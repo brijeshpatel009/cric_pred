@@ -2,10 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../Custom/my_icons_icons.dart';
-import '../../controller/User_Data.dart';
-import '../../controller/variable.dart';
-import 'My_Profile.dart';
+import '../../utils/User_Data.dart';
+import '../../utils/variable.dart';
 import 'dart:io';
 
 class ProfileScreen extends StatefulWidget {
@@ -55,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        matchCategoryIndex = 3;
+                        matchStreamingCategoryIndex = 3;
                       });
                     },
                     child: const Image(image: AssetImage('asset/prflImg.png'), fit: BoxFit.fill, color: Colors.brown),
@@ -66,10 +64,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: SizedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
-                        userName,
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                        "userName",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -104,17 +102,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: const Color(0xff70CDFF), width: 15),
-                      borderRadius: BorderRadius.circular((height * 0.2) * 2),
+                      borderRadius: BorderRadius.circular((height * 0.15) * 2),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular((height * 0.2) * 2),
+                      borderRadius: BorderRadius.circular((height * 0.15) * 2),
                       child: Stack(
                         alignment: Alignment.bottomCenter,
                         children: [
                           image == null
                               ? Container(
-                                  height: height * 0.15,
-                                  width: width * 0.325,
+                                  height: height * 0.19,
+                                  width: height * 0.19,
                             color: Colors.brown,
                                 )
                               : Image.file(

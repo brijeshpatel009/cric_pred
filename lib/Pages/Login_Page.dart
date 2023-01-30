@@ -1,9 +1,14 @@
 // ignore_for_file: file_names, avoid_print
 
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../Paint/LoginScreen_Paint.dart';
-import '../colors/Colors.dart';
+import '../controller/GetController.dart';
+import '../utils/Colors.dart';
 import 'SignUp_Page.dart';
+
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,6 +18,22 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    //   getCricketData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  GetDataController dataController = Get.put(GetDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignUpScreen(),
-                      ));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const SignUpScreen();
+                  },));
+                  print('login');
                 },
               ),
             ),

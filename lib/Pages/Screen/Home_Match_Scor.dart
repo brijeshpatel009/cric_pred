@@ -4,14 +4,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../../Custom/my_icons_icons.dart';
-import '../../controller/variable.dart';
+import '../../model/MatchesResult.dart';
+import '../../utils/variable.dart';
 
 class HomeMatchScoreScreen extends StatefulWidget {
-  const HomeMatchScoreScreen({Key? key, required this.color, required this.teamOne, required this.teamTwo}) : super(key: key);
+  const HomeMatchScoreScreen({Key? key, required this.color,required this.matchResultData})
+      : super(key: key);
   final Color color;
-  final String teamOne;
-  final String teamTwo;
+  final AllMatchData matchResultData;
 
   @override
   State<HomeMatchScoreScreen> createState() => _HomeMatchScoreScreenState();
@@ -72,47 +74,26 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(MyIcons.batBall, color: Colors.white),
+                          children: [
+                            const Icon(MyIcons.batBall, color: Colors.white),
                             Text(
-                              'IPL',
-                              style: TextStyle(fontSize: 10, color: Colors.white),
-                            )
+                              widget.matchResultData.matchtype.name,
+                              style: const TextStyle(fontSize: 10, color: Colors.white),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(widget.teamOne, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17)),
-                        const Text('vs'),
-                        Text(widget.teamTwo, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17)),
-                      ],
+                    FittedBox(
+                      child: Row(
+                        children: [
+                          Text(widget.matchResultData.teamA, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17)),
+                          const Text('vs'),
+                          Text(widget.matchResultData.teamB, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17)),
+                        ],
+                      ),
                     ),
                   ],
-                ),
-                SizedBox(
-                  child: matchCategoryIndex == 0
-                      ? Row(
-                          children: const [
-                            Text('Live'),
-                            Icon(
-                              Icons.circle,
-                              size: 8,
-                              color: Colors.red,
-                            ),
-                          ],
-                        )
-                      : Row(
-                          children: const [
-                            Text('Upcoming'),
-                            Icon(
-                              Icons.circle,
-                              size: 8,
-                              color: Colors.blue,
-                            ),
-                          ],
-                        ),
                 ),
               ],
             ),
@@ -165,7 +146,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                   Radius.circular(25),
                                 ),
                                 border: Border.all(color: Colors.black)),
-                            child: matchCategoryIndex == 0
+                            child: matchStreamingCategoryIndex == 0
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: const [
@@ -203,7 +184,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${widget.teamOne} (B)',
+                            '${widget.matchResultData.teamA} (B)',
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
@@ -216,7 +197,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${widget.teamTwo} (W)',
+                            '${widget.matchResultData.teamB} (W)',
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
@@ -276,12 +257,16 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 2),
-                                      child: Row(
-                                        children: [
-                                          Text(widget.teamOne),
-                                          const Spacer(),
-                                          const Text('(0.0)'),
-                                        ],
+                                      child: FittedBox(
+                                        child: Row(
+                                          children: [
+                                            Text(widget.matchResultData.teamA, style: const TextStyle(fontSize: 10)),
+                                            const Text(
+                                              '(0.0)',
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -293,12 +278,19 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 2),
-                                      child: Row(
-                                        children: [
-                                          Text(widget.teamTwo),
-                                          const Spacer(),
-                                          const Text('(0.0)'),
-                                        ],
+                                      child: FittedBox(
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              widget.matchResultData.teamB,
+                                              style: const TextStyle(fontSize: 5),
+                                            ),
+                                            const Text(
+                                              '(0.0)',
+                                              style: TextStyle(fontSize: 5),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),

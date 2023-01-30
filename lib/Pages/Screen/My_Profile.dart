@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: file_names
 
+import 'package:flutter/material.dart';
 import '../../Custom/my_icons_icons.dart';
 
 class MyProfile extends StatefulWidget {
@@ -36,7 +37,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 17),
-                  child: Text(widget.title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                  child: Text(widget.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 )
               ],
             ),

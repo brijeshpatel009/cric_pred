@@ -1,8 +1,13 @@
+// ignore_for_file: unused_import
+
+import 'package:cric_pred/Pages/SignUp_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'DemoPage.dart';
+import 'Pages/Home_Page.dart';
 import 'Pages/Login_Page.dart';
-import 'controller/variable.dart';
-import 'demo/Tabs_Widget.dart';
+import 'demo/DemoNested.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,13 +22,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home:  const LoginScreen(),
     );
   }
 }

@@ -1,6 +1,7 @@
+// ignore_for_file: file_names, avoid_print
+
 import 'package:flutter/material.dart';
 
-import '../../Custom/my_icons_icons.dart';
 import 'Teams_Match.dart';
 
 class TeamListScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class TeamListScreen extends StatefulWidget {
 }
 
 class _TeamListScreenState extends State<TeamListScreen> {
+
 
   @override
   Widget build(BuildContext context) {

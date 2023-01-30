@@ -1,8 +1,8 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 
-import '../../controller/variable.dart';
+import '../../utils/variable.dart';
 import 'Team_List_Screen.dart';
 
 class TeamScreen extends StatefulWidget {
@@ -58,7 +58,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
   ];
 
 
-  late final tabs = TabController(length: 5, vsync: this, animationDuration: Duration(seconds: 1));
+  late final tabs = TabController(length: 5, vsync: this, animationDuration: const Duration(seconds: 1));
   @override
   Widget build(BuildContext context) {
     return Scaffold(

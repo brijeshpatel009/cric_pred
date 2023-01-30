@@ -1,13 +1,15 @@
 // ignore_for_file: file_names, avoid_print
 
-import 'package:cric_pred/Custom/my_icons_icons.dart';
 import 'package:flutter/material.dart';
-import '../../controller/User_Data.dart';
-import '../../controller/variable.dart';
+import 'package:get/get.dart';
+
+import '../../controller/GetController.dart';
+import '../../utils/variable.dart';
 import '../../widget/Match_List.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.tab}) : super(key: key);
+  final TabController tab;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -33,11 +35,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ];
 
   late final tabController = TabController(length: 2, vsync: this, animationDuration: const Duration(seconds: 1));
+
   @override
   void initState() {
-    matchCategoryIndex=0;
+    matchStreamingCategoryIndex = 0;
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +65,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        matchCategoryIndex = 3;
+                        tabIndex = 2;
+                        widget.tab.animateTo(tabIndex);
                       });
+                      print('profile');
                     },
                     child: const Image(image: AssetImage('asset/prflImg.png'), fit: BoxFit.fill,color: Colors.brown),
                   ),
@@ -71,10 +78,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: SizedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
-                        userName,
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                        "userName",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -103,46 +110,46 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
 
               //Match Category
-              SizedBox(
-                height: 76,
-                width: double.infinity,
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: 6,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              print(index);
-                            },
-                            child: Container(
-                              width: 60,
-                              decoration: BoxDecoration(color: colors[index], borderRadius: BorderRadius.circular(20)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Image(
-                                  image: AssetImage(imagePath[index]),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            matchType[index],
-                            style: const TextStyle(fontWeight: FontWeight.w400),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
+              // SizedBox(
+              //   height: 76,
+              //   width: double.infinity,
+              //   child: ListView.builder(
+              //     physics: const BouncingScrollPhysics(),
+              //     itemCount: 6,
+              //     scrollDirection: Axis.horizontal,
+              //     itemBuilder: (context, index) {
+              //       return Padding(
+              //         padding: const EdgeInsets.symmetric(horizontal: 10),
+              //         child: Column(
+              //           children: [
+              //             GestureDetector(
+              //               onTap: () {
+              //                 print(index);
+              //               },
+              //               child: Container(
+              //                 width: 60,
+              //                 decoration: BoxDecoration(color: colors[index], borderRadius: BorderRadius.circular(20)),
+              //                 child: Padding(
+              //                   padding: const EdgeInsets.all(15),
+              //                   child: Image(
+              //                     image: AssetImage(imagePath[index]),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //             Text(
+              //               matchType[index],
+              //               style: const TextStyle(fontWeight: FontWeight.w400),
+              //             )
+              //           ],
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 30,
+              // ),
 
               //Live Or Upcoming Category Tab
               SizedBox(
@@ -153,10 +160,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     }),
                     onTap: (int val) {
                       setState(() {
-                        matchCategoryIndex = val;
+                        matchStreamingCategoryIndex = val;
                       });
                     },
                     physics: const BouncingScrollPhysics(),
+                    isScrollable: false,
                     indicatorSize: TabBarIndicatorSize.label,
                     indicatorColor: const Color(0xffF97900),
                     indicatorWeight: 3,
@@ -168,9 +176,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
 
               //Matches List View
+
               Flexible(
                 child: TabBarView(
-                  physics: const BouncingScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   controller: tabController,
                   children: const [
                     MatchesList(

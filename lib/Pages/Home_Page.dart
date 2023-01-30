@@ -1,9 +1,9 @@
 // ignore_for_file: file_names, avoid_print, no_leading_underscores_for_local_identifiers
 
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../controller/variable.dart';
+
+import '../utils/variable.dart';
 import 'Screen/Home_Screen.dart';
 import 'Screen/Team_Screen.dart';
 import 'Screen/UserProfile_Screen.dart';
@@ -22,18 +22,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    setState(() {
-    });
+    setState(() {});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(const Duration(milliseconds: 100), (timer) {setState(() {
-    });});
-    setState(() {
-      _tab.animateTo(tabIndex);
-    });
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -47,10 +41,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             TabBarView(
               physics: const NeverScrollableScrollPhysics(),
               controller: _tab,
-              children: const [
-                HomeScreen(),
-                TeamScreen(title: 'Teams',),
-                ProfileScreen(),
+              children: [
+                HomeScreen(
+                  tab: _tab,
+                ),
+                const TeamScreen(
+                  title: 'Teams',
+                ),
+                const ProfileScreen(),
               ],
             ),
             Positioned(
