@@ -173,7 +173,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     labelStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                     unselectedLabelColor: Colors.blueGrey,
                     controller: tabController,
-                    tabs: const [Text('Live Match'), Text('Upcoming')]),
+                    tabs: const [
+                      Text('Live Match'),
+                      Text('Upcoming'),
+                    ]),
               ),
 
               //Matches List View

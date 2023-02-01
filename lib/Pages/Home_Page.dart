@@ -1,7 +1,4 @@
 // ignore_for_file: file_names, avoid_print, no_leading_underscores_for_local_identifiers
-
-
-import 'package:cric_pred/Pages/Screen/Live_Score.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/variable.dart';
@@ -19,7 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   double iconSize = 30;
-  late final TabController _tab = TabController(length: 4, vsync: this);
+  late final TabController _tab = TabController(length: 3, vsync: this);
 
   @override
   void initState() {
@@ -46,7 +43,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 HomeScreen(
                   tab: _tab,
                 ),
-                const LiveScore(title: 'Live Match'),
                 const TeamScreen(
                   title: 'Teams',
                 ),
@@ -75,7 +71,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     indicatorColor: Colors.transparent,
                     tabs: <Widget>[
                       tab(Icons.home, 'Home'),
-                      tab(Icons.tv_sharp, 'Live'),
                       tab(Icons.people_alt, 'Team'),
                       tab(Icons.person_pin, 'Profile'),
                     ],

@@ -84,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   child: const Center(
                     child: Text(
-                      'Sing up',
+                      'Sign up',
                       style: TextStyle(
                         fontSize: 23,
                       ),

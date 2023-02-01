@@ -179,6 +179,8 @@ class _MatchesListState extends State<MatchesList> {
 
   GetDataController matchDataController = Get.find();
 
+
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -255,17 +257,16 @@ class _MatchesListState extends State<MatchesList> {
                                         Text(
                                           matchDataController.matchResultList[index].teamA,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700),
+                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700,letterSpacing: 0.5),
                                         ),
                                         const Text(
                                           ' vs ',
-                                          style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w400),
+                                          style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w400,),
                                         ),
                                         Text(
                                           matchDataController.matchResultList[index].teamB,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700),
-                                        ),
+                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700,letterSpacing: 0.5),),
                                       ],
                                     ),
                                   ),
@@ -282,26 +283,28 @@ class _MatchesListState extends State<MatchesList> {
                                         child: Text(
                                           textAlign: TextAlign.center,
                                           matchDataController.matchResultList[index].matchtype.name,
-                                          style: const TextStyle(color: Colors.black, fontSize: 11),
+                                          style: const TextStyle(color: Colors.black, fontSize: 10),
                                         ),
                                       ),
                                       matchStreamingCategoryIndex == 0
                                           ? Row(
-                                              children: const [
-                                                Text('Live'),
+                                              children: [
+                                                const Text('Live'),
+                                                SizedBox(width: width*0.015,),
                                                 Icon(
                                                   Icons.circle,
-                                                  size: 8,
+                                                  size: width*0.022,
                                                   color: Colors.red,
                                                 ),
                                               ],
                                             )
                                           : Row(
-                                              children: const [
-                                                Text('Upcoming'),
+                                              children: [
+                                                const Text('Upcoming'),
+                                                SizedBox(width: width*0.015,),
                                                 Icon(
                                                   Icons.circle,
-                                                  size: 8,
+                                                  size: width*0.022,
                                                   color: Colors.blue,
                                                 ),
                                               ],
@@ -310,7 +313,7 @@ class _MatchesListState extends State<MatchesList> {
                                   ),
                                   Text(
                                     matchDataController.matchResultList[index].matchtime,
-                                    style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w400),
+                                    style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w400,letterSpacing: 1),
                                   ),
                                 ],
                               ),

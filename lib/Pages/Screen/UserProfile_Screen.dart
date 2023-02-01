@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:cric_pred/Pages/Login_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../utils/User_Data.dart';
@@ -67,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Text(
                         "$userName",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -472,47 +473,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: padding),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: height * 0.07,
-                          width: width * 0.13,
-                          decoration: const BoxDecoration(
-                            color: Color(0xff70CDFF),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              bottomLeft: Radius.circular(15),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                        return const LoginScreen();
+                      },));
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: padding),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            height: height * 0.07,
+                            width: width * 0.13,
+                            decoration: const BoxDecoration(
+                              color: Color(0xff70CDFF),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                bottomLeft: Radius.circular(15),
+                              ),
+                            ),
+                            child: const Center(
+                              child: Icon(Icons.exit_to_app, size: 30),
                             ),
                           ),
-                          child: const Center(
-                            child: Icon(Icons.exit_to_app, size: 30),
-                          ),
-                        ),
-                        Container(
-                          height: height * 0.07,
-                          width: width * 0.75,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(13),
-                              topRight: Radius.circular(13),
+                          Container(
+                            height: height * 0.07,
+                            width: width * 0.75,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(13),
+                                topRight: Radius.circular(13),
+                              ),
+                              color: Color(0xff9BDCFF),
                             ),
-                            color: Color(0xff9BDCFF),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 10, left: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text('Log Out'),
-                                Icon(Icons.chevron_right_outlined),
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 10, left: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text('Log Out'),
+                                  Icon(Icons.chevron_right_outlined),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
