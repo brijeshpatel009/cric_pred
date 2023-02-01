@@ -64,9 +64,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: SizedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
-                        "userName",
+                        "$userName",
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ],

@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, avoid_print
 
+import 'package:cric_pred/utils/User_Data.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -78,10 +79,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: SizedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
-                        "userName",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                        "$userName",
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
