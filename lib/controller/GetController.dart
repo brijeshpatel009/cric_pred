@@ -60,7 +60,10 @@ print("object");
     }
     // print(">>>???>>>${liveMatchResponse.body}");
     // print(">>??<<>>??${liveMatchList[0].jsonruns}");
-    liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsonruns));
+    // for(var i=0; i<liveMatchList.length; i++){
+    //   print(i);
+    //   liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[i].jsonruns));
+    // }
     // print(liveMatchRunData!.jsonruns.runxa);
     // print(liveMatchRunData!.jsonruns.runxb);
     // print(liveMatchRunData!.jsonruns.fav);
@@ -69,7 +72,7 @@ print("object");
     // print(liveMatchRunData!.jsonruns.sessionA);
     // print(liveMatchRunData!.jsonruns.sessionB);
     // print(liveMatchRunData!.jsonruns.sessionOver);
-    print(liveMatchRunData!.jsonruns.summary);
+    // print(liveMatchRunData!.jsonruns.summary);
     // print(liveMatchRunData!.jsonruns.stat);
     return liveMatchList;
   }
