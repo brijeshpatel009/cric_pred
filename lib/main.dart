@@ -1,13 +1,10 @@
 // ignore_for_file: unused_import
-
 import 'package:cric_pred/Pages/SignUp_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'DemoPage.dart';
 import 'Pages/Home_Page.dart';
 import 'Pages/Login_Page.dart';
-import 'demo/DemoNested.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -39,101 +39,106 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xff98F6CB),
-      body: Stack(
-        children: [
-          LoginPaint(
-            width: width,
-            height: height,
-          ),
-          // Material(
-          //   elevation: 10,
-          //   shape: WaveBorder(height: height,width: width),
-          //   clipBehavior: Clip.antiAlias,
-          // ),
-          innerContainer(height * 0.37, width * 0.06),
-          textContainer(height * 0.37, width * 0.06, Icons.email, 'Enter Email', false, TextInputAction.next),
-          innerContainer(height * 0.46, width * 0.06),
-          textContainer(height * 0.46, width * 0.06, Icons.key, 'Enter Password', true, TextInputAction.done),
-          Positioned(
-            top: height * 0.665,
-            left: width * 0.5 - 100,
-            child: Container(
-              height: 45,
-              width: 200,
-              decoration: const BoxDecoration(color: Color(0xff1EB2A6), borderRadius: BorderRadius.all(Radius.circular(44))),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(44))),
-                  backgroundColor: const Color(0xff1EB2A6),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 23,
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: const Color(0xff98F6CB),
+        body: Stack(
+          children: [
+            LoginPaint(
+              width: width,
+              height: height,
+            ),
+            // Material(
+            //   elevation: 10,
+            //   shape: WaveBorder(height: height,width: width),
+            //   clipBehavior: Clip.antiAlias,
+            // ),
+            innerContainer(height * 0.37, width * 0.06),
+            textContainer(height * 0.37, width * 0.06, Icons.email, 'Enter Email', false, TextInputAction.next),
+            innerContainer(height * 0.46, width * 0.06),
+            textContainer(height * 0.46, width * 0.06, Icons.key, 'Enter Password', true, TextInputAction.done),
+            Positioned(
+              top: height * 0.665,
+              left: width * 0.5 - 100,
+              child: Container(
+                height: 45,
+                width: 200,
+                decoration: const BoxDecoration(color: Color(0xff1EB2A6), borderRadius: BorderRadius.all(Radius.circular(44))),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(44))),
+                    backgroundColor: const Color(0xff1EB2A6),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 23,
+                      ),
                     ),
                   ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return const SignUpScreen();
+                    },));
+                    print('login');
+                  },
                 ),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const SignUpScreen();
-                  },));
-                  print('login');
-                },
               ),
             ),
-          ),
-          Positioned(
-            bottom: height * 0.05,
-            right: width * 0.10,
-            child: Column(
-              children: [
-                const Text(
-                  'or',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        print('Google');
-                      },
-                      child: const Image(
-                        image: AssetImage("asset/goglImg.png"),
-                        height: 50,
-                        width: 50,
+            Positioned(
+              bottom: height * 0.05,
+              right: width * 0.10,
+              child: Column(
+                children: [
+                  const Text(
+                    'or',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+                  ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          print('Google');
+                        },
+                        child: const Image(
+                          image: AssetImage("asset/goglImg.png"),
+                          height: 50,
+                          width: 50,
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        print('FaceBook');
-                      },
-                      child: const Image(
-                        image: AssetImage('asset/fbImg.png'),
-                        height: 50,
-                        width: 50,
+                      GestureDetector(
+                        onTap: () {
+                          print('FaceBook');
+                        },
+                        child: const Image(
+                          image: AssetImage('asset/fbImg.png'),
+                          height: 50,
+                          width: 50,
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        print('Twitter');
-                      },
-                      child: const Image(
-                        image: AssetImage('asset/twtImg.png'),
-                        height: 50,
-                        width: 50,
+                      GestureDetector(
+                        onTap: () {
+                          print('Twitter');
+                        },
+                        child: const Image(
+                          image: AssetImage('asset/twtImg.png'),
+                          height: 50,
+                          width: 50,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
 
-        ],
+          ],
+        ),
       ),
     );
   }

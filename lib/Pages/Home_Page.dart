@@ -1,6 +1,4 @@
 // ignore_for_file: file_names, avoid_print, no_leading_underscores_for_local_identifiers
-
-
 import 'package:flutter/material.dart';
 
 import '../utils/variable.dart';

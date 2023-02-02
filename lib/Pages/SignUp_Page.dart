@@ -29,76 +29,81 @@ class _SignUpScreenState extends State<SignUpScreen> {
     //  replaceString = nested.replaceAll("\n\n\n", " ");
     //  var jsonData = jsonDecode(replaceString);
     // print(replaceString);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xff98F6CB),
-      body: Stack(
-        children: [
-          LoginPaint(
-            width: width,
-            height: height,
-          ),
-          Positioned(
-            top: height * 0.29,
-            left: width * 0.03,
-            child: SizedBox(
-              height: (height * 0.054) * 5.5,
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      innerContainer(),
-                      innerContainer(),
-                      innerContainer(),
-                      innerContainer(),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      textContainer(Icons.person, 'Username', false, TextInputAction.next,user),
-                      textContainer(Icons.email, 'Enter Email', false, TextInputAction.next,email),
-                      textContainer(Icons.call, 'Mobile number', false, TextInputAction.next,mobileNumber),
-                      textContainer(Icons.key, 'Password', true, TextInputAction.done,password),
-                    ],
-                  )
-                ],
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: const Color(0xff98F6CB),
+        body: Stack(
+          children: [
+            LoginPaint(
+              width: width,
+              height: height,
+            ),
+            Positioned(
+              top: height * 0.29,
+              left: width * 0.03,
+              child: SizedBox(
+                height: (height * 0.054) * 5.5,
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        innerContainer(),
+                        innerContainer(),
+                        innerContainer(),
+                        innerContainer(),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        textContainer(Icons.person, 'Username', false, TextInputAction.next,user),
+                        textContainer(Icons.email, 'Enter Email', false, TextInputAction.next,email),
+                        textContainer(Icons.call, 'Mobile number', false, TextInputAction.next,mobileNumber),
+                        textContainer(Icons.key, 'Password', true, TextInputAction.done,password),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            top: height * 0.665,
-            left: width * 0.5 - 100,
-            child: SizedBox(
-              height: 45,
-              width: 200,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(44))),
-                  backgroundColor: const Color(0xff1EB2A6),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Sing up',
-                    style: TextStyle(
-                      fontSize: 23,
+            Positioned(
+              top: height * 0.665,
+              left: width * 0.5 - 100,
+              child: SizedBox(
+                height: 45,
+                width: 200,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(44))),
+                    backgroundColor: const Color(0xff1EB2A6),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Sign up',
+                      style: TextStyle(
+                        fontSize: 23,
+                      ),
                     ),
                   ),
+                  onPressed: () {
+                    userName = user.text;
+                    userEmail = email.text;
+                    userMobileNumber = mobileNumber.text;
+                    userPassword = password.text;
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return const HomePage();
+                    },));
+                  },
                 ),
-                onPressed: () {
-                  userName = user.text;
-                  userEmail = email.text;
-                  userMobileNumber = mobileNumber.text;
-                  userPassword = password.text;
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const HomePage();
-                  },));
-                },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

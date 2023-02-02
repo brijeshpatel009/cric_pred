@@ -1,7 +1,5 @@
 // ignore_for_file: file_names, non_constant_identifier_names
-
 import 'package:flutter/material.dart';
-
 import '../../utils/variable.dart';
 import 'Team_List_Screen.dart';
 
@@ -16,6 +14,8 @@ class TeamScreen extends StatefulWidget {
 class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
   late double height = MediaQuery.of(context).size.height;
   late double width = MediaQuery.of(context).size.width;
+
+
   List<String> international = [
     'India',
     'Bangladesh',
@@ -28,27 +28,28 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
     'Ireland',
     'Zimbabwe',
   ];
+
   List<String> IPL = [
     'Mumbai Indians',
     'Chennai Super Kings',
     'Kolkata Knight Riders',
     'Royal Challengers Bangalore',
     'Punjab Kings',
-    'Sunrisers Hyderabad'
+    'Sunrisers Hyderabad',
   ];
   List<String> BPL = [
     'Comilla Victorians',
     'Rangpur Riders',
     'Fortune Barishal',
     'Rajshahi Royals',
-    'Duronto Rajshahi'
+    'Duronto Rajshahi',
   ];
   List<String> CPL = [
     'Guyana Amazon Warriors',
     'Trinbago Knight Riders',
     'Jamaica Tallawahs',
     'Antigua Hawksbills',
-    'Barbados Royals'
+    'Barbados Royals',
   ];
   List<String> ODI = [
     "IND",
@@ -59,6 +60,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
 
 
   late final tabs = TabController(length: 5, vsync: this, animationDuration: const Duration(seconds: 1));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

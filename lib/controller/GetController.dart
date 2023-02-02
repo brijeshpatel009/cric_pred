@@ -60,10 +60,7 @@ print("object");
     }
     // print(">>>???>>>${liveMatchResponse.body}");
     // print(">>??<<>>??${liveMatchList[0].jsonruns}");
-    // for(var i=0; i<liveMatchList.length; i++){
-    //   print(i);
-    //   liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[i].jsonruns));
-    // }
+    liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsonruns));
     // print(liveMatchRunData!.jsonruns.runxa);
     // print(liveMatchRunData!.jsonruns.runxb);
     // print(liveMatchRunData!.jsonruns.fav);
