@@ -60,7 +60,10 @@ print("object");
     }
     // print(">>>???>>>${liveMatchResponse.body}");
     // print(">>??<<>>??${liveMatchList[0].jsonruns}");
-    liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsonruns));
+    // liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsonruns));
+    // liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsondata));
+    List.generate(GetDataController().liveMatchList.length, (index) => liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[index].jsonruns)),);
+    List.generate(GetDataController().liveMatchList.length, (index) => liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[index].jsondata)));
     // print(liveMatchRunData!.jsonruns.runxa);
     // print(liveMatchRunData!.jsonruns.runxb);
     // print(liveMatchRunData!.jsonruns.fav);
@@ -69,7 +72,8 @@ print("object");
     // print(liveMatchRunData!.jsonruns.sessionA);
     // print(liveMatchRunData!.jsonruns.sessionB);
     // print(liveMatchRunData!.jsonruns.sessionOver);
-    // print(liveMatchRunData!.jsonruns.summary);
+    print(liveMatchRunData!.jsonruns.summary);
+    print(liveMatchRunData!.jsondata.wicketA);
     // print(liveMatchRunData!.jsonruns.stat);
     return liveMatchList;
   }

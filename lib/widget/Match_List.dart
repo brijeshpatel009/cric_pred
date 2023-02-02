@@ -217,7 +217,6 @@ class _MatchesListState extends State<MatchesList> {
                       Positioned(
                         right: 3,
                         child: GestureDetector(
-                          // behavior: HitTestBehavior.translucent,
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
@@ -338,7 +337,7 @@ class _MatchesListState extends State<MatchesList> {
                               Text(
                                 matchDataController.matchResultList[index].matchtype.name,
                                 style: const TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w500),
-                              )
+                              ),
                             ],
                           ),
                         ),
