@@ -30,51 +30,51 @@ class LiveScoreModel {
     required this.admsg,
   });
 
-  String jsonruns;
-  String jsondata;
-  String title;
-  String matchtime;
-  String venue;
-  String result;
-  int isfinished;
-  int ispriority;
-  String teamA;
-  String teamAImage;
-  String teamB;
-  int seriesid;
-  String teamBImage;
-  String imgeUrl;
-  String matchType;
-  String matchDate;
-  int matchId;
+  LiveScoreRunModel jsonruns;
+  LiveScoreRunModel jsondata;
+  String title = "";
+  String matchtime =  "";
+  String venue = "";
+  String result = "";
+  int isfinished = 0;
+  int ispriority = 0;
+  String teamA = "";
+  String teamAImage = "";
+  String teamB = "";
+  int seriesid = 0;
+  String teamBImage= "";
+  String imgeUrl= "";
+  String matchType = "";
+  String matchDate = "";
+  int matchId = 0;
   dynamic appversion;
-  String adphone;
-  String adimage;
-  String admsg;
+  String adphone = "";
+  String adimage = "";
+  String admsg = "";
 
   factory LiveScoreModel.fromJson(Map<String, dynamic> json) =>
       LiveScoreModel(
-        jsonruns: json["jsonruns"],
-        jsondata: json["jsondata"],
-        title: json["Title"],
-        matchtime: json["Matchtime"],
-        venue: json["venue"],
-        result: json["Result"],
-        isfinished: json["isfinished"],
-        ispriority: json["ispriority"],
-        teamA: json["TeamA"],
-        teamAImage: json["TeamAImage"],
-        teamB: json["TeamB"],
-        seriesid: json["seriesid"],
-        teamBImage: json["TeamBImage"],
-        imgeUrl: json["ImgeURL"],
-        matchType: json["MatchType"],
-        matchDate: json["MatchDate"],
-        matchId: json["MatchId"],
-        appversion: json["Appversion"],
-        adphone: json["adphone"],
-        adimage: json["adimage"],
-        admsg: json["admsg"],
+        jsonruns: json["jsonruns"] as LiveScoreRunModel,
+        jsondata: json["jsondata"] as LiveScoreRunModel,
+        title: json["Title"] as String,
+        matchtime: json["Matchtime"] as String,
+        venue: json["venue"] as String,
+        result: json["Result"] as String,
+        isfinished: json["isfinished"] as int,
+        ispriority: json["ispriority"] as int,
+        teamA: json["TeamA"] as String,
+        teamAImage: json["TeamAImage"] as String,
+        teamB: json["TeamB"] as String,
+        seriesid: json["seriesid"] as int,
+        teamBImage: json["TeamBImage"] as String,
+        imgeUrl: json["ImgeURL"] as String,
+        matchType: json["MatchType"] as String,
+        matchDate: json["MatchDate"] as String,
+        matchId: json["MatchId"] as int,
+        appversion: json["Appversion"] as String,
+        adphone: json["adphone"] as String,
+        adimage: json["adimage"] as String,
+        admsg: json["admsg"] as String,
       );
 
   Map<String, dynamic> toJson() =>
@@ -145,16 +145,16 @@ class Jsonruns {
     required this.stat,
   });
 
-  String runxa;
-  String runxb;
-  String fav;
-  String rateA;
-  String rateB;
-  String sessionA;
-  String sessionB;
-  String sessionOver;
-  String summary;
-  String stat;
+  String runxa = "";
+  String runxb = "";
+  String fav = "";
+  String rateA = "";
+  String rateB = "";
+  String sessionA = "";
+  String sessionB = "";
+  String sessionOver = "";
+  String summary = "";
+  String stat = "";
 
   factory Jsonruns.fromRawJson(String str) => Jsonruns.fromJson(json.decode(str));
 

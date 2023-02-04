@@ -161,11 +161,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget textContainer(double top, double left, IconData icon, String label, bool bool, TextInputAction action) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Positioned(
       top: top,
       left: left,
       child: Padding(
-        padding: const EdgeInsets.only(left: 5),
+        padding: EdgeInsets.only(left: width*0.05),
         child: Row(
           children: [
             Icon(
@@ -173,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
               color: iconColor,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: width*0.02),
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.054,
                 width: MediaQuery.of(context).size.width * 0.61,
@@ -190,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: Colors.black.withOpacity(0.1),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(left: 5),
+                    contentPadding: EdgeInsets.only(left: width*0.05,),
                     isDense: true,
                     focusColor: Colors.black,
                     floatingLabelBehavior: FloatingLabelBehavior.never,
