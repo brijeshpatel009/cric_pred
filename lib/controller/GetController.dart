@@ -7,11 +7,11 @@ import '../model/MatchesResult.dart';
 
 class GetDataController extends GetxController {
   MatchResultModel? matchResultData;
-  LiveScoreRunModel? liveMatchRunData;
-  late LiveScoreModel liveMatchData;
+  // LiveScoreRunModel? liveMatchRunData;
+  late LiveScoreModel liveScoreModelData;
   RxList<AllMatchData> matchResultList = RxList();
   RxList<LiveScoreModel> liveMatchList = RxList();
-  RxList<LiveScoreRunModel> liveMatchListRun = RxList();
+  // RxList<LiveScoreRunModel> liveMatchListRun = RxList();
   RxBool isLoading = true.obs;
 
   @override
@@ -40,7 +40,7 @@ class GetDataController extends GetxController {
     }
   }
 
-  Future<List<LiveScoreModel>> fetchPosts() async {
+  Future<LiveScoreModel> fetchPosts() async {
     final http.Response liveMatchResponse = await http.post(
       Uri.parse('http://cricpro.cricnet.co.in/api/values/LiveLine'),
       headers: {'Accept':'*/*','Connection':'keep-alive'},
@@ -53,9 +53,14 @@ class GetDataController extends GetxController {
     // print(">>??<<>>??${liveMatchList[0].jsonruns}");
     // liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsonruns));
     // liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsondata));
-    liveMatchData = RxList.generate(GetDataController().liveMatchListRun.length, (index) => jsonDecode(liveMatchList[index].jsonruns.jsonruns.toString())).toJson();
-    liveMatchData = RxList.generate(GetDataController().liveMatchListRun.length, (index) => jsonDecode(liveMatchList[index].jsondata.jsondata.toString())).toJson();
-    print(liveMatchData.jsonruns.jsonruns.sessionA);
+    // liveMatchData = RxList.generate(GetDataController().liveMatchListRun.length, (index) => jsonDecode(liveMatchList[index].jsonruns.toString())).toJson();
+    // liveMatchData = RxList.generate(GetDataController().liveMatchListRun.length, (index) => jsonDecode(liveMatchList[index].jsondata.toString())).toJson();
+    // liveMatchList = RxList.generate(GetDataController().liveMatchListRun.length, (index) => jsonDecode(liveMatchList[index].jsonruns.toString())).toJson();
+    // liveMatchList = RxList.generate(GetDataController().liveMatchListRun.length, (index) => jsonDecode(liveMatchList[index].jsondata.toString())).toJson();
+    liveScoreModelData = RxList.generate(GetDataController().liveMatchList.length, (index) => LiveScoreModel.fromJson(jsonDecode(liveMatchList[index].jsonruns.toString()))).toJson();
+    liveScoreModelData = RxList.generate(GetDataController().liveMatchList.length, (index) => LiveScoreModel.fromJson(jsonDecode(liveMatchList[index].jsondata.toString()))).toJson();
+    print(liveScoreModelData.jsonruns);
+    print(liveScoreModelData.jsondata);
     // print(liveMatchRunData!.jsonruns.runxa);
     // print(liveMatchRunData!.jsonruns.runxb);
     // print(liveMatchRunData!.jsonruns.fav);
@@ -68,6 +73,6 @@ class GetDataController extends GetxController {
     //  print(liveMatchRunData!.jsondata.wicketA);
     // print(liveMatchRunData!.jsondata.sessionA);
 
-    return liveMatchList;
+    return liveScoreModelData;
   }
 }
