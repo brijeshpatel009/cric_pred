@@ -2,9 +2,7 @@
 
 import 'package:cric_pred/utils/User_Data.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../../controller/GetController.dart';
 import '../../utils/variable.dart';
 import '../../widget/Match_List.dart';
 
@@ -43,8 +41,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       });
                       print('profile');
                     },
-                    child: const Image(image: AssetImage('asset/prflImg.png'), fit: BoxFit.fill,color: Colors.brown),
+                    child: const Image(image: AssetImage('asset/prflImg.png'), fit: BoxFit.fill, color: Colors.brown),
                   ),
                 ),
               ),
@@ -156,9 +152,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               SizedBox(
                 height: 30,
                 child: TabBar(
-                    overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                      return states.contains(MaterialState.focused) ? null : Colors.transparent;
-                    }),
+                    // overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                    //   return states.contains(MaterialState.focused) ? null : Colors.transparent;
+                    // }),
                     onTap: (int val) {
                       setState(() {
                         matchStreamingCategoryIndex = val;
@@ -185,12 +181,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: tabController,
-                  children: const [
+                  children: [
                     MatchesList(
-                      itemCount: 6,
+                      matchStreamingCategoryIndex: matchStreamingCategoryIndex,
                     ),
                     MatchesList(
-                      itemCount: 5,
+                      matchStreamingCategoryIndex: matchStreamingCategoryIndex,
                     ),
                   ],
                 ),

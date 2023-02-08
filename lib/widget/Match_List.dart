@@ -6,14 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../Pages/Screen/Home_Match_Scor.dart';
-import '../controller/GetController.dart';
-import '../model/GetAllPlayer.dart';
+import '../controller/GetAllMatchController.dart';
+import '../model/GetAllPlayerModel.dart';
 import '../model/News.dart';
 import '../utils/variable.dart';
 
 class MatchesList extends StatefulWidget {
-  const MatchesList({Key? key, required this.itemCount}) : super(key: key);
-  final int itemCount;
+  const MatchesList({Key? key, required this.matchStreamingCategoryIndex}) : super(key: key);
+  final int matchStreamingCategoryIndex;
 
   @override
   State<MatchesList> createState() => _MatchesListState();
@@ -114,6 +114,7 @@ class _MatchesListState extends State<MatchesList> {
     const Color(0xff21B07E),
     const Color(0xff0505DD),
   ];
+  String? date;
 
   String getSystemTime() {
     var now = DateTime.now();
@@ -170,6 +171,17 @@ class _MatchesListState extends State<MatchesList> {
   void initState() {
     // initSocket();
     super.initState();
+    String cDate = DateFormat("dd-MMM-yyyy hh:mma-EEE").format(DateTime.now());
+    DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
+    DateTime dt = DateTime.parse('2020-01-02 03:04:05');
+    print(dt); // 2020-01-02 03:04:05.000
+
+    date = matchDataController.liveMatchScoreList[0].matchtime;
+    var modifyDate = date!.replaceAll('at ', "");
+    print(modifyDate);
+    // DateTime dt2 = DateTime.parse(cDate);
+    // print(dt1>dt2);
+    // print(dt1.compareTo(dt2));
   }
 
   @override
@@ -177,9 +189,7 @@ class _MatchesListState extends State<MatchesList> {
     super.dispose();
   }
 
-  GetDataController matchDataController = Get.find();
-
-
+  GetAllMatchesController matchDataController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +201,8 @@ class _MatchesListState extends State<MatchesList> {
           : ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 15, bottom: 100),
-              itemCount: matchDataController.matchResultList.length,
+              itemCount:
+                  matchStreamingCategoryIndex == 0 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchScoreList.length,
               itemBuilder: (context, index) {
                 return Container(
                   height: height * 0.13,
@@ -215,14 +226,16 @@ class _MatchesListState extends State<MatchesList> {
                         ),
                       ),
                       Positioned(
-                        right: 3,
+                        right: 1.5,
                         child: GestureDetector(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
                                 return HomeMatchScoreScreen(
                                   color: matchesColor[index],
-                                  matchResultData: matchDataController.matchResultList[index],
+                                  matchResultData: matchDataController.allMatchResultList[index],
+                                  liveMatchData: matchDataController.liveMatchScoreList[index],
+                                  index: index,
                                 );
                               },
                             ));
@@ -254,18 +267,27 @@ class _MatchesListState extends State<MatchesList> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          matchDataController.matchResultList[index].teamA,
+                                          matchStreamingCategoryIndex == 0
+                                              ? matchDataController.allMatchResultList[index].teamA
+                                              : matchDataController.liveMatchScoreList[index].teamA,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700,letterSpacing: 0.5),
+                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
                                         ),
                                         const Text(
                                           ' vs ',
-                                          style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w400,),
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                         ),
                                         Text(
-                                          matchDataController.matchResultList[index].teamB,
+                                          matchStreamingCategoryIndex == 0
+                                              ? matchDataController.allMatchResultList[index].teamB
+                                              : matchDataController.liveMatchScoreList[index].teamB,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700,letterSpacing: 0.5),),
+                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -281,7 +303,9 @@ class _MatchesListState extends State<MatchesList> {
                                         ),
                                         child: Text(
                                           textAlign: TextAlign.center,
-                                          matchDataController.matchResultList[index].matchtype.name,
+                                          matchStreamingCategoryIndex == 0
+                                              ? matchDataController.allMatchResultList[index].matchtype.name
+                                              : matchDataController.liveMatchScoreList[index].matchType,
                                           style: const TextStyle(color: Colors.black, fontSize: 10),
                                         ),
                                       ),
@@ -289,10 +313,12 @@ class _MatchesListState extends State<MatchesList> {
                                           ? Row(
                                               children: [
                                                 const Text('Live'),
-                                                SizedBox(width: width*0.015,),
+                                                SizedBox(
+                                                  width: width * 0.015,
+                                                ),
                                                 Icon(
                                                   Icons.circle,
-                                                  size: width*0.022,
+                                                  size: width * 0.022,
                                                   color: Colors.red,
                                                 ),
                                               ],
@@ -300,10 +326,12 @@ class _MatchesListState extends State<MatchesList> {
                                           : Row(
                                               children: [
                                                 const Text('Upcoming'),
-                                                SizedBox(width: width*0.015,),
+                                                SizedBox(
+                                                  width: width * 0.015,
+                                                ),
                                                 Icon(
                                                   Icons.circle,
-                                                  size: width*0.022,
+                                                  size: width * 0.022,
                                                   color: Colors.blue,
                                                 ),
                                               ],
@@ -311,8 +339,10 @@ class _MatchesListState extends State<MatchesList> {
                                     ],
                                   ),
                                   Text(
-                                    matchDataController.matchResultList[index].matchtime,
-                                    style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w400,letterSpacing: 1),
+                                    matchStreamingCategoryIndex == 0
+                                        ? matchDataController.allMatchResultList[index].matchtime
+                                        : matchDataController.liveMatchScoreList[index].matchtime,
+                                    style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w400, letterSpacing: 1),
                                   ),
                                 ],
                               ),
@@ -335,7 +365,9 @@ class _MatchesListState extends State<MatchesList> {
                             children: [
                               const Image(image: AssetImage('asset/cricImg.png'), height: 30),
                               Text(
-                                matchDataController.matchResultList[index].matchtype.name,
+                                matchStreamingCategoryIndex == 0
+                                    ? matchDataController.allMatchResultList[index].matchtype.name
+                                    : matchDataController.liveMatchScoreList[index].matchType,
                                 style: const TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w500),
                               ),
                             ],

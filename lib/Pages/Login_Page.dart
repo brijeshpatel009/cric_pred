@@ -1,14 +1,12 @@
 // ignore_for_file: file_names, avoid_print
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../Paint/LoginScreen_Paint.dart';
-import '../controller/GetController.dart';
+import '../controller/GetAllMatchController.dart';
 import '../utils/Colors.dart';
 import 'SignUp_Page.dart';
-
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,8 +16,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -33,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  GetDataController dataController = Get.put(GetDataController());
+  GetAllMatchesController dataController = Get.put(GetAllMatchesController());
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +78,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return const SignUpScreen();
-                    },));
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return const SignUpScreen();
+                      },
+                    ));
                     print('login');
                   },
                 ),
@@ -136,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-
           ],
         ),
       ),
@@ -161,13 +158,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget textContainer(double top, double left, IconData icon, String label, bool bool, TextInputAction action) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Positioned(
       top: top,
       left: left,
       child: Padding(
-        padding: EdgeInsets.only(left: width*0.05),
+        padding: const EdgeInsets.only(left: 5),
         child: Row(
           children: [
             Icon(
@@ -175,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
               color: iconColor,
             ),
             Padding(
-              padding: EdgeInsets.only(left: width*0.02),
+              padding: const EdgeInsets.only(left: 10),
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.054,
                 width: MediaQuery.of(context).size.width * 0.61,
@@ -192,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: Colors.black.withOpacity(0.1),
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(left: width*0.05,),
+                    contentPadding: const EdgeInsets.only(left: 5),
                     isDense: true,
                     focusColor: Colors.black,
                     floatingLabelBehavior: FloatingLabelBehavior.never,

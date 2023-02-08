@@ -122,10 +122,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget textContainer(IconData icon, String label, bool bool, TextInputAction action,TextEditingController userData) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.only(left: width*0.04),
+      padding: const EdgeInsets.only(left: 3),
       child: Row(
         children: [
           Icon(
@@ -133,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             color: iconColor,
           ),
           Padding(
-            padding: EdgeInsets.only(left: width*0.02),
+            padding: const EdgeInsets.only(left: 5),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.054,
               width: MediaQuery.of(context).size.width * 0.57,
@@ -151,7 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 keyboardType: TextInputType.emailAddress,
                 cursorColor: Colors.black.withOpacity(0.1),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(left: width*0.05),
+                  contentPadding: const EdgeInsets.only(left: 5),
                   isDense: true,
                   focusColor: Colors.black,
                   floatingLabelBehavior: FloatingLabelBehavior.never,

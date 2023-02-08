@@ -1,5 +1,8 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../controller/GetAllMatchController.dart';
 import '../../utils/variable.dart';
 import 'Team_List_Screen.dart';
 
@@ -14,7 +17,6 @@ class TeamScreen extends StatefulWidget {
 class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
   late double height = MediaQuery.of(context).size.height;
   late double width = MediaQuery.of(context).size.width;
-
 
   List<String> international = [
     'India',
@@ -54,12 +56,13 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
   List<String> ODI = [
     "IND",
     "NZ",
-    "ENG"	,
+    "ENG",
     "AUS",
   ];
 
+  late final tabs = TabController(length: 6, vsync: this, animationDuration: const Duration(seconds: 1));
 
-  late final tabs = TabController(length: 5, vsync: this, animationDuration: const Duration(seconds: 1));
+  GetAllMatchesController allMatches = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +110,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 indicatorColor: const Color(0xffF97900),
                 tabs: [
                   tab('International'),
+                  tab('T20'),
                   tab('IPL'),
                   tab('CPL'),
                   tab('BPL'),
@@ -119,12 +123,27 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
               Flexible(
                 child: TabBarView(
                   controller: tabs,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    TeamListScreen(matchList: international,),
-                    TeamListScreen(matchList: IPL,),
-                    TeamListScreen(matchList: CPL,),
-                    TeamListScreen(matchList: BPL,),
-                    TeamListScreen(matchList: ODI,),
+                    TeamListScreen(
+                      matchList: international,
+                    ),
+                    TeamListScreen(
+                      matchList: [],
+                      list: allMatches.allMatchResultList,
+                    ),
+                    TeamListScreen(
+                      matchList: IPL,
+                    ),
+                    TeamListScreen(
+                      matchList: CPL,
+                    ),
+                    TeamListScreen(
+                      matchList: BPL,
+                    ),
+                    TeamListScreen(
+                      matchList: ODI,
+                    ),
                   ],
                 ),
               ),
