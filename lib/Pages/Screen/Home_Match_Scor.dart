@@ -35,11 +35,11 @@ class HomeMatchScoreScreen extends StatefulWidget {
 class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
   late double height = MediaQuery.of(context).size.height;
   late double width = MediaQuery.of(context).size.width;
-  int run = Random().nextInt(200);
-  int runs = Random().nextInt(200);
-  int wickets = Random().nextInt(12);
-  int wicket = Random().nextInt(12);
-  double over = Random().nextDouble() * 20.0;
+  // int run = Random().nextInt(200);
+  // int runs = Random().nextInt(200);
+  // int wickets = Random().nextInt(12);
+  // int wicket = Random().nextInt(12);
+  // double over = Random().nextDouble() * 20.0;
   static const int _len = 5;
   LiveScoreRunModel? liveMatchRun;
   MatchDataModel? liveMatchData;
@@ -48,7 +48,8 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
   void initState() {
     super.initState();
     getPlayerController = Get.put(GetPlayerAndRunController())
-      ..getMatchPlayerData(matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchId : widget.liveMatchData.matchId);
+      ..getMatchPlayerData(matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchId!.toInt()
+          : widget.liveMatchData.matchId);
     liveMatchRun = LiveScoreRunModel.fromJson(jsonDecode(getMatchController.liveMatchScoreList[widget.index].jsonruns));
     liveMatchData = MatchDataModel.fromJson(jsonDecode(getMatchController.liveMatchScoreList[widget.index].jsondata));
     print(getPlayerController.allPlayerDataList[0].teamRuns);
@@ -96,7 +97,8 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                           children: [
                             const Icon(MyIcons.batBall, color: Colors.white),
                             Text(
-                              matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchtype.name : widget.liveMatchData.matchType,
+                              matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchtype ?? ""
+                                  : widget.liveMatchData.matchType,
                               style: const TextStyle(fontSize: 10, color: Colors.white),
                             ),
                           ],
@@ -107,12 +109,14 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                       child: Row(
                         children: [
                           Text(
-                            matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
+                            matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA ?? ""
+                                : widget.liveMatchData.teamA,
                             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                           ),
                           const Text(' vs '),
                           Text(
-                            matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
+                            matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB ?? ""
+                                : widget.liveMatchData.teamB,
                             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                           ),
                         ],
@@ -173,35 +177,35 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                 border: Border.all(color: Colors.black)),
                             child: matchStreamingCategoryIndex == 0
                                 ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Text(
-                                        'Live',
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                      Icon(
-                                        Icons.circle,
-                                        color: Colors.red,
-                                        size: 8,
-                                      ),
-                                    ],
-                                  )
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  'Live',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                Icon(
+                                  Icons.circle,
+                                  color: Colors.red,
+                                  size: 8,
+                                ),
+                              ],
+                            )
                                 : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Text('Upcoming', style: TextStyle(fontSize: 12)),
-                                      Icon(
-                                        Icons.circle,
-                                        color: Colors.blue,
-                                        size: 8,
-                                      ),
-                                    ],
-                                  ),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text('Upcoming', style: TextStyle(fontSize: 12)),
+                                Icon(
+                                  Icons.circle,
+                                  color: Colors.blue,
+                                  size: 8,
+                                ),
+                              ],
+                            ),
                           ),
                           SizedBox(width: (width * 0.9) * 0.03),
                           Text(
                             'Start: ${matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchtime : widget.liveMatchData.matchtime}',
-                            style: const TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 12),
                           ),
                         ],
                       ),
@@ -209,28 +213,28 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA : widget.liveMatchData.teamA} (B)',
+                            '${ matchStreamingCategoryIndex == 0 ? liveMatchData!.jsondata!.teamA ?? ""
+                                  : liveMatchData!.jsondata!.teamA } (B)',
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          Text(matchStreamingCategoryIndex == 0 ? "$run/$wickets ($over)" : "${liveMatchRun?.jsonruns.fav}")
+                          Text(matchStreamingCategoryIndex == 0 ? "${liveMatchRun!.jsonruns.runxa}/${liveMatchData!.jsondata!.wicketA} (${liveMatchData!.jsondata!.wicketA})" : "${liveMatchRun?.jsonruns.fav}"),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB : widget.liveMatchData.teamB} (W)',
+                            '${matchStreamingCategoryIndex == 0 ? liveMatchData!.jsondata!.teamB ?? ""
+                                  : liveMatchData!.jsondata!.teamB} (W)',
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          Text(
-                            '$runs/$wicket (${over.toStringAsFixed(1)})',
-                          ),
+                          Text(matchStreamingCategoryIndex == 0 ? "${liveMatchRun!.jsonruns.runxa}/${liveMatchData!.jsondata!.wicketB} (${liveMatchData!.jsondata!.oversB})" : "${liveMatchRun?.jsonruns.fav}"),
                         ],
                       ),
                     ],

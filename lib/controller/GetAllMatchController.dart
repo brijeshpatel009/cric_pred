@@ -32,11 +32,12 @@ class GetAllMatchesController extends GetxController {
 
   getMatchData() async {
     isLoading.value = true;
-    print("object");
+    print("<<<<<<object");
     final http.Response matchResultResponse = await http.post(Uri.parse('http://cricpro.cricnet.co.in/api/values/MatchResults'),
         headers: {'Accept': '*/*', 'Connection': 'keep-alive'}, body: {'start': '0', 'end': '15'});
+    print(matchResultResponse.statusCode);
     if (matchResultResponse.statusCode == 200) {
-      // print('------res------------>${liveMatchResponse.body}');
+      // print('------res------------>${matchResultResponse.body}');
       matchResultData = MatchResultModel.fromJson(jsonDecode(matchResultResponse.body));
       allMatchResultList.value.addAll(matchResultData?.allMatch ?? []);
       allMatchResultList.refresh();

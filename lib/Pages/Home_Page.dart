@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     tabs: <Widget>[
                       tab(Icons.home, 'Home'),
                       tab(Icons.people_alt, 'Team'),
-                      tab(Icons.newspaper_rounded, 'News'),
+                      tab(Icons.newspaper_sharp, 'News'),
                       tab(Icons.person_pin, 'Profile'),
                     ],
                     controller: _tab,

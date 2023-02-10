@@ -1,111 +1,88 @@
-// ignore_for_file: file_names, constant_identifier_names
-
-import 'dart:convert';
-
 class MatchResultModel {
-  MatchResultModel({
-    required this.playerslist,
-    required this.allMatch,
-    required this.success,
-    required this.msg,
-  });
+  Null? playerslist;
+  List<AllMatchData>? allMatch;
+  bool? success;
+  String? msg;
 
-  dynamic playerslist;
-  List<AllMatchData> allMatch;
-  bool success;
-  String msg;
+  MatchResultModel({this.playerslist, this.allMatch, this.success, this.msg});
 
-  factory MatchResultModel.fromRawJson(String str) => MatchResultModel.fromJson(json.decode(str));
+  MatchResultModel.fromJson(Map<String, dynamic> json) {
+    playerslist = json['Playerslist'];
+    if (json['AllMatch'] != null) {
+      allMatch = <AllMatchData>[];
+      json['AllMatch'].forEach((v) {
+        allMatch!.add(AllMatchData.fromJson(v));
+      });
+    }
+    success = json['success'];
+    msg = json['msg'];
+  }
 
-  String toRawJson() => json.encode(toJson());
-
-  factory MatchResultModel.fromJson(Map<String, dynamic> json) => MatchResultModel(
-        playerslist: json["Playerslist"],
-        allMatch: List<AllMatchData>.from(json["AllMatch"].map((x) => AllMatchData.fromJson(x))),
-        success: json["success"],
-        msg: json["msg"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "Playerslist": playerslist,
-        "AllMatch": List<dynamic>.from(allMatch.map((x) => x.toJson())),
-        "success": success,
-        "msg": msg,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Playerslist'] = playerslist;
+    if (allMatch != null) {
+      data['AllMatch'] = allMatch!.map((v) => v.toJson()).toList();
+    }
+    data['success'] = success;
+    data['msg'] = msg;
+    return data;
+  }
 }
 
 class AllMatchData {
-  AllMatchData({
-    required this.title,
-    required this.matchtime,
-    required this.venue,
-    required this.matchId,
-    required this.teamA,
-    required this.teamB,
-    required this.teamAImage,
-    required this.matchtype,
-    required this.teamBImage,
-    required this.result,
-    required this.imageUrl,
-  });
+  String? title;
+  String? matchtime;
+  String? venue;
+  int? matchId;
+  String? teamA;
+  String? teamB;
+  String? teamAImage;
+  String? matchtype;
+  String? teamBImage;
+  String? result;
+  String? imageUrl;
 
-  String title;
-  String matchtime;
-  String venue;
-  int matchId;
-  String teamA;
-  String teamB;
-  String teamAImage;
-  Matchtype matchtype;
-  String teamBImage;
-  String result;
-  String imageUrl;
+  AllMatchData(
+      {this.title,
+      this.matchtime,
+      this.venue,
+      this.matchId,
+      this.teamA,
+      this.teamB,
+      this.teamAImage,
+      this.matchtype,
+      this.teamBImage,
+      this.result,
+      this.imageUrl});
 
-  factory AllMatchData.fromRawJson(String str) => AllMatchData.fromJson(json.decode(str));
+  AllMatchData.fromJson(Map<String, dynamic> json) {
+    title = json['Title'];
+    matchtime = json['Matchtime'];
+    venue = json['Venue'];
+    matchId = json['MatchId'];
+    teamA = json['TeamA'];
+    teamB = json['TeamB'];
+    teamAImage = json['TeamAImage'];
+    matchtype = json['Matchtype'];
+    teamBImage = json['TeamBImage'];
+    result = json['Result'];
+    imageUrl = json['ImageUrl'];
+  }
 
-  String toRawJson() => json.encode(toJson());
-
-  factory AllMatchData.fromJson(Map<String, dynamic> json) => AllMatchData(
-        title: json["Title"],
-        matchtime: json["Matchtime"],
-        venue: json["Venue"],
-        matchId: json["MatchId"],
-        teamA: json["TeamA"],
-        teamB: json["TeamB"],
-        teamAImage: json["TeamAImage"],
-        matchtype: matchtypeValues.map[json["Matchtype"]]!,
-        teamBImage: json["TeamBImage"],
-        result: json["Result"],
-        imageUrl: json["ImageUrl"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "Title": title,
-        "Matchtime": matchtime,
-        "Venue": venue,
-        "MatchId": matchId,
-        "TeamA": teamA,
-        "TeamB": teamB,
-        "TeamAImage": teamAImage,
-        "Matchtype": matchtypeValues.reverse[matchtype],
-        "TeamBImage": teamBImage,
-        "Result": result,
-        "ImageUrl": imageUrl,
-      };
-}
-
-enum Matchtype { T20, ODI }
-
-final matchtypeValues = EnumValues({"ODI": Matchtype.ODI, "T20": Matchtype.T20});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Title'] = title;
+    data['Matchtime'] = matchtime;
+    data['Venue'] = venue;
+    data['MatchId'] = matchId;
+    data['TeamA'] = teamA;
+    data['TeamB'] = teamB;
+    data['TeamAImage'] = teamAImage;
+    data['Matchtype'] = matchtype;
+    data['TeamBImage'] = teamBImage;
+    data['Result'] = result;
+    data['ImageUrl'] = imageUrl;
+    return data;
   }
 }

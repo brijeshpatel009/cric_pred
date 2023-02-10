@@ -268,7 +268,7 @@ class _MatchesListState extends State<MatchesList> {
                                       children: [
                                         Text(
                                           matchStreamingCategoryIndex == 0
-                                              ? matchDataController.allMatchResultList[index].teamA
+                                              ? matchDataController.allMatchResultList[index].teamA ?? ""
                                               : matchDataController.liveMatchScoreList[index].teamA,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
@@ -283,7 +283,7 @@ class _MatchesListState extends State<MatchesList> {
                                         ),
                                         Text(
                                           matchStreamingCategoryIndex == 0
-                                              ? matchDataController.allMatchResultList[index].teamB
+                                              ? matchDataController.allMatchResultList[index].teamB ?? ''
                                               : matchDataController.liveMatchScoreList[index].teamB,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
@@ -304,7 +304,7 @@ class _MatchesListState extends State<MatchesList> {
                                         child: Text(
                                           textAlign: TextAlign.center,
                                           matchStreamingCategoryIndex == 0
-                                              ? matchDataController.allMatchResultList[index].matchtype.name
+                                              ? matchDataController.allMatchResultList[index].matchtype ?? ""
                                               : matchDataController.liveMatchScoreList[index].matchType,
                                           style: const TextStyle(color: Colors.black, fontSize: 10),
                                         ),
@@ -340,7 +340,7 @@ class _MatchesListState extends State<MatchesList> {
                                   ),
                                   Text(
                                     matchStreamingCategoryIndex == 0
-                                        ? matchDataController.allMatchResultList[index].matchtime
+                                        ? matchDataController.allMatchResultList[index].matchtime ?? ""
                                         : matchDataController.liveMatchScoreList[index].matchtime,
                                     style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w400, letterSpacing: 1),
                                   ),
@@ -366,7 +366,7 @@ class _MatchesListState extends State<MatchesList> {
                               const Image(image: AssetImage('asset/cricImg.png'), height: 30),
                               Text(
                                 matchStreamingCategoryIndex == 0
-                                    ? matchDataController.allMatchResultList[index].matchtype.name
+                                    ? matchDataController.allMatchResultList[index].matchtype ?? ""
                                     : matchDataController.liveMatchScoreList[index].matchType,
                                 style: const TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w500),
                               ),
