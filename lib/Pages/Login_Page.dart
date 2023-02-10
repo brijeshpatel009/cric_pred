@@ -1,10 +1,8 @@
 // ignore_for_file: file_names, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../Paint/LoginScreen_Paint.dart';
-import '../controller/GetAllMatchController.dart';
 import '../utils/Colors.dart';
 import 'SignUp_Page.dart';
 
@@ -28,8 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement dispose
     super.dispose();
   }
-
-  GetAllMatchesController dataController = Get.put(GetAllMatchesController());
 
   @override
   Widget build(BuildContext context) {

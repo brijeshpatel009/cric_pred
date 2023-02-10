@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, file_names
 
 import 'dart:convert';
 
@@ -34,6 +34,7 @@ class NewsController extends GetxController {
     if (newsDataResponse.statusCode == 200) {
       getNewsData = NewsModel.fromJson(jsonDecode(newsDataResponse.body));
       print(getNewsData?.newsList?[0].title);
+      isLoading.value = false;
     } else {
       print(newsDataResponse.statusCode);
     }

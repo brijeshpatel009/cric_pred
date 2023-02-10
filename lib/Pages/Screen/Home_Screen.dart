@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "$userName",
+                        userName,
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ],
@@ -152,9 +152,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               SizedBox(
                 height: 30,
                 child: TabBar(
-                    // overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                    //   return states.contains(MaterialState.focused) ? null : Colors.transparent;
-                    // }),
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                      return states.contains(MaterialState.focused) ? null : Colors.transparent;
+                    }),
                     onTap: (int val) {
                       setState(() {
                         matchStreamingCategoryIndex = val;
