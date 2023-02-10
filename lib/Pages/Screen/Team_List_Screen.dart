@@ -1,37 +1,55 @@
 // ignore_for_file: file_names, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../controller/MatchStatsController.dart';
+import '../../model/MatchesResult.dart';
 import 'Teams_Match.dart';
 
 class TeamListScreen extends StatefulWidget {
-  const TeamListScreen({Key? key,required this.matchList}) : super(key: key);
+  const TeamListScreen({Key? key, required this.matchList, this.list}) : super(key: key);
   final List matchList;
+  final RxList<AllMatchData>? list;
 
   @override
   State<TeamListScreen> createState() => _TeamListScreenState();
 }
 
 class _TeamListScreenState extends State<TeamListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    matchStatsController = Get.put(MatchStatusController())..getMatchStatsData(10768);
+  }
 
+  late MatchStatusController matchStatsController;
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return ListView.builder(
-      itemCount: widget.matchList.length,
-      padding: EdgeInsets.only(left: width*0.05,right: width*0.05,bottom: height*0.13),
+      itemCount: widget.matchList.isNotEmpty ? widget.matchList.length : widget.list?.length,
+      padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05, bottom: height * 0.13),
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return  TeamsMatch(title: widget.matchList[index],);
-                },));
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return TeamsMatch(
+                        title: widget.matchList.isNotEmpty ? widget.matchList[index] : widget.list?[index].title,
+                        matchStatus: widget.matchList.isNotEmpty ? 0000 : widget.list?[index].matchId ?? 0000,
+                      );
+                    },
+                  ),
+                );
                 print(index);
               },
               child: Container(
@@ -48,8 +66,8 @@ class _TeamListScreenState extends State<TeamListScreen> {
                   padding: const EdgeInsets.only(left: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:  [
-                      Text(widget.matchList[index]),
+                    children: [
+                      Text(widget.matchList.isNotEmpty ? widget.matchList[index] : widget.list?[index].title),
                     ],
                   ),
                 ),

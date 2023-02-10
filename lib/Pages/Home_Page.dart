@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/variable.dart';
 import 'Screen/Home_Screen.dart';
+import 'Screen/News_Screen.dart';
 import 'Screen/Team_Screen.dart';
 import 'Screen/UserProfile_Screen.dart';
 
@@ -16,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   double iconSize = 30;
-  late final TabController _tab = TabController(length: 3, vsync: this);
+  late final TabController _tab = TabController(length: 4, vsync: this);
 
   @override
   void initState() {
@@ -46,6 +47,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 const TeamScreen(
                   title: 'Teams',
                 ),
+                const NewsScreen(
+                  title: "News",
+                ),
                 const ProfileScreen(),
               ],
             ),
@@ -72,6 +76,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     tabs: <Widget>[
                       tab(Icons.home, 'Home'),
                       tab(Icons.people_alt, 'Team'),
+                      tab(Icons.newspaper_rounded, 'News'),
                       tab(Icons.person_pin, 'Profile'),
                     ],
                     controller: _tab,

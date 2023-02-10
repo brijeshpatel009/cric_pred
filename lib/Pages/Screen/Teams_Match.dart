@@ -1,12 +1,16 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, depend_on_referenced_packages, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:html/parser.dart';
 
 import '../../Custom/my_icons_icons.dart';
+import '../../controller/MatchStatsController.dart';
 
 class TeamsMatch extends StatefulWidget {
-  const TeamsMatch({Key? key,required this.title}) : super(key: key);
+  const TeamsMatch({Key? key, required this.title, required this.matchStatus}) : super(key: key);
   final String title;
+  final int matchStatus;
 
   @override
   State<TeamsMatch> createState() => _TeamsMatchState();
@@ -15,6 +19,21 @@ class TeamsMatch extends StatefulWidget {
 class _TeamsMatchState extends State<TeamsMatch> {
   late double height = MediaQuery.of(context).size.height;
   late double width = MediaQuery.of(context).size.width;
+
+  String _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString = parse(document.body?.text).documentElement?.text ?? '';
+    print(parsedString);
+    return parsedString;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    matchStatsController = Get.put(MatchStatusController())..getMatchStatsData(10768);
+  }
+
+  late MatchStatusController matchStatsController;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +57,9 @@ class _TeamsMatchState extends State<TeamsMatch> {
                     Navigator.pop(context);
                   },
                   child: const Icon(MyIcons.backArrow)),
-               Text(
-                 "${widget.title}'s  Teams",
-                style: const TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w600),
+              Text(
+                widget.title,
+                style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -51,6 +70,15 @@ class _TeamsMatchState extends State<TeamsMatch> {
         width: double.maxFinite,
         decoration: const BoxDecoration(
           image: DecorationImage(image: AssetImage('asset/background.png'), fit: BoxFit.fill),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Text(
+              _parseHtmlString(matchStatsController.matchStatusData?.matchst?[0].stat1descr ?? ''),
+              style: const TextStyle(fontSize: 18),
+            ),
+          ),
         ),
       ),
     );
