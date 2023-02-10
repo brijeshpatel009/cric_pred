@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'cric_pred',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
