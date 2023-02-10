@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 List<LiveScoreModel> liveScoreModelFromJson(String str) => List<LiveScoreModel>.from(json.decode(str).map((x) => LiveScoreModel.fromJson(x)));

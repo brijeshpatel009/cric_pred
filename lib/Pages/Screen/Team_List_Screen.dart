@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controller/MatchStatsContrroller.dart';
+import '../../controller/MatchStatsController.dart';
 import '../../model/MatchesResult.dart';
 import 'Teams_Match.dart';
 

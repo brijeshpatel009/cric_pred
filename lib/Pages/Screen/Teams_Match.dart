@@ -1,11 +1,11 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, depend_on_referenced_packages, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 
 import '../../Custom/my_icons_icons.dart';
-import '../../controller/MatchStatsContrroller.dart';
+import '../../controller/MatchStatsController.dart';
 
 class TeamsMatch extends StatefulWidget {
   const TeamsMatch({Key? key, required this.title, required this.matchStatus}) : super(key: key);
@@ -73,9 +73,10 @@ class _TeamsMatchState extends State<TeamsMatch> {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Text(
               _parseHtmlString(matchStatsController.matchStatusData?.matchst?[0].stat1descr ?? ''),
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
           ),
         ),

@@ -1,9 +1,10 @@
+// ignore_for_file: file_names, avoid_print
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
 import '../model/GetAllPlayerModel.dart';
 
 class GetPlayerAndRunController extends GetxController {

@@ -8,7 +8,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../Pages/Screen/Home_Match_Scor.dart';
 import '../controller/GetAllMatchController.dart';
 import '../model/GetAllPlayerModel.dart';
-import '../model/News.dart';
+import '../model/NewsModel.dart';
 import '../utils/variable.dart';
 
 class MatchesList extends StatefulWidget {

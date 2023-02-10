@@ -1,8 +1,7 @@
 // ignore_for_file: file_names
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+
 import '../Paint/LoginScreen_Paint.dart';
 import '../utils/Colors.dart';
 import '../utils/User_Data.dart';
@@ -61,10 +60,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        textContainer(Icons.person, 'Username', false, TextInputAction.next,user),
-                        textContainer(Icons.email, 'Enter Email', false, TextInputAction.next,email),
-                        textContainer(Icons.call, 'Mobile number', false, TextInputAction.next,mobileNumber),
-                        textContainer(Icons.key, 'Password', true, TextInputAction.done,password),
+                        textContainer(Icons.person, 'Username', false, TextInputAction.next, user),
+                        textContainer(Icons.email, 'Enter Email', false, TextInputAction.next, email),
+                        textContainer(Icons.call, 'Mobile number', false, TextInputAction.next, mobileNumber),
+                        textContainer(Icons.key, 'Password', true, TextInputAction.done, password),
                       ],
                     )
                   ],
@@ -95,9 +94,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     userEmail = email.text;
                     userMobileNumber = mobileNumber.text;
                     userPassword = password.text;
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return const HomePage();
-                    },));
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return const HomePage();
+                      },
+                    ));
                   },
                 ),
               ),
@@ -121,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget textContainer(IconData icon, String label, bool bool, TextInputAction action,TextEditingController userData) {
+  Widget textContainer(IconData icon, String label, bool bool, TextInputAction action, TextEditingController userData) {
     return Padding(
       padding: const EdgeInsets.only(left: 3),
       child: Row(
