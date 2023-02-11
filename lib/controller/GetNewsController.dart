@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../model/NewsModel.dart';
 
 class NewsController extends GetxController {
-  NewsModel? getNewsData;
+  late NewsModel getNewsData;
   RxBool isLoading = true.obs;
 
   @override

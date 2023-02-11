@@ -275,7 +275,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                   ? "Data Not Available From Server Side"
                                   : getAllPlayerController.allPlayerDataList.isEmpty
                                       ? "Data Is Not available Because Of That  Match Is Not Started"
-                                      : matchDataString(liveMatchData?.jsondata?.title ?? '')),
+                                      : matchDataString(liveMatchData!.jsondata!.title!)),
                               // Text(matchDataString(liveMatchRun?.jsonruns.summary ?? "")),
                             ],
                           ),
