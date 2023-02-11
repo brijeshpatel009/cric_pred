@@ -39,7 +39,6 @@ class GetAllMatchesController extends GetxController {
     print(matchResultResponse.statusCode);
     if (matchResultResponse.statusCode == 200) {
       // print('------res------------>${matchResultResponse.body}');
-      print('------res------------>${matchResultResponse.body}');
       matchResultData = MatchResultModel.fromJson(jsonDecode(matchResultResponse.body));
       allMatchResultList.value.addAll(matchResultData?.allMatch ?? []);
       allMatchResultList.refresh();

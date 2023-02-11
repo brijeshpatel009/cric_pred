@@ -47,12 +47,6 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
   @override
   void initState() {
     super.initState();
-    getPlayerController = Get.put(GetPlayerAndRunController())
-      ..getMatchPlayerData(matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchId!.toInt()
-          : widget.liveMatchData.matchId);
-    liveMatchRun = LiveScoreRunModel.fromJson(jsonDecode(getMatchController.liveMatchScoreList[widget.index].jsonruns));
-    liveMatchData = MatchDataModel.fromJson(jsonDecode(getMatchController.liveMatchScoreList[widget.index].jsondata));
-    print(getPlayerController.allPlayerDataList[0].teamRuns);
     getAllPlayerController = Get.put(GetPlayerAndRunController())
       ..getMatchPlayerData(matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchId ?? 0000 : widget.liveMatchData.matchId);
     liveMatchRun = LiveScoreRunModel.fromJson(jsonDecode(
@@ -282,7 +276,6 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                   : getAllPlayerController.allPlayerDataList.isEmpty
                                       ? "Data Is Not available Because Of That  Match Is Not Started"
                                       : matchDataString(liveMatchData?.jsondata?.title ?? '')),
-                              // Text(matchDataString(liveMatchRun?.jsonruns.summary ?? "")),
                             ],
                           ),
                         ),

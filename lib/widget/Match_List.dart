@@ -179,6 +179,27 @@ class _MatchesListState extends State<MatchesList> {
 
   GetAllMatchesController matchDataController = Get.put(GetAllMatchesController());
 
+  // String dateConverter(String myDate) {
+  //   String date;
+  //   DateTime convertedDate = DateFormat("DD/MM/YYYY").parse(myDate.toString());
+  //   final now = DateTime.now();
+  //   final today = DateTime(now.year, now.month, now.day);
+  //   final yesterday = DateTime(now.year, now.month, now.day - 1);
+  //   final tomorrow = DateTime(now.year, now.month, now.day + 1);
+  //   final dateToCheck = convertedDate;
+  //   final checkDate = DateTime(dateToCheck.year, dateToCheck.month, dateToCheck.day);
+  //   if (checkDate == today) {
+  //     date = "Today";
+  //   } else if (checkDate == yesterday) {
+  //     date = "Yesterday";
+  //   } else if (checkDate == tomorrow) {
+  //     date = "Tomorrow";
+  //   } else {
+  //     date = myDate;
+  //   }
+  //   return date;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -190,7 +211,7 @@ class _MatchesListState extends State<MatchesList> {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 15, bottom: 100),
               itemCount:
-                  matchStreamingCategoryIndex == 0 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchScoreList.length,
+                  matchStreamingCategoryIndex == 0 ? matchDataController.liveMatchScoreList.length : matchDataController.allMatchResultList.length,
               itemBuilder: (context, index) {
                 return Container(
                   height: height * 0.13,
@@ -256,8 +277,8 @@ class _MatchesListState extends State<MatchesList> {
                                       children: [
                                         Text(
                                           matchStreamingCategoryIndex == 0
-                                              ? matchDataController.allMatchResultList[index].teamA ?? ""
-                                              : matchDataController.liveMatchScoreList[index].teamA,
+                                              ? matchDataController.liveMatchScoreList[index].teamA
+                                              : matchDataController.allMatchResultList[index].teamA ?? "",
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
                                         ),
@@ -271,8 +292,8 @@ class _MatchesListState extends State<MatchesList> {
                                         ),
                                         Text(
                                           matchStreamingCategoryIndex == 0
-                                              ? matchDataController.allMatchResultList[index].teamB ?? ""
-                                              : matchDataController.liveMatchScoreList[index].teamB,
+                                              ? matchDataController.liveMatchScoreList[index].teamB
+                                              : matchDataController.allMatchResultList[index].teamB ?? "",
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
                                         ),
@@ -293,8 +314,8 @@ class _MatchesListState extends State<MatchesList> {
                                           child: Text(
                                             textAlign: TextAlign.center,
                                             matchStreamingCategoryIndex == 0
-                                                ? matchDataController.allMatchResultList[index].matchtype ?? ""
-                                                : matchDataController.liveMatchScoreList[index].matchType,
+                                                ? matchDataController.liveMatchScoreList[index].matchType
+                                                : matchDataController.allMatchResultList[index].matchtype ?? "",
                                             style: const TextStyle(
                                               color: Colors.black,
                                             ),
@@ -332,8 +353,8 @@ class _MatchesListState extends State<MatchesList> {
                                   ),
                                   Text(
                                     matchStreamingCategoryIndex == 0
-                                        ? matchDataController.allMatchResultList[index].matchtime ?? ""
-                                        : matchDataController.liveMatchScoreList[index].matchtime,
+                                        ? matchDataController.liveMatchScoreList[index].matchtime
+                                        : matchDataController.allMatchResultList[index].matchtime ?? "",
                                     style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w400, letterSpacing: 1),
                                   ),
                                 ],
@@ -358,8 +379,8 @@ class _MatchesListState extends State<MatchesList> {
                               const Image(image: AssetImage('asset/cricImg.png'), height: 30),
                               Text(
                                 matchStreamingCategoryIndex == 0
-                                    ? matchDataController.allMatchResultList[index].matchtype ?? ""
-                                    : matchDataController.liveMatchScoreList[index].matchType,
+                                    ? matchDataController.liveMatchScoreList[index].matchType
+                                    : matchDataController.allMatchResultList[index].matchtype ?? "",
                                 style: const TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w500),
                               ),
                             ],
