@@ -12,7 +12,6 @@ class GetAllMatchesController extends GetxController {
   MatchResultModel? matchResultData;
   RxList<AllMatchData> allMatchResultList = RxList([]);
   RxList<LiveScoreModel> liveMatchScoreList = RxList([]);
-  // RxList<LiveScoreRunModel> liveMatchListRun = RxList([]);
   RxBool isLoading = true.obs;
 
   @override
@@ -33,11 +32,14 @@ class GetAllMatchesController extends GetxController {
   getMatchData() async {
     isLoading.value = true;
     print("<<<<<<object");
+    allMatchResultList.clear();
+    print("object");
     final http.Response matchResultResponse = await http.post(Uri.parse('http://cricpro.cricnet.co.in/api/values/MatchResults'),
         headers: {'Accept': '*/*', 'Connection': 'keep-alive'}, body: {'start': '0', 'end': '15'});
     print(matchResultResponse.statusCode);
     if (matchResultResponse.statusCode == 200) {
       // print('------res------------>${matchResultResponse.body}');
+      print('------res------------>${matchResultResponse.body}');
       matchResultData = MatchResultModel.fromJson(jsonDecode(matchResultResponse.body));
       allMatchResultList.value.addAll(matchResultData?.allMatch ?? []);
       allMatchResultList.refresh();
@@ -48,6 +50,7 @@ class GetAllMatchesController extends GetxController {
   }
 
   fetchPosts() async {
+    liveMatchScoreList.clear();
     final http.Response liveMatchResponse = await http.post(
       Uri.parse('http://cricpro.cricnet.co.in/api/values/LiveLine'),
       headers: {'Accept': '*/*', 'Connection': 'keep-alive'},
@@ -57,7 +60,7 @@ class GetAllMatchesController extends GetxController {
       liveMatchScoreList.add(LiveScoreModel.fromJson(element));
     }
     for (var i = 0; i < liveMatchScoreList.length; i++) {
-      print("${liveMatchScoreList[i].teamA}  vs ${liveMatchScoreList[i].teamB}");
+      // print("${liveMatchScoreList[i].teamA}  vs ${liveMatchScoreList[i].teamB}");
     }
     // print(">>>???>>>${liveMatchResponse.body}");
     // print(">>??<<>>??${liveMatchList[0].jsonruns}");

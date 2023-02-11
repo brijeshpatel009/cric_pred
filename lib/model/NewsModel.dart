@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, unused_local_variable
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -40,14 +42,7 @@ class NewsList {
   String? publishedAT;
   String? content;
 
-  NewsList(
-      {this.author,
-        this.title,
-        this.description,
-        this.uRL,
-        this.uRLToImage,
-        this.publishedAT,
-        this.content});
+  NewsList({this.author, this.title, this.description, this.uRL, this.uRLToImage, this.publishedAT, this.content});
 
   NewsList.fromJson(Map<String, dynamic> json) {
     author = json['author'];
@@ -72,9 +67,7 @@ class NewsList {
   }
 }
 
-
-
-Future<void> getNews(Map<String , dynamic> response) async {
+Future<void> getNews(Map<String, dynamic> response) async {
   if (kDebugMode) {
     print(response);
   }

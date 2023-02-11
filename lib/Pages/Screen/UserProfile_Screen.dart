@@ -1,11 +1,13 @@
 // ignore_for_file: file_names
 
+import 'dart:io';
+
 import 'package:cric_pred/Pages/Login_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
-import 'dart:io';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -67,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "$userName",
+                        userName,
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ],
@@ -114,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ? Container(
                                   height: height * 0.19,
                                   width: height * 0.19,
-                            color: Colors.brown,
+                                  color: Colors.brown,
                                 )
                               : Image.file(
                                   File(image!.path),
@@ -475,9 +477,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                        return const LoginScreen();
-                      },));
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) {
+                          return const LoginScreen();
+                        },
+                      ));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(bottom: padding),

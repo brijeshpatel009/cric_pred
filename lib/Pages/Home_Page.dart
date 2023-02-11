@@ -5,7 +5,6 @@ import '../utils/variable.dart';
 import 'Screen/Home_Screen.dart';
 import 'Screen/News_Screen.dart';
 import 'Screen/Team_Screen.dart';
-import 'Screen/UserProfile_Screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,13 +14,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-
   double iconSize = 30;
-  late final TabController _tab = TabController(length: 4, vsync: this);
+  late final TabController _tab = TabController(length: 3, vsync: this);
 
   @override
   void initState() {
-    setState(() {});
     super.initState();
   }
 
@@ -50,11 +47,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 const NewsScreen(
                   title: "News",
                 ),
-                const ProfileScreen(),
+                // const ProfileScreen(),
               ],
             ),
             Positioned(
-              bottom: size.height * 0.05, right: 5, left: 5,
+              bottom: size.height * 0.05,
+              right: 5,
+              left: 5,
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(
                   Radius.circular(15.0),
@@ -63,7 +62,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   height: 64,
                   color: const Color(0xffFFAA59),
                   child: TabBar(
-                    onTap: (int val){
+                    onTap: (int val) {
                       setState(() {
                         tabIndex = val;
                       });
@@ -76,8 +75,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     tabs: <Widget>[
                       tab(Icons.home, 'Home'),
                       tab(Icons.people_alt, 'Team'),
-                      tab(Icons.newspaper_sharp, 'News'),
-                      tab(Icons.person_pin, 'Profile'),
+                      tab(Icons.newspaper_rounded, 'News'),
+                      // tab(Icons.person_pin, 'Profile'),
                     ],
                     controller: _tab,
                   ),

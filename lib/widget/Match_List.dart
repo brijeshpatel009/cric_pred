@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, avoid_print, library_prefixes
+// ignore_for_file: file_names, avoid_print, library_prefixes, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +22,7 @@ class MatchesList extends StatefulWidget {
 class _MatchesListState extends State<MatchesList> {
   late double height = MediaQuery.of(context).size.height;
   late double width = MediaQuery.of(context).size.width;
+
   List<Color> matchesColor = [
     const Color(0xff525298),
     const Color(0xff42BDFE),
@@ -174,22 +175,9 @@ class _MatchesListState extends State<MatchesList> {
     String cDate = DateFormat("dd-MMM-yyyy hh:mma-EEE").format(DateTime.now());
     DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
     DateTime dt = DateTime.parse('2020-01-02 03:04:05');
-    print(dt); // 2020-01-02 03:04:05.000
-
-    date = matchDataController.liveMatchScoreList[0].matchtime;
-    var modifyDate = date!.replaceAll('at ', "");
-    print(modifyDate);
-    // DateTime dt2 = DateTime.parse(cDate);
-    // print(dt1>dt2);
-    // print(dt1.compareTo(dt2));
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  GetAllMatchesController matchDataController = Get.find();
+  GetAllMatchesController matchDataController = Get.put(GetAllMatchesController());
 
   @override
   Widget build(BuildContext context) {
@@ -234,12 +222,12 @@ class _MatchesListState extends State<MatchesList> {
                                 return HomeMatchScoreScreen(
                                   color: matchesColor[index],
                                   matchResultData: matchDataController.allMatchResultList[index],
-                                  liveMatchData: matchDataController.liveMatchScoreList[index],
+                                  liveMatchData:
+                                      matchDataController.liveMatchScoreList[index + 1 > matchDataController.liveMatchScoreList.length ? 0 : index],
                                   index: index,
                                 );
                               },
                             ));
-                            print(index);
                           },
                           child: Container(
                             width: width * 0.82,
@@ -283,7 +271,7 @@ class _MatchesListState extends State<MatchesList> {
                                         ),
                                         Text(
                                           matchStreamingCategoryIndex == 0
-                                              ? matchDataController.allMatchResultList[index].teamB ?? ''
+                                              ? matchDataController.allMatchResultList[index].teamB ?? ""
                                               : matchDataController.liveMatchScoreList[index].teamB,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
@@ -301,12 +289,16 @@ class _MatchesListState extends State<MatchesList> {
                                           borderRadius: BorderRadius.circular(10),
                                           border: Border.all(color: Colors.black),
                                         ),
-                                        child: Text(
-                                          textAlign: TextAlign.center,
-                                          matchStreamingCategoryIndex == 0
-                                              ? matchDataController.allMatchResultList[index].matchtype ?? ""
-                                              : matchDataController.liveMatchScoreList[index].matchType,
-                                          style: const TextStyle(color: Colors.black, fontSize: 10),
+                                        child: FittedBox(
+                                          child: Text(
+                                            textAlign: TextAlign.center,
+                                            matchStreamingCategoryIndex == 0
+                                                ? matchDataController.allMatchResultList[index].matchtype ?? ""
+                                                : matchDataController.liveMatchScoreList[index].matchType,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       matchStreamingCategoryIndex == 0

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_void_to_null, unnecessary_question_mark
+
 class MatchResultModel {
   Null? playerslist;
   List<AllMatchData>? allMatch;

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
 import '../model/GetAllPlayerModel.dart';
 
 class GetPlayerAndRunController extends GetxController {
@@ -14,6 +15,7 @@ class GetPlayerAndRunController extends GetxController {
 
   getMatchPlayerData(int matchId) async {
     isLoading.value = true;
+    allPlayerDataList.clear();
     print("object");
 
     final http.Response allPlayerResponse = await http.post(Uri.parse('http://cricpro.cricnet.co.in/api/values/GetAllPlayers'),
@@ -31,11 +33,12 @@ class GetPlayerAndRunController extends GetxController {
     print("Api Passed");
 
     if (response.statusCode == 200) {
+      print(allPlayerResponse.body);
       allPlayerRunData = AllPlayerRunModel.fromJson(jsonDecode(allPlayerResponse.body));
       allPlayerDataList.addAll(allPlayerRunData?.playerslist ?? []);
       allPlayerDataList.refresh();
       // _parseHtmlString(commen);
-      print("...>>${allPlayerDataList[0].teamRuns}");
+      // print("...>>${allPlayerDataList[0].teamRuns}");
       isLoading.value = false;
     } else {
       print(allPlayerResponse.statusCode);

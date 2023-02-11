@@ -19,8 +19,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late double height = MediaQuery.of(context).size.height;
   late double width = MediaQuery.of(context).size.width;
 
-  // String nested = "{\"jsonruns\":{\"runxa\":\"28\",\"runxb\":\"21\",\"fav\":\"India\",\"rateA\":\"4\",\"rateB\":\"5\",\"sessionA\":\"172\",\"sessionB\":\"173\",\"sessionOver\":\"20\",\"summary\":\"PLZ RATE US 5 STARS\\n*****\\nNew Zealand tour of India, 2023\\n3rd ODI MATCH\\n\\nIndia Vs New Zealand\\n\\nToss - New Zealand won the toss and opted to bowl first\\n\\nRate Open 30-32 IND\\n\\nIndia Sessions\\nOver    Open       runs/wk            Rate    \\n10 Over (56-58) 82 Runs/0wk (10-12 IND)\\n20 Over (144-146) \\n\\n\\nLIVE ON STAR SPORTS 1\\n\\nVenue: Holkar Cricket Stadium, Indore\\n\\n\\nShare This App and Rate us on Playstore\\n\",\"stat\":\"\"}}";
-
   @override
   Widget build(BuildContext context) {
     // String replaceString = nested.replaceAll("\"", "");
