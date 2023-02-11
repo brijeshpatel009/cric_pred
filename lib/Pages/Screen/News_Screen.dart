@@ -30,6 +30,10 @@ class _NewsScreenState extends State<NewsScreen> {
       }
     }
 
+    // bool loaded = false;
+    // var img = Image.network(src);
+    // var placeholder = AssetImage(assetName)
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -60,30 +64,106 @@ class _NewsScreenState extends State<NewsScreen> {
               )
             : SafeArea(
                 child: ListView.builder(
-                  padding: EdgeInsets.only(bottom: height * 0.13),
-                  itemCount: newsController.getNewsData?.newsList?.length,
+                  itemCount: newsController.getNewsData.newsList!.length,
+                  padding: EdgeInsets.only(bottom: height * 0.11),
                   physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                        color: Colors.white.withOpacity(0.1),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                              title: ClipRRect(
-                                  borderRadius: const BorderRadius.all(Radius.circular(18)),
-                                  child: Image.network(newsController.getNewsData?.newsList?[index].uRLToImage ?? '')),
-                              subtitle: GestureDetector(
-                                onTap: () {
-                                  launchBrowser(newsController.getNewsData?.newsList?[index].uRL ?? '');
-                                  print(newsController.getNewsData?.newsList?[index].uRL ?? '');
-                                },
-                                child: Text(newsController.getNewsData?.newsList?[index].title ?? '',
-                                    style: const TextStyle(color: Colors.black, fontSize: 18)),
-                              )),
-                        )),
-                  ),
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: height * 0.25,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                launchBrowser(newsController.getNewsData.newsList![index].uRL!);
+                              },
+                              child: Row(
+                                children: [
+                                  Card(
+                                    clipBehavior: Clip.antiAlias,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    child: AspectRatio(
+                                      aspectRatio: 0.8,
+                                      child: newsController.getNewsData.newsList![index].uRLToImage! == ""
+                                          ? Container(
+                                              color: Colors.blue.shade100,
+                                              child: Image.asset(
+                                                'asset/cricImg.png',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            )
+                                          : Image.network(
+                                              newsController.getNewsData.newsList![index].uRLToImage!.contains("http")
+                                                  ? newsController.getNewsData.newsList![index].uRLToImage!
+                                                  : "https:${newsController.getNewsData.newsList![index].uRLToImage!}",
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Flexible(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          newsController.getNewsData.newsList![index].title!,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          style: const TextStyle(color: Colors.black, fontFamily: 'PoppinsBold', fontSize: 18),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(newsController.getNewsData.newsList![index].description!,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 5,
+                                            style: const TextStyle(color: Colors.grey, fontFamily: 'PoppinsReg', fontSize: 12)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Divider(
+                            height: 10,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    );
+                  },
                 ),
+
+                // ListView.builder(
+                //   padding: EdgeInsets.only(bottom: height * 0.13),
+                //   itemCount:
+                //   physics: const BouncingScrollPhysics(),
+                //   itemBuilder: (context, index) => Padding(
+                //     padding: const EdgeInsets.all(8.0),
+                //     child: Card(
+                //         color: Colors.white.withOpacity(0.1),
+                //         child: Padding(
+                //           padding: const EdgeInsets.all(8.0),
+                //           child: ListTile(
+                //               title: ClipRRect(
+                //                   borderRadius: const BorderRadius.all(Radius.circular(18)),
+                //                   child: Image.network()),
+                //               subtitle: GestureDetector(
+                //                 onTap: () {
+                //                   launchBrowser(newsController.getNewsData?.newsList?[index].uRL ?? '');
+                //                   print(newsController.getNewsData?.newsList?[index].uRL ?? '');
+                //                 },
+                //                 child: Text(,
+                //                     style: const TextStyle(color: Colors.black, fontSize: 18)),
+                //               )),
+                //         )),
+                //   ),
+                // ),
               )),
       ),
     );
