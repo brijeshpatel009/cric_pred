@@ -159,6 +159,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       setState(() {
                         matchStreamingCategoryIndex = val;
                       });
+                      print(val);
                     },
                     physics: const BouncingScrollPhysics(),
                     isScrollable: false,

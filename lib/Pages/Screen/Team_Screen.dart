@@ -62,7 +62,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
 
   late final tabs = TabController(length: 6, vsync: this, animationDuration: const Duration(seconds: 1));
 
-  GetAllMatchesController allMatches = Get.find();
+  final GetAllMatchesController allMatches = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                   tab('IPL'),
                   tab('CPL'),
                   tab('BPL'),
-                  tab('ODI'),
+                  tab('Test'),
                 ],
               ),
               SizedBox(
@@ -126,23 +126,22 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     TeamListScreen(
-                      matchList: international,
+                      list: allMatches.completeInternationalMatchList,
                     ),
                     TeamListScreen(
-                      matchList: const [],
-                      list: allMatches.allMatchResultList,
+                      list: allMatches.completeT20MatchList,
                     ),
                     TeamListScreen(
-                      matchList: IPL,
+                      list: allMatches.completeIPLMatchList,
                     ),
                     TeamListScreen(
-                      matchList: CPL,
+                      list: allMatches.completeCPLMatchList,
                     ),
                     TeamListScreen(
-                      matchList: BPL,
+                      list: allMatches.completeBPLMatchList,
                     ),
                     TeamListScreen(
-                      matchList: ODI,
+                      list: allMatches.completeTestMatchList,
                     ),
                   ],
                 ),

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,44 +12,68 @@ import '../model/MatchesResult.dart';
 class GetAllMatchesController extends GetxController {
   MatchResultModel? matchResultData;
   RxList<AllMatchData> allMatchResultList = RxList([]);
+  RxList<AllMatchData> completeTestMatchList = RxList([]);
+  RxList<AllMatchData> completeT20MatchList = RxList([]);
+  RxList<AllMatchData> completeBPLMatchList = RxList([]);
+  RxList<AllMatchData> completeIPLMatchList = RxList([]);
+  RxList<AllMatchData> completeCPLMatchList = RxList([]);
+  RxList<AllMatchData> completeInternationalMatchList = RxList([]);
   RxList<LiveScoreModel> liveMatchScoreList = RxList([]);
   RxBool isLoading = true.obs;
+  ScrollController allMatchScroller = ScrollController();
 
   @override
   void onInit() {
     getMatchData();
     fetchPosts();
-    // photoScroller.addListener(() {
-    //   if (photoScroller.position.pixels ==
-    //       photoScroller.position.maxScrollExtent && photoList.length < (obj?.count ?? 0) ) {
-    //     page = page+1;
-    //     pageLimit = pageLimit+10;
-    //     getPhoto();
-    //   }
-    // });
     super.onInit();
   }
 
-  getMatchData() async {
+  matchDataPagination() {}
+  Future<void> getMatchData() async {
     isLoading.value = true;
     print("<<<<<<object");
     allMatchResultList.clear();
-    print("object");
+
+    print(">>>>>>All Match Api Calling<<<<<<");
     final http.Response matchResultResponse = await http.post(Uri.parse('http://cricpro.cricnet.co.in/api/values/MatchResults'),
-        headers: {'Accept': '*/*', 'Connection': 'keep-alive'}, body: {'start': '0', 'end': '15'});
+        headers: {'Accept': '*/*', 'Connection': 'keep-alive'}, body: {'start': '0', 'end': '1000'});
+    print(">>>>>>All Match Api Called<<<<<<");
     print(matchResultResponse.statusCode);
     if (matchResultResponse.statusCode == 200) {
       // print('------res------------>${matchResultResponse.body}');
       matchResultData = MatchResultModel.fromJson(jsonDecode(matchResultResponse.body));
       allMatchResultList.value.addAll(matchResultData?.allMatch ?? []);
       allMatchResultList.refresh();
+      filterMatchList();
       isLoading.value = false;
     } else {
       print(matchResultResponse.statusCode);
     }
   }
 
-  fetchPosts() async {
+  void filterMatchList() {
+    completeInternationalMatchList.clear();
+    completeTestMatchList.clear();
+    completeT20MatchList.clear();
+    completeBPLMatchList.clear();
+    completeIPLMatchList.clear();
+    completeCPLMatchList.clear();
+    completeInternationalMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("International")).toList();
+    completeT20MatchList.value = allMatchResultList.value.where((e) => e.matchtype == "T20").toList();
+    completeIPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("IPL")).toList();
+    completeCPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("CPL")).toList();
+    completeBPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("BPL")).toList();
+    completeTestMatchList.value = allMatchResultList.value.where((e) => e.matchtype == "Test").toList();
+    completeInternationalMatchList.refresh();
+    completeTestMatchList.refresh();
+    completeT20MatchList.refresh();
+    completeBPLMatchList.refresh();
+    completeIPLMatchList.refresh();
+    completeCPLMatchList.refresh();
+  }
+
+  Future<void> fetchPosts() async {
     liveMatchScoreList.clear();
     final http.Response liveMatchResponse = await http.post(
       Uri.parse('http://cricpro.cricnet.co.in/api/values/LiveLine'),
@@ -58,26 +83,5 @@ class GetAllMatchesController extends GetxController {
     for (var element in responseJson) {
       liveMatchScoreList.add(LiveScoreModel.fromJson(element));
     }
-    for (var i = 0; i < liveMatchScoreList.length; i++) {
-      // print("${liveMatchScoreList[i].teamA}  vs ${liveMatchScoreList[i].teamB}");
-    }
-    // print(">>>???>>>${liveMatchResponse.body}");
-    // print(">>??<<>>??${liveMatchList[0].jsonruns}");
-    // liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsondata));
-    // liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsonruns));
-    // liveMatchRunData = LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[0].jsondata));
-    // List.generate(GetDataController().liveMatchList.length, (index) => liveMatchRunData.add(LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[index].jsonruns))));
-    // List.generate(GetDataController().liveMatchList.length, (index) => liveMatchRunData.add(LiveScoreRunModel.fromJson(jsonDecode(liveMatchList[index].jsondata))));
-    // print(liveMatchRunData!.jsonruns.runxa);
-    // print(liveMatchRunData!.jsonruns.runxb);
-    // print(liveMatchRunData!.jsonruns.fav);
-    // print(liveMatchRunData!.jsonruns.rateA);
-    // print(liveMatchRunData!.jsonruns.rateB);
-    // print(liveMatchRunData!.jsonruns.sessionA);
-    // print(liveMatchRunData!.jsonruns.sessionB);
-    // print(liveMatchRunData!.jsonruns.sessionOver);
-    // print(liveMatchRunData!.jsonruns.summary);
-    // print(liveMatchRunData!.jsondata.wicketA);
-    // print(liveMatchRunData!.jsonruns.stat);
   }
 }
