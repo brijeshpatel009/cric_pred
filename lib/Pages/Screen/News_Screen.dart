@@ -19,7 +19,7 @@ class _NewsScreenState extends State<NewsScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    NewsController newsController = Get.put(NewsController());
+    final NewsController newsController = Get.find();
 
     Future<void> launchBrowser(String url) async {
       Uri openLink = Uri.parse(url);
@@ -99,7 +99,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                               newsController.getNewsData.newsList![index].uRLToImage!.contains("http")
                                                   ? newsController.getNewsData.newsList![index].uRLToImage!
                                                   : "https:${newsController.getNewsData.newsList![index].uRLToImage!}",
-                                              fit: BoxFit.cover,
+                                              fit: BoxFit.fill,
                                             ),
                                     ),
                                   ),

@@ -8,9 +8,9 @@ import '../../Custom/my_icons_icons.dart';
 import '../../controller/MatchStatsController.dart';
 
 class TeamsMatch extends StatefulWidget {
-  const TeamsMatch({Key? key, required this.title, required this.matchStatus}) : super(key: key);
+  const TeamsMatch({Key? key, required this.title, required this.matchId}) : super(key: key);
   final String title;
-  final int matchStatus;
+  final int matchId;
 
   @override
   State<TeamsMatch> createState() => _TeamsMatchState();
@@ -30,7 +30,7 @@ class _TeamsMatchState extends State<TeamsMatch> {
   @override
   void initState() {
     super.initState();
-    matchStatsController = Get.put(MatchStatusController())..getMatchStatsData(10768);
+    matchStatsController = Get.find()..getMatchStatsData(widget.matchId);
   }
 
   late MatchStatusController matchStatsController;
@@ -73,12 +73,25 @@ class _TeamsMatchState extends State<TeamsMatch> {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Text(
-              _parseHtmlString(matchStatsController.matchStatusData?.matchst?[0].stat1descr ?? ''),
-              style: const TextStyle(fontSize: 18),
-            ),
-          ),
+              physics: const BouncingScrollPhysics(),
+              child: Obx(
+                () => matchStatsController.isLoading.value == true
+                    ? Center(
+                        child: SizedBox(
+                          height: height * 0.1,
+                          width: height * 0.1,
+                          child: const CircularProgressIndicator(),
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                          matchStatsController.matchStatusData!.matchst!.isEmpty
+                              ? "Data Not Available"
+                              : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat1descr ?? ''),
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+              )),
         ),
       ),
     );

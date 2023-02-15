@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-import '../Pages/Screen/Home_Match_Scor.dart';
+import '../Pages/Screen/Match_Score.dart';
 import '../controller/GetAllMatchController.dart';
 import '../model/GetAllPlayerModel.dart';
 import '../model/NewsModel.dart';
@@ -177,7 +177,7 @@ class _MatchesListState extends State<MatchesList> {
     DateTime dt = DateTime.parse('2020-01-02 03:04:05');
   }
 
-  GetAllMatchesController matchDataController = Get.put(GetAllMatchesController());
+  final GetAllMatchesController matchDataController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +190,7 @@ class _MatchesListState extends State<MatchesList> {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 15, bottom: 100),
               itemCount:
-                  matchStreamingCategoryIndex == 0 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchScoreList.length,
+                  matchStreamingCategoryIndex == 1 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchScoreList.length,
               itemBuilder: (context, index) {
                 return Container(
                   height: height * 0.13,
@@ -255,7 +255,7 @@ class _MatchesListState extends State<MatchesList> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          matchStreamingCategoryIndex == 0
+                                          matchStreamingCategoryIndex == 1
                                               ? matchDataController.allMatchResultList[index].teamA ?? ""
                                               : matchDataController.liveMatchScoreList[index].teamA,
                                           overflow: TextOverflow.ellipsis,
@@ -270,7 +270,7 @@ class _MatchesListState extends State<MatchesList> {
                                           ),
                                         ),
                                         Text(
-                                          matchStreamingCategoryIndex == 0
+                                          matchStreamingCategoryIndex == 1
                                               ? matchDataController.allMatchResultList[index].teamB ?? ""
                                               : matchDataController.liveMatchScoreList[index].teamB,
                                           overflow: TextOverflow.ellipsis,
@@ -292,7 +292,7 @@ class _MatchesListState extends State<MatchesList> {
                                         child: FittedBox(
                                           child: Text(
                                             textAlign: TextAlign.center,
-                                            matchStreamingCategoryIndex == 0
+                                            matchStreamingCategoryIndex == 1
                                                 ? matchDataController.allMatchResultList[index].matchtype ?? ""
                                                 : matchDataController.liveMatchScoreList[index].matchType,
                                             style: const TextStyle(
@@ -331,7 +331,7 @@ class _MatchesListState extends State<MatchesList> {
                                     ],
                                   ),
                                   Text(
-                                    matchStreamingCategoryIndex == 0
+                                    matchStreamingCategoryIndex == 1
                                         ? matchDataController.allMatchResultList[index].matchtime ?? ""
                                         : matchDataController.liveMatchScoreList[index].matchtime,
                                     style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w400, letterSpacing: 1),
@@ -357,7 +357,7 @@ class _MatchesListState extends State<MatchesList> {
                             children: [
                               const Image(image: AssetImage('asset/cricImg.png'), height: 30),
                               Text(
-                                matchStreamingCategoryIndex == 0
+                                matchStreamingCategoryIndex == 1
                                     ? matchDataController.allMatchResultList[index].matchtype ?? ""
                                     : matchDataController.liveMatchScoreList[index].matchType,
                                 style: const TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w500),
