@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../model/MatchesResult.dart';
 import '../../utils/Shared_Pref.dart';
-import 'Teams_Match.dart';
+import 'Teams_Match_Score.dart';
 
 class TeamListScreen extends StatefulWidget {
   const TeamListScreen({Key? key, required this.list}) : super(key: key);
@@ -29,6 +29,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    double newsCardHeight = height * 0.07;
     return widget.list.isEmpty
         ? Center(
             child: SizedBox(
@@ -43,73 +44,90 @@ class _TeamListScreenState extends State<TeamListScreen> {
             padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05, bottom: height * 0.13),
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return TeamsMatch(
-                              title: widget.list[index].title ?? '',
-                              matchId: widget.list[index].matchId ?? 0000,
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.025, vertical: height * 0.015),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xffF1F5FE),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(height * 0.03),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xff000000).withOpacity(0.35),
+                        blurRadius: 7,
+                        spreadRadius: 0.8,
+                        offset: const Offset(0.0, 0.0),
+                      )
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return TeamsMatch(
+                                    title: widget.list[index].title ?? '',
+                                    matchId: widget.list[index].matchId ?? 0000,
+                                  );
+                                },
+                              ),
                             );
+                            print(index);
                           },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              widget.list[index].title ?? "",
+                              softWrap: false,
+                              maxLines: 1,
+                            ),
+                          ),
                         ),
-                      );
-                      print(index);
-                    },
-                    child: Container(
-                      height: height * 0.07,
-                      width: width * 0.75,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(13),
-                          topLeft: Radius.circular(13),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: height * 0.07,
+                          width: height * 0.07,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff2E2445),
+                            borderRadius: BorderRadius.all(Radius.circular((height * 0.07) * 0.35)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xff000000).withOpacity(0.35),
+                                blurRadius: 4,
+                                spreadRadius: 0.5,
+                                offset: const Offset(0.0, 0.0),
+                              )
+                            ],
+                          ),
+                          child: IconButton(
+                            onPressed: () async {
+                              setState(() {
+                                isFavourite.contains(widget.list[index].title!)
+                                    ? isFavourite.remove(widget.list[index].title!)
+                                    : isFavourite.add(widget.list[index].title!);
+                              });
+                              SharedPreferencesDatas.getStringList(SharedPreferencesDatas.selectedMatchName).clear();
+                              SharedPreferencesDatas.setStringList(SharedPreferencesDatas.selectedMatchName, isFavourite);
+                            },
+                            icon: Icon(
+                              isFavourite.contains(widget.list[index].title!) ? Icons.star : Icons.star_border,
+                              size: (height * 0.07) * 0.6,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                        color: Color(0xff9BDCFF),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Center(child: Text(widget.list[index].title ?? "", maxLines: 1)),
-                      ),
-                    ),
+                    ],
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    height: height * 0.07,
-                    width: width * 0.13,
-                    decoration: const BoxDecoration(
-                      color: Color(0xff70CDFF),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      ),
-                    ),
-
-                    //serviceProvider.justPostsModel.length
-
-                    child: Center(
-                      child: IconButton(
-                        onPressed: () async {
-                          setState(() {
-                            isFavourite.contains(widget.list[index].title!)
-                                ? isFavourite.remove(widget.list[index].title!)
-                                : isFavourite.add(widget.list[index].title!);
-                          });
-                          SharedPreferencesDatas.getStringList(SharedPreferencesDatas.selectedMatchName).clear();
-                          SharedPreferencesDatas.setStringList(SharedPreferencesDatas.selectedMatchName, isFavourite);
-                        },
-                        icon: Icon(
-                          isFavourite.contains(widget.list[index].title!) ? Icons.star : Icons.star_border,
-                          size: 33,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               );
             },
           );

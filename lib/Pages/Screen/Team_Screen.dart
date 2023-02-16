@@ -70,29 +70,20 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
       extendBody: true,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          height: double.maxFinite,
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('asset/appbar.png'), fit: BoxFit.fill),
-          ),
-        ),
-        title: Text(widget.title, style: const TextStyle(color: Colors.black)),
-        centerTitle: true,
-      ),
       body: Container(
-        width: double.maxFinite,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('asset/background.png'), fit: BoxFit.fill),
-        ),
+        height: double.infinity,
+        color: const Color(0xff2E2445),
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(
-                height: height * 0.05,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                child: Center(
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(color: Colors.white, fontSize: height * 0.04, fontWeight: FontWeight.w600, letterSpacing: 1),
+                  ),
+                ),
               ),
               TabBar(
                 overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
@@ -105,7 +96,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 },
                 controller: tabs,
                 isScrollable: true,
-                unselectedLabelStyle: const TextStyle(color: Colors.black),
+                unselectedLabelStyle: const TextStyle(color: Color(0xffFFFFFF)),
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: const Color(0xffF97900),
                 tabs: [
@@ -117,33 +108,39 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                   tab('Test'),
                 ],
               ),
-              SizedBox(
-                height: height * 0.05,
-              ),
-              Flexible(
-                child: TabBarView(
-                  controller: tabs,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    TeamListScreen(
-                      list: allMatches.completeInternationalMatchList,
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
+                  child: Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: height * 0.11, top: height * 0.04),
+                      child: TabBarView(
+                        controller: tabs,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          TeamListScreen(
+                            list: allMatches.completeInternationalMatchList,
+                          ),
+                          TeamListScreen(
+                            list: allMatches.completeT20MatchList,
+                          ),
+                          TeamListScreen(
+                            list: allMatches.completeIPLMatchList,
+                          ),
+                          TeamListScreen(
+                            list: allMatches.completeCPLMatchList,
+                          ),
+                          TeamListScreen(
+                            list: allMatches.completeBPLMatchList,
+                          ),
+                          TeamListScreen(
+                            list: allMatches.completeTestMatchList,
+                          ),
+                        ],
+                      ),
                     ),
-                    TeamListScreen(
-                      list: allMatches.completeT20MatchList,
-                    ),
-                    TeamListScreen(
-                      list: allMatches.completeIPLMatchList,
-                    ),
-                    TeamListScreen(
-                      list: allMatches.completeCPLMatchList,
-                    ),
-                    TeamListScreen(
-                      list: allMatches.completeBPLMatchList,
-                    ),
-                    TeamListScreen(
-                      list: allMatches.completeTestMatchList,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],
@@ -156,7 +153,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
   Widget tab(String string) {
     return Text(
       string,
-      style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+      style: const TextStyle(color: Color(0xffFFFFFF), fontSize: 18, fontWeight: FontWeight.w600),
     );
   }
 }

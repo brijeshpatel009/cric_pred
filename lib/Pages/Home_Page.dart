@@ -1,4 +1,5 @@
 // ignore_for_file: file_names, avoid_print, no_leading_underscores_for_local_identifiers
+import 'package:cric_pred/Custom/tab_bar_icon_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/variable.dart';
@@ -24,7 +25,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
@@ -51,35 +53,43 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ],
             ),
             Positioned(
-              bottom: size.height * 0.05,
-              right: 5,
-              left: 5,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(15.0),
-                ),
-                child: Container(
-                  height: 64,
-                  color: const Color(0xffFFAA59),
-                  child: TabBar(
-                    onTap: (int val) {
-                      setState(() {
-                        tabIndex = val;
-                      });
-                    },
-                    physics: const NeverScrollableScrollPhysics(),
-                    labelColor: Colors.black87,
-                    unselectedLabelColor: Colors.black45,
-                    labelStyle: const TextStyle(fontSize: 13.0),
-                    indicatorColor: Colors.transparent,
-                    tabs: <Widget>[
-                      tab(Icons.home, 'Home'),
-                      tab(Icons.people_alt, 'Team'),
-                      tab(Icons.newspaper_rounded, 'News'),
-                      // tab(Icons.person_pin, 'Profile'),
-                    ],
-                    controller: _tab,
+              bottom: height * 0.05,
+              right: 10,
+              left: 10,
+              child: Container(
+                height: height * 0.1,
+                decoration: const BoxDecoration(
+                  color: Color(0xffFFFFFF),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black45,
+                      blurRadius: 6,
+                      spreadRadius: 1,
+                      offset: Offset(0.0, 0.0),
+                    )
+                  ],
+                ),
+                child: TabBar(
+                  onTap: (int val) {
+                    setState(() {
+                      tabIndex = val;
+                    });
+                  },
+                  physics: const NeverScrollableScrollPhysics(),
+                  labelColor: const Color(0xff2E2445),
+                  unselectedLabelColor: Colors.grey,
+                  labelStyle: const TextStyle(fontSize: 13.0, color: Color(0xff2E2445)),
+                  indicatorColor: Colors.transparent,
+                  tabs: <Widget>[
+                    tab(TabBarIcon.home, 'Home', height),
+                    tab(TabBarIcon.team, 'Team', height),
+                    tab(TabBarIcon.news, 'News', height),
+                    // tab(Icons.person_pin, 'Profile'),
+                  ],
+                  controller: _tab,
                 ),
               ),
             )
@@ -89,11 +99,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget tab(IconData icon, String name) {
+  Widget tab(IconData icon, String name, double height) {
     return Tab(
       icon: Icon(
         icon,
-        size: iconSize,
+        size: (height * 0.1) * 0.4,
       ),
       text: name,
     );
