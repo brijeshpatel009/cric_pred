@@ -2,12 +2,12 @@
 
 import 'dart:convert';
 
-List<LiveScoreModel> liveScoreModelFromJson(String str) => List<LiveScoreModel>.from(json.decode(str).map((x) => LiveScoreModel.fromJson(x)));
+List<LiveMatchModel> liveScoreModelFromJson(String str) => List<LiveMatchModel>.from(json.decode(str).map((x) => LiveMatchModel.fromJson(x)));
 
-String liveScoreModelToJson(List<LiveScoreModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String liveScoreModelToJson(List<LiveMatchModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class LiveScoreModel {
-  LiveScoreModel({
+class LiveMatchModel {
+  LiveMatchModel({
     required this.jsonruns,
     required this.jsondata,
     required this.title,
@@ -53,7 +53,7 @@ class LiveScoreModel {
   String adimage;
   String admsg;
 
-  factory LiveScoreModel.fromJson(Map<String, dynamic> json) => LiveScoreModel(
+  factory LiveMatchModel.fromJson(Map<String, dynamic> json) => LiveMatchModel(
         jsonruns: json["jsonruns"],
         jsondata: json["jsondata"],
         title: json["Title"],
