@@ -12,7 +12,8 @@ import '../utils/variable.dart';
 import 'commonWidget.dart';
 
 class MatchesList extends StatefulWidget {
-  const MatchesList({Key? key, required this.matchStreamingCategoryIndex}) : super(key: key);
+  const MatchesList({Key? key, required this.matchStreamingCategoryIndex})
+      : super(key: key);
   final int matchStreamingCategoryIndex;
 
   @override
@@ -21,19 +22,123 @@ class MatchesList extends StatefulWidget {
 
 class _MatchesListState extends State<MatchesList> {
   String? date;
+  late double height = MediaQuery
+      .of(context)
+      .size
+      .height;
+  late double width = MediaQuery
+      .of(context)
+      .size
+      .width;
 
-  String getSystemTime() {
-    var now = DateTime.now();
-    return DateFormat("dd MMM - hh:mm a").format(now);
-  }
+  List<Color> matchesColor = [
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+    const Color(0xff525298),
+    const Color(0xff42BDFE),
+    const Color(0xffDD52E1),
+    const Color(0xffFCBC03),
+    const Color(0xff21B07E),
+    const Color(0xff0505DD),
+  ];
+
+  // String? date;
+
+  // String getSystemTime() {
+  //   var now = DateTime.now();
+  //   return DateFormat("dd MMM yyyy - hh:mm EEE").format(now);
+  // }
 
   late IO.Socket socket;
 
   initSocket() {
-    socket = IO.io("https://soccer-battle-2023.onrender.com/", <String, dynamic>{
-      'autoConnect': false,
-      'transports': ['websocket'],
-    });
+    socket =
+        IO.io("https://soccer-battle-2023.onrender.com/", <String, dynamic>{
+          'autoConnect': false,
+          'transports': ['websocket'],
+        });
     socket.connect();
     socket.onConnect((_) {
       sendData();
@@ -77,33 +182,14 @@ class _MatchesListState extends State<MatchesList> {
   void initState() {
     // initSocket();
     super.initState();
-    String cDate = DateFormat("dd-MMM-yyyy hh:mma-EEE").format(DateTime.now());
-    DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
-    DateTime dt = DateTime.parse('2020-01-02 03:04:05');
+    // String cDate = DateFormat("dd-MMM-yyyy hh:mma-EEE").format(DateTime.now());
+    // DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
+    // DateTime dt = DateTime.parse('2020-01-02 03:04:05');
   }
 
   final GetAllMatchesController matchDataController = Get.find();
 
-  // String dateConverter(String myDate) {
-  //   String date;
-  //   DateTime convertedDate = DateFormat("DD/MM/YYYY").parse(myDate.toString());
-  //   final now = DateTime.now();
-  //   final today = DateTime(now.year, now.month, now.day);
-  //   final yesterday = DateTime(now.year, now.month, now.day - 1);
-  //   final tomorrow = DateTime(now.year, now.month, now.day + 1);
-  //   final dateToCheck = convertedDate;
-  //   final checkDate = DateTime(dateToCheck.year, dateToCheck.month, dateToCheck.day);
-  //   if (checkDate == today) {
-  //     date = "Today";
-  //   } else if (checkDate == yesterday) {
-  //     date = "Yesterday";
-  //   } else if (checkDate == tomorrow) {
-  //     date = "Tomorrow";
-  //   } else {
-  //     date = myDate;
-  //   }
-  //   return date;
-  // }
+  DateTime curruntDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,3 @@
-// ignore_for_file: file_names, avoid_print, invalid_use_of_protected_member
-
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -35,7 +33,6 @@ class GetAllMatchesController extends GetxController {
   matchDataPagination() {}
   Future<void> getMatchData() async {
     isLoading.value = true;
-    print("<<<<<<object");
     allMatchResultList.clear();
 
     // print(">>>>>>All Match Api Calling<<<<<<");
