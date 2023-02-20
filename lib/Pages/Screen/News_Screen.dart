@@ -64,7 +64,7 @@ class _NewsScreenState extends State<NewsScreen> {
                   color: Colors.white,
                   child: Obx(() => newsController.isLoading.value
                       ? Center(
-                          child: SizedBox(height: height * 0.04, width: height * 0.04, child: CircularProgressIndicator()),
+                          child: SizedBox(height: height * 0.04, width: height * 0.04, child: const CircularProgressIndicator()),
                         )
                       : ListView.builder(
                           itemCount: newsController.getNewsData.newsList!.length,

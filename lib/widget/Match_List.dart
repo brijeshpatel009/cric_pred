@@ -97,7 +97,8 @@ class _MatchesListState extends State<MatchesList> {
           : ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 15, bottom: 100),
-              itemCount: matchStreamingCategoryIndex == 1 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchList.length,
+              itemCount:
+                  matchStreamingCategoryIndex == 1 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchApiList.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: height * 0.02),

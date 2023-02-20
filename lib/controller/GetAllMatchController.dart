@@ -19,9 +19,9 @@ class GetAllMatchesController extends GetxController {
   RxList<AllMatchData> completeIPLMatchList = RxList([]);
   RxList<AllMatchData> completeCPLMatchList = RxList([]);
   RxList<AllMatchData> completeInternationalMatchList = RxList([]);
-  RxList<LiveMatchModel> testMatchList = RxList([]);
+  RxList<LiveMatchModel> liveMatchApiList = RxList([]);
+  RxList<LiveMatchModel> upcomingMatchList = RxList([]);
   RxList<LiveMatchModel> liveMatchList = RxList([]);
-  RxList liveMatchFilterList = [].obs;
   RxBool isLoading = true.obs;
   ScrollController allMatchScroller = ScrollController();
 
@@ -29,6 +29,7 @@ class GetAllMatchesController extends GetxController {
   void onInit() {
     getMatchData();
     fetchPosts();
+    filterLiveMatchList();
     super.onInit();
   }
 
@@ -62,55 +63,64 @@ class GetAllMatchesController extends GetxController {
     completeBPLMatchList.clear();
     completeIPLMatchList.clear();
     completeCPLMatchList.clear();
-    testMatchList.clear();
     completeInternationalMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("International")).toList();
     completeT20MatchList.value = allMatchResultList.value.where((e) => e.matchtype == "T20").toList();
     completeIPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("IPL")).toList();
     completeCPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("CPL")).toList();
     completeBPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("BPL")).toList();
     completeTestMatchList.value = allMatchResultList.value.where((e) => e.matchtype == "Test").toList();
-    testMatchList.value = liveMatchList.value.where((e) => e.matchtime.length > 28).toList();
     completeInternationalMatchList.refresh();
     completeTestMatchList.refresh();
     completeT20MatchList.refresh();
     completeBPLMatchList.refresh();
     completeIPLMatchList.refresh();
     completeCPLMatchList.refresh();
-    testMatchList.refresh();
     isLoading.value = false;
-    print(">>>>>>>>>>+========= ${testMatchList.length}");
   }
 
   Future<void> fetchPosts() async {
-    liveMatchList.clear();
+    liveMatchApiList.clear();
     final http.Response liveMatchResponse = await http.post(
       Uri.parse('http://cricpro.cricnet.co.in/api/values/LiveLine'),
       headers: {'Accept': '*/*', 'Connection': 'keep-alive'},
     );
     var responseJson = json.decode(liveMatchResponse.body);
     for (var element in responseJson) {
-      liveMatchList.add(LiveMatchModel.fromJson(element));
+      liveMatchApiList.add(LiveMatchModel.fromJson(element));
     }
   }
 
   void filterLiveMatchList() {
-    List<String> apiDateList = [];
-    for (var a = 0; a < liveMatchList.length; a++) {
-      apiDateList.add(liveMatchList[a].matchtime);
+    DateTime currentDate = DateTime.now();
+
+    yourParserOrDateTimeParse(String dateTime) {
+      print('Element: $dateTime');
+      String stringDateFormat = dateTime.length > 28
+          ? "${dateTime.substring(0, 6).replaceAll(" ", '-')}-${DateFormat("yyyy").format(currentDate)}"
+          : dateTime.substring(0, 11);
+      String stringTimeFormat = dateTime.length > 28 ? dateTime.substring(26, 33) : dateTime.split('at').last.split('-').first;
+
+      //     print('stringDateFormat: $stringDateFormat');
+      //     print('stringTimeFormat: $stringTimeFormat');
+
+      String formatTime = dateTime.length > 28
+          ? '${stringTimeFormat.substring(0, 5)} ${stringTimeFormat.substring(5, 7)}'
+          : '${stringTimeFormat.substring(1, 6)} ${stringTimeFormat.substring(6, 8)}';
+      String stringDateTime = "$stringDateFormat $formatTime";
+
+//     print('stringDateTime: $stringDateTime');
+
+      DateTime dateTimeFormat = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "dd-MMM-yyyy h:mm a").parse(stringDateTime);
+
+//     print('dateTimeFormat: $dateTimeFormat');
+      return dateTimeFormat;
+//     String dateTimeDifference = currentDate.difference(dateTimeFormat).toString();
     }
 
-    DateTime currentDate = DateTime.now();
-    String apiDateTime = '';
-    String stringDateFormat = apiDateTime.split('at').first.replaceAll(' ', '');
-    String stringTimeFormat = apiDateTime.split('at').last.split('-').first;
-    print('stringDateFormat: $stringDateFormat');
-    print('stringTimeFormat: $stringTimeFormat');
-    String formatTime = '${stringTimeFormat.substring(0, 6)} ${stringTimeFormat.substring(6, 8)}';
-    String stringDateTime = "$stringDateFormat$formatTime";
-    print('stringDateTime: $stringDateTime');
-    DateTime dateTimeFormat = DateFormat("dd-MMM-yyyy h:mm a").parse(stringDateTime);
-    print('dateTimeFormat: $dateTimeFormat');
-    bool dateTimeDifference = currentDate.difference(dateTimeFormat).isNegative;
-    print('dateTime has gone: $dateTimeDifference');
+    liveMatchList.value = liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now())).toList();
+    print("live Match List: $liveMatchList");
+    upcomingMatchList.value =
+        liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isAfter(DateTime.now())).toList();
+    print("upcoming Match List: $upcomingMatchList");
   }
 }
