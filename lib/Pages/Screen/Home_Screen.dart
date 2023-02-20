@@ -1,8 +1,10 @@
 // ignore_for_file: file_names, avoid_print
 
-import 'package:cric_pred/utils/User_Data.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
+import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
 import '../../widget/Match_List.dart';
 
@@ -15,24 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  List<Color> colors = [
-    Colors.deepOrangeAccent.withOpacity(0.4),
-    Colors.lightBlueAccent.withOpacity(0.4),
-    Colors.indigo.withOpacity(0.4),
-    Colors.deepOrange.withOpacity(0.4),
-    Colors.pink.withOpacity(0.4),
-    const Color(0xff21B152).withOpacity(0.4),
-  ];
-
-  List<String> imagePath = [
-    'asset/menuImg.png',
-    'asset/cricImg.png',
-    'asset/cricImg.png',
-    'asset/cricImg.png',
-    'asset/cricImg.png',
-    'asset/cricImg.png',
-  ];
-
   late final tabController = TabController(length: 2, vsync: this, animationDuration: const Duration(seconds: 1));
 
   @override
@@ -43,67 +27,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double size = min(height, width);
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('asset/appbar.png'), fit: BoxFit.fill),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(12), bottomRight: Radius.circular(3), topRight: Radius.circular(3), topLeft: Radius.circular(3)),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        tabIndex = 2;
-                        widget.tab.animateTo(tabIndex);
-                      });
-                      print('profile');
-                    },
-                    child: const Image(image: AssetImage('asset/prflImg.png'), fit: BoxFit.fill, color: Colors.brown),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        userName,
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-      ),
       body: Container(
-        height: double.maxFinite,
-        width: double.maxFinite,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('asset/background.png'),
-            fit: BoxFit.fill,
-          ),
-        ),
+        height: double.infinity,
+        color: const Color(0xff2E2445),
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(
-                height: 30,
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.02, horizontal: width * 0.04),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular((height * 0.07) * 0.15)),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            tabIndex = 2;
+                            widget.tab.animateTo(tabIndex);
+                          });
+                          print('profile');
+                        },
+                        child: SizedBox(
+                            height: height * 0.07,
+                            width: height * 0.07,
+                            child: const Image(image: AssetImage('asset/prflImg.png'), fit: BoxFit.fill)),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    userName,
+                    style: TextStyle(fontSize: size * 0.05, fontWeight: FontWeight.w600, color: Colors.white),
+                  ),
+                ],
               ),
 
               //Match Category
@@ -149,47 +110,57 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               // ),
 
               //Live Or Upcoming Category Tab
-              SizedBox(
-                height: 30,
-                child: TabBar(
-                    overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                      return states.contains(MaterialState.focused) ? null : Colors.transparent;
-                    }),
-                    onTap: (int val) {
-                      setState(() {
-                        matchStreamingCategoryIndex = val;
-                      });
-                      print(val);
-                    },
-                    physics: const BouncingScrollPhysics(),
-                    isScrollable: false,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicatorColor: const Color(0xffF97900),
-                    indicatorWeight: 3,
-                    labelColor: Colors.black,
-                    labelStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                    unselectedLabelColor: Colors.blueGrey,
-                    controller: tabController,
-                    tabs: const [
-                      Text('Live Match'),
-                      Text('Upcoming'),
-                    ]),
-              ),
+              TabBar(
+                  overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                    return states.contains(MaterialState.focused) ? null : Colors.transparent;
+                  }),
+                  onTap: (int val) {
+                    setState(() {
+                      matchStreamingCategoryIndex = val;
+                    });
+                    print(val);
+                  },
+                  physics: const NeverScrollableScrollPhysics(),
+                  isScrollable: false,
+                  unselectedLabelStyle: const TextStyle(color: Color(0xffFFFFFF)),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicatorColor: const Color(0xffF97900),
+                  indicatorWeight: height * 0.005,
+                  labelColor: const Color(0xffF97900),
+                  labelStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                  unselectedLabelColor: Colors.white,
+                  controller: tabController,
+                  tabs: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: height * 0.03,
+                        bottom: height * 0.01,
+                      ),
+                      child: Text('Live Match', style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
+                    ),
+                    Text('Upcoming', style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
+                  ]),
 
               //Matches List View
 
-              Flexible(
-                child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: tabController,
-                  children: [
-                    MatchesList(
-                      matchStreamingCategoryIndex: matchStreamingCategoryIndex,
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
+                  child: Container(
+                    color: Colors.white,
+                    child: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: tabController,
+                      children: [
+                        MatchesList(
+                          matchStreamingCategoryIndex: matchStreamingCategoryIndex,
+                        ),
+                        MatchesList(
+                          matchStreamingCategoryIndex: matchStreamingCategoryIndex,
+                        ),
+                      ],
                     ),
-                    MatchesList(
-                      matchStreamingCategoryIndex: matchStreamingCategoryIndex,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],

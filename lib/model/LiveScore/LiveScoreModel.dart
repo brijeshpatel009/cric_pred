@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-List<LiveScoreModel> liveScoreModelFromJson(String str) => List<LiveScoreModel>.from(json.decode(str).map((x) => LiveScoreModel.fromJson(x)));
+List<LiveMatchModel> liveScoreModelFromJson(String str) => List<LiveMatchModel>.from(json.decode(str).map((x) => LiveMatchModel.fromJson(x)));
 
-String liveScoreModelToJson(List<LiveScoreModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String liveScoreModelToJson(List<LiveMatchModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class LiveScoreModel {
-  LiveScoreModel({
+class LiveMatchModel {
+  LiveMatchModel({
     required this.jsonruns,
     required this.jsondata,
     required this.title,
@@ -51,29 +51,29 @@ class LiveScoreModel {
   String adimage;
   String admsg;
 
-  factory LiveScoreModel.fromJson(Map<String, dynamic> json) => LiveScoreModel(
-    jsonruns: json["jsonruns"],
-    jsondata: json["jsondata"],
-    title: json["Title"],
-    matchtime: json["Matchtime"],
-    venue: json["venue"],
-    result: json["Result"],
-    isfinished: json["isfinished"],
-    ispriority: json["ispriority"],
-    teamA: json["TeamA"],
-    teamAImage: json["TeamAImage"],
-    teamB: json["TeamB"],
-    seriesid: json["seriesid"],
-    teamBImage: json["TeamBImage"],
-    imgeUrl: json["ImgeURL"],
-    matchType: json["MatchType"],
-    matchDate: json["MatchDate"],
-    matchId: json["MatchId"],
-    appversion: json["Appversion"],
-    adphone: json["adphone"],
-    adimage: json["adimage"],
-    admsg: json["admsg"],
-  );
+  factory LiveMatchModel.fromJson(Map<String, dynamic> json) => LiveMatchModel(
+        jsonruns: json["jsonruns"],
+        jsondata: json["jsondata"],
+        title: json["Title"],
+        matchtime: json["Matchtime"],
+        venue: json["venue"],
+        result: json["Result"],
+        isfinished: json["isfinished"],
+        ispriority: json["ispriority"],
+        teamA: json["TeamA"],
+        teamAImage: json["TeamAImage"],
+        teamB: json["TeamB"],
+        seriesid: json["seriesid"],
+        teamBImage: json["TeamBImage"],
+        imgeUrl: json["ImgeURL"],
+        matchType: json["MatchType"],
+        matchDate: json["MatchDate"],
+        matchId: json["MatchId"],
+        appversion: json["Appversion"],
+        adphone: json["adphone"],
+        adimage: json["adimage"],
+        admsg: json["admsg"],
+      );
 
   Map<String, dynamic> toJson() => {
     "jsonruns": jsonruns,

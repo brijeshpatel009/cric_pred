@@ -1,4 +1,6 @@
 // ignore_for_file: file_names, non_constant_identifier_names
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,84 +17,33 @@ class TeamScreen extends StatefulWidget {
 }
 
 class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
-  late double height = MediaQuery.of(context).size.height;
-  late double width = MediaQuery.of(context).size.width;
-
-  List<String> international = [
-    'India',
-    'Bangladesh',
-    'England',
-    'South Africa',
-    'Australia',
-    'Sri Lanka',
-    'New Zealand',
-    'West Indies',
-    'Ireland',
-    'Zimbabwe',
-  ];
-
-  List<String> IPL = [
-    'Mumbai Indians',
-    'Chennai Super Kings',
-    'Kolkata Knight Riders',
-    'Royal Challengers Bangalore',
-    'Punjab Kings',
-    'Sunrisers Hyderabad',
-  ];
-  List<String> BPL = [
-    'Comilla Victorians',
-    'Rangpur Riders',
-    'Fortune Barishal',
-    'Rajshahi Royals',
-    'Duronto Rajshahi',
-  ];
-  List<String> CPL = [
-    'Guyana Amazon Warriors',
-    'Trinbago Knight Riders',
-    'Jamaica Tallawahs',
-    'Antigua Hawksbills',
-    'Barbados Royals',
-  ];
-  List<String> ODI = [
-    "IND",
-    "NZ",
-    "ENG",
-    "AUS",
-  ];
-
   late final tabs = TabController(length: 6, vsync: this, animationDuration: const Duration(seconds: 1));
 
   final GetAllMatchesController allMatches = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double size = min(height, width);
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          height: double.maxFinite,
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('asset/appbar.png'), fit: BoxFit.fill),
-          ),
-        ),
-        title: Text(widget.title, style: const TextStyle(color: Colors.black)),
-        centerTitle: true,
-      ),
       body: Container(
-        width: double.maxFinite,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('asset/background.png'), fit: BoxFit.fill),
-        ),
+        height: double.infinity,
+        color: const Color(0xff2E2445),
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(
-                height: height * 0.05,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                child: Center(
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(color: Colors.white, fontSize: size * 0.07, fontWeight: FontWeight.w600, letterSpacing: 1),
+                  ),
+                ),
               ),
               TabBar(
                 overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
@@ -105,45 +56,56 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 },
                 controller: tabs,
                 isScrollable: true,
-                unselectedLabelStyle: const TextStyle(color: Colors.black),
+                unselectedLabelStyle: const TextStyle(color: Color(0xffFFFFFF)),
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: const Color(0xffF97900),
+                indicatorWeight: height * 0.005,
+                padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                 tabs: [
-                  tab('International'),
-                  tab('T20'),
-                  tab('IPL'),
-                  tab('CPL'),
-                  tab('BPL'),
-                  tab('Test'),
+                  tab('International', width),
+                  tab('T20', width),
+                  tab('IPL', width),
+                  tab('CPL', width),
+                  tab('BPL', width),
+                  tab('Test', width),
                 ],
               ),
-              SizedBox(
-                height: height * 0.05,
-              ),
-              Flexible(
-                child: TabBarView(
-                  controller: tabs,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    TeamListScreen(
-                      list: allMatches.completeInternationalMatchList,
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
+                  child: Container(
+                    color: Colors.white,
+                    child: TabBarView(
+                      controller: tabs,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        TeamListScreen(
+                          list: allMatches.completeInternationalMatchList,
+                          isLoading: allMatches.isLoading.value,
+                        ),
+                        TeamListScreen(
+                          list: allMatches.completeT20MatchList,
+                          isLoading: allMatches.isLoading.value,
+                        ),
+                        TeamListScreen(
+                          list: allMatches.completeIPLMatchList,
+                          isLoading: allMatches.isLoading.value,
+                        ),
+                        TeamListScreen(
+                          list: allMatches.completeCPLMatchList,
+                          isLoading: allMatches.isLoading.value,
+                        ),
+                        TeamListScreen(
+                          list: allMatches.completeBPLMatchList,
+                          isLoading: allMatches.isLoading.value,
+                        ),
+                        TeamListScreen(
+                          list: allMatches.completeTestMatchList,
+                          isLoading: allMatches.isLoading.value,
+                        ),
+                      ],
                     ),
-                    TeamListScreen(
-                      list: allMatches.completeT20MatchList,
-                    ),
-                    TeamListScreen(
-                      list: allMatches.completeIPLMatchList,
-                    ),
-                    TeamListScreen(
-                      list: allMatches.completeCPLMatchList,
-                    ),
-                    TeamListScreen(
-                      list: allMatches.completeBPLMatchList,
-                    ),
-                    TeamListScreen(
-                      list: allMatches.completeTestMatchList,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],
@@ -153,10 +115,10 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget tab(String string) {
+  Widget tab(String string, double width) {
     return Text(
       string,
-      style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+      style: TextStyle(color: const Color(0xffFFFFFF), fontSize: width * 0.05, fontWeight: FontWeight.w400),
     );
   }
 }

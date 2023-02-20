@@ -25,7 +25,7 @@ class HomeMatchScoreScreen extends StatefulWidget {
   }) : super(key: key);
   final Color color;
   final AllMatchData matchResultData;
-  final LiveScoreModel liveMatchData;
+  final LiveMatchModel liveMatchData;
   final int index;
 
   @override
@@ -49,10 +49,10 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
     super.initState();
     getAllPlayerController = Get.find()
       ..getMatchPlayerData(matchStreamingCategoryIndex == 1 ? widget.matchResultData.matchId ?? 0000 : widget.liveMatchData.matchId);
-    liveMatchRun = LiveScoreRunModel.fromJson(jsonDecode(
-        getMatchController.liveMatchScoreList[widget.index + 1 > getMatchController.liveMatchScoreList.length ? 0 : widget.index].jsonruns));
-    liveMatchData = MatchDataModel.fromJson(jsonDecode(
-        getMatchController.liveMatchScoreList[widget.index + 1 > getMatchController.liveMatchScoreList.length ? 0 : widget.index].jsondata));
+    liveMatchRun = LiveScoreRunModel.fromJson(
+        jsonDecode(getMatchController.liveMatchList[widget.index + 1 > getMatchController.liveMatchList.length ? 0 : widget.index].jsonruns));
+    liveMatchData = MatchDataModel.fromJson(
+        jsonDecode(getMatchController.liveMatchList[widget.index + 1 > getMatchController.liveMatchList.length ? 0 : widget.index].jsondata));
     print(widget.matchResultData.matchId);
   }
 
@@ -275,8 +275,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                             children: [
                               Text(matchStreamingCategoryIndex == 1
                                   ? "Data Not Available From Server Side"
-                                  : getMatchController
-                                              .liveMatchScoreList[widget.index + 1 > getMatchController.liveMatchScoreList.length ? 0 : widget.index]
+                                  : getMatchController.liveMatchList[widget.index + 1 > getMatchController.liveMatchList.length ? 0 : widget.index]
                                               .jsondata ==
                                           ''
                                       ? "Data Is Not available\nBecause Of That Match Is Not Started"
