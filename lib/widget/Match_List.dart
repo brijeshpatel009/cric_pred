@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, avoid_print, library_prefixes, unused_local_variable
 
+import 'package:cric_pred/Pages/Screen/Match_Score.dart';
+import 'package:cric_pred/Pages/Screen/Team_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -209,22 +211,172 @@ class _MatchesListState extends State<MatchesList> {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: height * 0.02),
-                  child: commonContainer(
-                    size: cardHeight,
-                    radius: cardHeight * 0.3,
-                    child: Padding(
-                      padding: EdgeInsets.all(cardHeight * 0.08),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Row(
+                  child: Stack(
+                    children: [
+                      commonContainer(
+                        size: cardHeight,
+                        radius: cardHeight * 0.3,
+                        child: Padding(
+                          padding: EdgeInsets.all(cardHeight * 0.08),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: cardHeight * 0.1,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular((width * 0.13))),
+                                        color: Colors.white,
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.black45,
+                                            blurRadius: 5,
+                                            spreadRadius: -1.9,
+                                            offset: Offset(0.0, 0.0),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(vertical: (cardHeight * 0.1) * 0.07, horizontal: (cardHeight * 0.1) * 0.5),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            FittedBox(
+                                                child: Text(
+                                              matchStreamingCategoryIndex == 0 ? 'Live' : 'Upcoming',
+                                              style: const TextStyle(fontWeight: FontWeight.w500),
+                                            )),
+                                            Icon(
+                                              Icons.circle,
+                                              size: width * 0.022,
+                                              color: matchStreamingCategoryIndex == 0 ? Colors.red : Colors.blue,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: cardHeight * 0.1,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    //TeamA
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            SizedBox(
+                                              height: cardHeight * 0.25,
+                                              width: cardHeight * 0.25,
+                                              child: Image.network(
+                                                "${matchDataController.allMatchResultList[index].imageUrl}${matchDataController.allMatchResultList[index].teamAImage}",
+                                              ),
+                                            ),
+                                            Text(
+                                              matchDataController.allMatchResultList[index].teamA ?? '',
+                                              style: const TextStyle(fontWeight: FontWeight.w500),
+                                            ),
+                                            matchStreamingCategoryIndex == 0 ?
+                                            Padding(
+                                              padding: EdgeInsets.only(top: cardHeight *0.05),
+                                              child: const Text(
+                                                "150/02",
+                                                style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20),
+                                              ),
+                                            )
+                                                : const Text(''),
+                                            matchStreamingCategoryIndex == 0 ?
+                                            const Text(
+                                              "(20.5 over)",
+                                              style: TextStyle(fontWeight: FontWeight.w500),
+                                            ) : const Text(""),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    //VS
+                                    Image.asset(
+                                      'asset/VS.png',
+                                      fit: BoxFit.contain,
+                                      height: cardHeight * 0.4,
+                                      width: cardHeight * 0.4,
+                                    ),
+                                    //TeamB
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          height: cardHeight * 0.25,
+                                          width: cardHeight * 0.25,
+                                          child: Image.network(
+                                            "${matchDataController.allMatchResultList[index].imageUrl}${matchDataController.allMatchResultList[index].teamBImage}",
+                                          ),
+                                        ),
+                                        Text(
+                                          matchDataController.allMatchResultList[index].teamB ?? '',
+                                          style: const TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                        matchStreamingCategoryIndex == 0 ?
+                                        Padding(
+                                          padding: EdgeInsets.only(top: cardHeight *0.05),
+                                          child: const Text(
+                                            "280/06",
+                                            style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20),
+                                          ),
+                                        ) : const Text(""),
+                                        matchStreamingCategoryIndex == 0 ?
+                                        const Text(
+                                          "(50 over)",
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ) : const Text(""),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                matchStreamingCategoryIndex == 0 ?
+                                const Text("") :
+                                Text(matchStreamingCategoryIndex == 0
+                                                  ? matchDataController.liveMatchList[index].matchtime
+                                                  : matchDataController.allMatchResultList[index].matchtime ?? "",
+                                              style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 1),
+                                ),
+                                matchStreamingCategoryIndex == 0 ?
+                                 const SizedBox(height: 01)
+                                : SizedBox(height: height*0.01,),
+                              ],
+                            ),
+                          ),
+                      ),
+                      matchStreamingCategoryIndex == 0 ?
+                      Positioned(
+                        top: height * 0.24,
+                        left: width * 0.40,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return HomeMatchScoreScreen(
+                                              color: matchesColor[index],
+                                              matchResultData: matchDataController.allMatchResultList[index],
+                                              liveMatchData: matchDataController.liveMatchList[index + 1 > matchDataController.liveMatchList.length ? 0 : index],
+                                              index: index,
+                                            );
+                            },));
+                          },
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              SizedBox(width: width*0.009,),
                               Container(
-                                height: cardHeight * 0.1,
+                                height: cardHeight/07,
+                                width: width/05,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(Radius.circular((width * 0.13))),
-                                  color: Colors.white,
+                                  color: const Color(0xFF2E2445),
                                   boxShadow: const [
                                     BoxShadow(
                                       color: Colors.black45,
@@ -238,71 +390,61 @@ class _MatchesListState extends State<MatchesList> {
                                   padding: EdgeInsets.symmetric(vertical: (cardHeight * 0.1) * 0.07, horizontal: (cardHeight * 0.1) * 0.5),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: const [
                                       FittedBox(
                                           child: Text(
-                                        matchStreamingCategoryIndex == 0 ? 'Live' : 'Upcoming',
-                                        style: const TextStyle(fontWeight: FontWeight.w500),
-                                      )),
-                                      Icon(
-                                        Icons.circle,
-                                        size: width * 0.022,
-                                        color: matchStreamingCategoryIndex == 0 ? Colors.red : Colors.blue,
-                                      ),
+                                            'View',
+                                            style: TextStyle(fontWeight: FontWeight.w500,color: Colors.white),
+                                          )),
                                     ],
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //TeamA
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    height: cardHeight * 0.25,
-                                    width: cardHeight * 0.25,
-                                    child: Image.network(
-                                      "${matchDataController.allMatchResultList[index].imageUrl}${matchDataController.allMatchResultList[index].teamAImage}",
-                                    ),
+                        ),
+                      )
+                      : Positioned(
+                        top: height * 0.24,
+                        left: width * 0.40,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(width: width*0.009,),
+                            Container(
+                              height: cardHeight/07,
+                              width: width/05,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular((width * 0.13))),
+                                color: const Color(0xFF2E2445),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black45,
+                                    blurRadius: 5,
+                                    spreadRadius: -1.9,
+                                    offset: Offset(0.0, 0.0),
                                   ),
-                                  Text(
-                                    matchDataController.allMatchResultList[index].teamA ?? '',
-                                    style: const TextStyle(fontWeight: FontWeight.w500),
-                                  )
                                 ],
                               ),
-                              //VS
-                              Image.asset(
-                                'asset/VS.png',
-                                fit: BoxFit.contain,
-                                height: cardHeight * 0.4,
-                                width: cardHeight * 0.4,
-                              ),
-                              //TeamB
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    height: cardHeight * 0.25,
-                                    width: cardHeight * 0.25,
-                                    child: Image.network(
-                                      "${matchDataController.allMatchResultList[index].imageUrl}${matchDataController.allMatchResultList[index].teamBImage}",
-                                    ),
-                                  ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: const [
                                   Text(
-                                    matchDataController.allMatchResultList[index].teamB ?? '',
-                                    style: const TextStyle(fontWeight: FontWeight.w500),
-                                  )
+                                    'Upcomming',
+                                    style: TextStyle(fontWeight: FontWeight.w500,color: Colors.white,overflow: TextOverflow.ellipsis,),
+                                    maxLines: 2,
+                                    softWrap: true,
+                                  ),
                                 ],
-                              )
-                            ],
-                          ),
-                        ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 );
                 //   Container(

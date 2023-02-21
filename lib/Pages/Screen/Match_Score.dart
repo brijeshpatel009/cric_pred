@@ -106,7 +106,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                           children: [
                             const Icon(MyIcons.batBall, color: Colors.white),
                             Text(
-                              matchStreamingCategoryIndex == 1 ? widget.matchResultData.matchtype ?? '' : widget.liveMatchData.matchType,
+                              matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchtype ?? '' : widget.liveMatchData.matchType,
                               style: const TextStyle(fontSize: 10, color: Colors.white),
                             ),
                           ],
@@ -117,12 +117,12 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                       child: Row(
                         children: [
                           Text(
-                            matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA ?? '' : widget.liveMatchData.teamA,
+                            matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA ?? '' : widget.liveMatchData.teamA,
                             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                           ),
                           const Text(' vs '),
                           Text(
-                            matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB ?? "" : widget.liveMatchData.teamB,
+                            matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB ?? "" : widget.liveMatchData.teamB,
                             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                           ),
                         ],
@@ -216,7 +216,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                   ),
                                   SizedBox(width: (width * 0.9) * 0.03),
                                   Text(
-                                    'Start: ${matchStreamingCategoryIndex == 1 ? widget.matchResultData.matchtime : widget.liveMatchData.matchtime}',
+                                    'Start: ${matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchtime : widget.liveMatchData.matchtime}',
                                     style: const TextStyle(fontSize: 15),
                                   ),
                                 ],
@@ -226,7 +226,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA}',
+                                  '${matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA : widget.liveMatchData.teamA}',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
@@ -245,7 +245,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB}',
+                                  '${matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB : widget.liveMatchData.teamB}',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
@@ -273,7 +273,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                           physics: const BouncingScrollPhysics(),
                           child: Column(
                             children: [
-                              Text(matchStreamingCategoryIndex == 1
+                              Text(matchStreamingCategoryIndex == 0
                                   ? "Data Not Available From Server Side"
                                   : getMatchController
                                               .liveMatchApiList[widget.index + 1 > getMatchController.liveMatchApiList.length ? 0 : widget.index]

@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: SizedBox(
                             height: height * 0.07,
                             width: height * 0.07,
-                            child: const Image(image: AssetImage('asset/prflImg.png'), fit: BoxFit.fill)),
+                            child: const Image(image: AssetImage('asset/prflImg1.png'), fit: BoxFit.fill)),
                       ),
                     ),
                   ),
@@ -138,7 +138,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       child: Text('Live Match', style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
                     ),
-                    Text('Upcoming', style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: height * 0.03,
+                        bottom: height * 0.01,
+                      ),
+                      child: Text('Upcoming', style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
+                    ),
                   ]),
 
               //Matches List View
