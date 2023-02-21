@@ -19,7 +19,7 @@ class NewsController extends GetxController {
 
   Future<void> newsDataFetch() async {
     isLoading.value = true;
-    print(">>>>>>News Api Calling<<<<<<");
+    // print(">>>>>>News Api Calling<<<<<<");
 
     final http.Response newsDataResponse = await http.post(
       Uri.parse('http://onlineid.cricnet.co.in/api/values/SportsNews'),
@@ -28,15 +28,15 @@ class NewsController extends GetxController {
       },
     );
 
-    print(">>>>>>News Api Called<<<<<<");
-    print(newsDataResponse.body);
+    // print(">>>>>>News Api Called<<<<<<");
+    // print(newsDataResponse.body);
 
     if (newsDataResponse.statusCode == 200) {
       getNewsData = NewsModel.fromJson(jsonDecode(newsDataResponse.body));
-      print(getNewsData.newsList?[0].title);
+      // print(getNewsData.newsList?[0].title);
       isLoading.value = false;
     } else {
-      print(newsDataResponse.statusCode);
+      // print(newsDataResponse.statusCode);
     }
   }
 }
