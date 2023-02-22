@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: SizedBox(
                             height: height * 0.07,
                             width: height * 0.07,
-                            child: const Image(image: AssetImage('asset/prflImg.png'), fit: BoxFit.fill)),
+                            child: const Image(image: AssetImage('asset/cricImg.png'), fit: BoxFit.fill)),
                       ),
                     ),
                   ),

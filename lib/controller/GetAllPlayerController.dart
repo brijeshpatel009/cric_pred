@@ -13,7 +13,7 @@ class GetPlayerAndRunController extends GetxController {
   AllPlayerRunModel? allPlayerRunData;
   RxList<Playerslist> allPlayerDataList = RxList([]);
 
-  getMatchPlayerData(int matchId) async {
+  getMatchPlayerData(int matchId, int length) async {
     isLoading.value = true;
     allPlayerDataList.clear();
     print("object");
@@ -44,6 +44,8 @@ class GetPlayerAndRunController extends GetxController {
       print(allPlayerResponse.statusCode);
     }
   }
+
+  getDataForLiveScore() {}
 }
 
 // String _parseHtmlString(String htmlString) {

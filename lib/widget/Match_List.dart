@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../controller/GetAllMatchController.dart';
 import '../model/GetAllPlayerModel.dart';
+import '../model/LiveScore/MatchDataModel.dart';
 import '../model/NewsModel.dart';
 import '../utils/variable.dart';
 import 'commonWidget.dart';
@@ -21,11 +21,6 @@ class MatchesList extends StatefulWidget {
 
 class _MatchesListState extends State<MatchesList> {
   String? date;
-
-  String getSystemTime() {
-    var now = DateTime.now();
-    return DateFormat("dd MMM - hh:mm a").format(now);
-  }
 
   late IO.Socket socket;
 
@@ -77,9 +72,12 @@ class _MatchesListState extends State<MatchesList> {
   void initState() {
     // initSocket();
     super.initState();
+    matchDataController = Get.find();
+    print("(b)object");
   }
 
-  final GetAllMatchesController matchDataController = Get.find();
+  late GetAllMatchesController matchDataController;
+  List<MatchDataModel> matchDataList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -94,114 +92,123 @@ class _MatchesListState extends State<MatchesList> {
           : ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 15, bottom: 100),
-              itemCount:
-                  matchStreamingCategoryIndex == 1 ? matchDataController.upcomingMatchApiList.length : matchDataController.liveMatchApiList.length,
+              itemCount: matchStreamingCategoryIndex == 1
+                  ? matchDataController.upcomingMatchApiList.length
+                  : matchDataController.currentLiveMatchFilterList.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: height * 0.02),
-                  child: commonContainer(
-                    size: cardHeight,
-                    radius: cardHeight * 0.3,
-                    child: Padding(
-                      padding: EdgeInsets.all(cardHeight * 0.08),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: cardHeight * 0.1,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular((width * 0.13))),
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black45,
-                                      blurRadius: 5,
-                                      spreadRadius: -1.9,
-                                      offset: Offset(0.0, 0.0),
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: (cardHeight * 0.1) * 0.07, horizontal: (cardHeight * 0.1) * 0.5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      FittedBox(
-                                          child: Text(
-                                        matchStreamingCategoryIndex == 0 ? 'Live' : 'Upcoming',
-                                        style: const TextStyle(fontWeight: FontWeight.w500),
-                                      )),
-                                      Icon(
-                                        Icons.circle,
-                                        size: width * 0.022,
-                                        color: matchStreamingCategoryIndex == 0 ? Colors.red : Colors.blue,
+                  child: Stack(children: [
+                    commonContainer(
+                      size: cardHeight,
+                      radius: cardHeight * 0.3,
+                      child: Padding(
+                        padding: EdgeInsets.all(cardHeight * 0.08),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: cardHeight * 0.1,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular((width * 0.13))),
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black45,
+                                        blurRadius: 5,
+                                        spreadRadius: -1.9,
+                                        offset: Offset(0.0, 0.0),
                                       ),
                                     ],
                                   ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: (cardHeight * 0.1) * 0.07, horizontal: (cardHeight * 0.1) * 0.5),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        FittedBox(
+                                            child: Text(
+                                          matchStreamingCategoryIndex == 0 ? 'Live' : 'Upcoming',
+                                          style: const TextStyle(fontWeight: FontWeight.w500),
+                                        )),
+                                        Icon(
+                                          Icons.circle,
+                                          size: width * 0.022,
+                                          color: matchStreamingCategoryIndex == 0 ? Colors.red : Colors.blue,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //TeamA
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    height: cardHeight * 0.25,
-                                    width: cardHeight * 0.25,
-                                    child: Image.network(
-                                      matchStreamingCategoryIndex == 1
-                                          ? "${matchDataController.upcomingMatchApiList[index].ImageUrl}${matchDataController.upcomingMatchApiList[index].TeamAImage}"
-                                          : "${matchDataController.allMatchResultList[index].imageUrl}${matchDataController.allMatchResultList[index].teamAImage}",
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //TeamA
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      height: cardHeight * 0.25,
+                                      width: cardHeight * 0.25,
+                                      child: Image.network(
+                                        matchStreamingCategoryIndex == 1
+                                            ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamAImage}"
+                                            : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamAImage}",
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    matchStreamingCategoryIndex == 1
-                                        ? matchDataController.upcomingMatchApiList[index].TeamA ?? ""
-                                        : matchDataController.allMatchResultList[index].teamA ?? '',
-                                    style: const TextStyle(fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                              //VS
-                              Image.asset(
-                                'asset/VS.png',
-                                fit: BoxFit.contain,
-                                height: cardHeight * 0.4,
-                                width: cardHeight * 0.4,
-                              ),
-                              //TeamB
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    height: cardHeight * 0.25,
-                                    width: cardHeight * 0.25,
-                                    child: Image.network(
+                                    Text(
                                       matchStreamingCategoryIndex == 1
-                                          ? "${matchDataController.upcomingMatchApiList[index].ImageUrl}${matchDataController.upcomingMatchApiList[index].TeamBImage}"
-                                          : "${matchDataController.allMatchResultList[index].imageUrl}${matchDataController.allMatchResultList[index].teamBImage}",
+                                          ? matchDataController.upcomingMatchApiList[index].teamA
+                                          : matchDataController.currentLiveMatchFilterList[index].teamA,
+                                      style: const TextStyle(fontWeight: FontWeight.w500),
                                     ),
-                                  ),
-                                  Text(
-                                    matchStreamingCategoryIndex == 1
-                                        ? matchDataController.upcomingMatchApiList[index].TeamB ?? ""
-                                        : matchDataController.allMatchResultList[index].teamB ?? '',
-                                    style: const TextStyle(fontWeight: FontWeight.w500),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
+                                    Text(
+                                      matchStreamingCategoryIndex == 1 ? "" : '',
+                                      style: const TextStyle(fontWeight: FontWeight.w400, color: Colors.grey),
+                                    )
+                                  ],
+                                ),
+
+                                //VS
+                                Image.asset(
+                                  'asset/VS.png',
+                                  fit: BoxFit.contain,
+                                  height: cardHeight * 0.4,
+                                  width: cardHeight * 0.4,
+                                ),
+
+                                //TeamB
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      height: cardHeight * 0.25,
+                                      width: cardHeight * 0.25,
+                                      child: Image.network(
+                                        matchStreamingCategoryIndex == 1
+                                            ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamBImage}"
+                                            : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamBImage}",
+                                      ),
+                                    ),
+                                    Text(
+                                      matchStreamingCategoryIndex == 1
+                                          ? matchDataController.upcomingMatchApiList[index].teamB
+                                          : matchDataController.currentLiveMatchFilterList[index].teamB,
+                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                  ]),
                 );
                 //   Container(
                 //   height: height * 0.13,

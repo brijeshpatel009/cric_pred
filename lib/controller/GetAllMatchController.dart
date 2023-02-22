@@ -69,7 +69,7 @@ class GetAllMatchesController extends GetxController {
     final http.Response upcomingMatchResponse = await http.get(Uri.parse('http://cricpro.cricnet.co.in/api/values/upcomingMatches'));
     if (upcomingMatchResponse.statusCode == 200) {
       var upcomingMatchData = UpComingModel.fromJson(jsonDecode(upcomingMatchResponse.body));
-      upcomingMatchApiList.value.addAll(upcomingMatchData.AllMatch!);
+      upcomingMatchApiList.value.addAll(upcomingMatchData.allMatch);
       upcomingMatchApiList.refresh();
     } else {
       print(upcomingMatchResponse.statusCode);
@@ -141,13 +141,21 @@ class GetAllMatchesController extends GetxController {
             yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now()) &&
             DateFormat("dd-MMM-yyyy").parse(element.matchtime).difference(DateTime.now()).inDays >= 0)
         .toList();
-    for (var a = 0; a < upcomingMatchFilterList.length; a++) {
-      print(DateFormat("dd-MMM-yyyy").parse(upcomingMatchFilterList[a].matchtime).difference(DateTime.now()).inMinutes);
-      String durationToString(int minutes) {
-        var d = Duration(minutes: minutes);
-        List<String> parts = d.toString().split(':');
-        return '${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')}';
-      }
-    }
+
+    // for (var a = 0; a < upcomingMatchFilterList.length; a++) {
+    //   // print(DateFormat("dd-MMM-yyyy").parse(upcomingMatchFilterList[a].matchtime).difference(DateTime.now()).inMinutes);
+    //   int time = DateFormat("dd-MMM-yyyy").parse("06:30PM").difference(DateTime.now()).inSeconds;
+    //   print("Minutes:=> $time");
+
+    // int sec = time % 60;
+    // int min = (time / 60).floor();
+    // String minute = min.toString().length <= 1 ? "0$min" : "$min";
+    // String second = sec.toString().length <= 1 ? "0$sec" : "$sec";
+    // print("$minute:$second");
+
+    // var d = Duration(minutes: mini);
+    // List<String> parts = d.toString().split(':');
+    // print('${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')}');
+    // }
   }
 }
