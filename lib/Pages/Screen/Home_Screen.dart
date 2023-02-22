@@ -1,8 +1,13 @@
 // ignore_for_file: file_names, avoid_print
 
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:cric_pred/controller/GetAllMatchController.dart';
+import 'package:cric_pred/controller/GetAllPlayerController.dart';
+import 'package:cric_pred/model/LiveScore/MatchRunsModel.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
@@ -19,11 +24,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final tabController = TabController(length: 2, vsync: this, animationDuration: const Duration(seconds: 1));
 
+  LiveScoreRunModel? liveMatchRun;
+
   @override
   void initState() {
     matchStreamingCategoryIndex = 0;
     super.initState();
+    List.generate(matchStreamingCategoryIndex == 1 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchApiList.length, (index) {
+      getAllPlayerController = Get.find()
+        ..getMatchPlayerData(matchStreamingCategoryIndex == 1 ? matchDataController.allMatchResultList[index].matchId ?? 0000 : matchDataController.liveMatchApiList[index + 1 >matchDataController.liveMatchApiList.length? 0: index].matchId);
+      // liveMatchRun = LiveScoreRunModel.fromJson(
+      //     jsonDecode(getMatchController.liveMatchApiList[index + 1 > getMatchController.liveMatchApiList.length ? 0 : index].jsonruns));
+      // print(matchDataController.allMatchResultList[index].matchId);
+      print("object");
+    },);
   }
+
+  final GetAllMatchesController matchDataController = Get.find();
+  final GetAllMatchesController getMatchController = Get.find();
+  late GetPlayerAndRunController getAllPlayerController;
 
   @override
   Widget build(BuildContext context) {

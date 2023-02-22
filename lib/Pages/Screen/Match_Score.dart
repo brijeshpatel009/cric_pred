@@ -18,12 +18,10 @@ import '../../utils/variable.dart';
 class HomeMatchScoreScreen extends StatefulWidget {
   const HomeMatchScoreScreen({
     Key? key,
-    required this.color,
     required this.matchResultData,
     required this.liveMatchData,
     required this.index,
   }) : super(key: key);
-  final Color color;
   final AllMatchData matchResultData;
   final LiveMatchModel liveMatchData;
   final int index;
@@ -98,7 +96,6 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                         height: 43,
                         width: 43,
                         decoration: BoxDecoration(
-                          color: widget.color,
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: Column(
@@ -106,7 +103,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                           children: [
                             const Icon(MyIcons.batBall, color: Colors.white),
                             Text(
-                              matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchtype ?? '' : widget.liveMatchData.matchType,
+                              matchStreamingCategoryIndex == 0 ? widget.liveMatchData.matchType : widget.matchResultData.matchtype ?? '',
                               style: const TextStyle(fontSize: 10, color: Colors.white),
                             ),
                           ],
@@ -117,12 +114,12 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                       child: Row(
                         children: [
                           Text(
-                            matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA ?? '' : widget.liveMatchData.teamA,
+                            matchStreamingCategoryIndex == 0 ? widget.liveMatchData.teamA : widget.matchResultData.teamA ?? '' ,
                             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                           ),
                           const Text(' vs '),
                           Text(
-                            matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB ?? "" : widget.liveMatchData.teamB,
+                            matchStreamingCategoryIndex == 0 ? widget.liveMatchData.teamB : widget.matchResultData.teamB ?? "" ,
                             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                           ),
                         ],
@@ -216,7 +213,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                   ),
                                   SizedBox(width: (width * 0.9) * 0.03),
                                   Text(
-                                    'Start: ${matchStreamingCategoryIndex == 0 ? widget.matchResultData.matchtime : widget.liveMatchData.matchtime}',
+                                    'Start: ${matchStreamingCategoryIndex == 0 ? widget.liveMatchData.matchtime : widget.matchResultData.matchtime}',
                                     style: const TextStyle(fontSize: 15),
                                   ),
                                 ],
@@ -226,7 +223,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA : widget.liveMatchData.teamA}',
+                                  '${matchStreamingCategoryIndex == 0 ? widget.liveMatchData.teamA : widget.matchResultData.teamA}',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
@@ -238,14 +235,14 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                         ? "in progress.."
                                         : getAllPlayerController.allPlayerDataList[0].teamRuns == "in progress.."
                                             ? "${getAllPlayerController.allPlayerDataList[0].teamRuns}"
-                                            : "${getAllPlayerController.allPlayerDataList[0].teamRuns})")
+                                            : "${getAllPlayerController.allPlayerDataList[0].teamRuns}")
                               ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB : widget.liveMatchData.teamB}',
+                                  '${matchStreamingCategoryIndex == 0 ? widget.liveMatchData.teamB : widget.matchResultData.teamB}',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
@@ -256,7 +253,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                       ? "Match Not Started"
                                       : getAllPlayerController.allPlayerDataList.last.teamRuns == ''
                                           ? "in progress.."
-                                          : "${getAllPlayerController.allPlayerDataList.last.teamRuns})",
+                                          : "${getAllPlayerController.allPlayerDataList.last.teamRuns}",
                                 ),
                               ],
                             ),
