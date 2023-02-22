@@ -184,9 +184,6 @@ class _MatchesListState extends State<MatchesList> {
   void initState() {
     // initSocket();
     super.initState();
-    // String cDate = DateFormat("dd-MMM-yyyy hh:mma-EEE").format(DateTime.now());
-    // DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
-    // DateTime dt = DateTime.parse('2020-01-02 03:04:05');
   }
 
   final GetAllMatchesController matchDataController = Get.find();
@@ -207,7 +204,7 @@ class _MatchesListState extends State<MatchesList> {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 15, bottom: 100),
               itemCount:
-                  matchStreamingCategoryIndex == 1 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchApiList.length,
+                  matchStreamingCategoryIndex == 1 ? matchDataController.upcomingMatchApiList.length : matchDataController.liveMatchApiList.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: height * 0.02),
