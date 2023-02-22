@@ -46,7 +46,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
   void initState() {
     super.initState();
     getAllPlayerController = Get.find()
-      ..getMatchPlayerData(matchStreamingCategoryIndex == 0 ?  widget.liveMatchData.matchId : widget.matchResultData.matchId ?? 0000);
+      ..getMatchPlayerData(matchStreamingCategoryIndex == 1 ? widget.matchResultData.matchId ?? 0000 : widget.liveMatchData.matchId, 0);
     liveMatchRun = LiveScoreRunModel.fromJson(
         jsonDecode(getMatchController.liveMatchApiList[widget.index + 1 > getMatchController.liveMatchApiList.length ? 0 : widget.index].jsonruns));
     liveMatchData = MatchDataModel.fromJson(

@@ -6,6 +6,7 @@ import 'package:html/parser.dart';
 
 import '../../Custom/my_icons_icons.dart';
 import '../../controller/MatchStatsController.dart';
+import '../../widget/Marquee.dart';
 
 class TeamsMatch extends StatefulWidget {
   const TeamsMatch({Key? key, required this.title, required this.matchId}) : super(key: key);
@@ -57,9 +58,14 @@ class _TeamsMatchState extends State<TeamsMatch> {
                     Navigator.pop(context);
                   },
                   child: const Icon(MyIcons.backArrow)),
-              Text(
-                widget.title,
-                style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+              Expanded(
+                child: MarqueeWidget(
+                  direction: Axis.horizontal,
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                ),
               ),
             ],
           ),
@@ -83,12 +89,18 @@ class _TeamsMatchState extends State<TeamsMatch> {
                           child: const CircularProgressIndicator(),
                         ),
                       )
-                    : Center(
-                        child: Text(
-                          matchStatsController.matchStatusData!.matchst!.isEmpty
-                              ? "Data Not Available"
-                              : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat1descr ?? ''),
-                          style: const TextStyle(fontSize: 18),
+                    : Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Center(
+                          child: MarqueeWidget(
+                            direction: Axis.vertical,
+                            child: Text(
+                              matchStatsController.matchStatusData!.matchst!.isEmpty
+                                  ? "Data Not Available"
+                                  : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat1descr ?? ''),
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                          ),
                         ),
                       ),
               )),
