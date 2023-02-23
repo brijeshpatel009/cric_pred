@@ -57,9 +57,11 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 controller: tabs,
                 isScrollable: true,
                 unselectedLabelStyle: const TextStyle(color: Color(0xffFFFFFF)),
-                indicatorSize: TabBarIndicatorSize.label,
+                unselectedLabelColor: Colors.white,
                 indicatorColor: const Color(0xffF97900),
+                labelColor: const Color(0xffF97900),
                 indicatorWeight: height * 0.005,
+                indicatorSize: TabBarIndicatorSize.label,
                 padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                 tabs: [
                   tab('International', width),
@@ -118,7 +120,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
   Widget tab(String string, double width) {
     return Text(
       string,
-      style: TextStyle(color: const Color(0xffFFFFFF), fontSize: width * 0.05, fontWeight: FontWeight.w400),
+      style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400),
     );
   }
 }

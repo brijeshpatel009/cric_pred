@@ -7,6 +7,7 @@ import 'package:cric_pred/widget/commonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key, required this.title}) : super(key: key);
@@ -29,7 +30,7 @@ class _NewsScreenState extends State<NewsScreen> {
     Future<void> launchBrowser(String url) async {
       Uri openLink = Uri.parse(url);
       if (await canLaunchUrl(openLink)) {
-        await launchUrl(openLink);
+        await launchUrlString(url, mode: LaunchMode.externalApplication);
       } else {
         throw 'Could not launch $url';
       }
@@ -78,8 +79,8 @@ class _NewsScreenState extends State<NewsScreen> {
                                 padding: EdgeInsets.all(newsCardHeight * 0.1),
                                 child: GestureDetector(
                                   onTap: () {
-                                    launchBrowser(newsController.getNewsData.newsList?[index].uRL ?? '');
                                     print(newsController.getNewsData.newsList?[index].uRL ?? '');
+                                    launchBrowser(newsController.getNewsData.newsList?[index].uRL ?? '');
                                   },
                                   child: Row(
                                     children: [
