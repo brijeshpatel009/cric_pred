@@ -235,7 +235,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                         ? "in progress.."
                                         : getAllPlayerController.allPlayerDataList[0].teamRuns == "in progress.."
                                             ? "${getAllPlayerController.allPlayerDataList[0].teamRuns}"
-                                            : "${getAllPlayerController.allPlayerDataList[0].teamRuns}")
+                                            : "${getAllPlayerController.allPlayerDataList[0].teamRuns})")
                               ],
                             ),
                             Row(
@@ -253,7 +253,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                       ? "Match Not Started"
                                       : getAllPlayerController.allPlayerDataList.last.teamRuns == ''
                                           ? "in progress.."
-                                          : "${getAllPlayerController.allPlayerDataList.last.teamRuns}",
+                                          : "${getAllPlayerController.allPlayerDataList.last.teamRuns})",
                                 ),
                               ],
                             ),

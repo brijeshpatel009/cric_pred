@@ -26,19 +26,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   LiveScoreRunModel? liveMatchRun;
 
+
   @override
   void initState() {
-    matchStreamingCategoryIndex = 0;
+    matchStreamingCategoryIndex == 0;
     super.initState();
-    List.generate(matchStreamingCategoryIndex == 1 ? matchDataController.allMatchResultList.length : matchDataController.liveMatchApiList.length, (index) {
+    List.generate(matchStreamingCategoryIndex == 1 ? matchDataController.upcomingMatchApiList.length : matchDataController.liveMatchApiList.length, (index) {
       getAllPlayerController = Get.find()
-        ..getMatchPlayerData(matchStreamingCategoryIndex == 1 ? matchDataController.allMatchResultList[index].matchId ?? 0000 : matchDataController.liveMatchApiList[index + 1 >matchDataController.liveMatchApiList.length? 0: index].matchId);
+        ..getMatchPlayerData(matchStreamingCategoryIndex == 1 ? matchDataController.upcomingMatchApiList[index].matchId ?? 0000 : matchDataController.liveMatchApiList[index + 1 > matchDataController.liveMatchApiList.length ? 0 : index].matchId, 0);
       // liveMatchRun = LiveScoreRunModel.fromJson(
-      //     jsonDecode(getMatchController.liveMatchApiList[index + 1 > getMatchController.liveMatchApiList.length ? 0 : index].jsonruns));
-      // print(matchDataController.allMatchResultList[index].matchId);
-      print("object");
+      //     //     jsonDecode(getMatchController.liveMatchApiList[index + 1 > getMatchController.liveMatchApiList.length ? 0 : index].jsonruns));
+      //     // print(matchDataController.allMatchResultList[index].matchId);
+      //     print("object");
     },);
   }
+
+
 
   final GetAllMatchesController matchDataController = Get.find();
   final GetAllMatchesController getMatchController = Get.find();

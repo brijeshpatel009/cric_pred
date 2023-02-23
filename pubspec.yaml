@@ -46,7 +46,7 @@ dependencies:
   url_launcher: ^6.1.9
   cached_network_image: ^3.2.3
   shared_preferences: ^2.0.17
-
+  flutter_countdown_timer: ^4.1.0
 
 dev_dependencies:
   flutter_test:
