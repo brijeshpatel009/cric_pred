@@ -150,7 +150,6 @@ class _MatchesListState extends State<MatchesList> {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) {
                                   return HomeMatchScoreScreen(
-                                    color: Colors.orange,
                                     matchResultData: matchDataController.upcomingMatchApiList[index],
                                     liveMatchData: matchDataController
                                         .currentLiveMatchFilterList[index + 1 > matchDataController.currentLiveMatchFilterList.length ? 0 : index],
