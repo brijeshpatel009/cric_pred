@@ -16,6 +16,7 @@ import '../model/GetAllPlayerModel.dart';
 import '../model/LiveScore/MatchDataModel.dart';
 import '../model/NewsModel.dart';
 import '../utils/variable.dart';
+import 'CountDown.dart';
 import 'Marquee.dart';
 import 'commonWidget.dart';
 
@@ -122,14 +123,10 @@ class _MatchesListState extends State<MatchesList> {
               child: SizedBox(height: height * 0.04, width: height * 0.04, child: const CircularProgressIndicator()),
             )
           : matchDataController.currentLiveMatchFilterList.isEmpty && matchStreamingCategoryIndex == 0
-              ? const Center(
+              ? Center(
                   child: Text(
                     'Currently Not Live Any Match',
-                    style: TextStyle(
-                      color: Color(0xff2E2445),
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.8,
-                    ),
+                    style: TextStyle(color: const Color(0xff2E2445), fontWeight: FontWeight.w500, letterSpacing: 0.8, fontSize: height * 0.02),
                   ),
                 )
               : ListView.builder(
@@ -147,16 +144,17 @@ class _MatchesListState extends State<MatchesList> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return HomeMatchScoreScreen(
-                                    matchResultData: matchDataController.upcomingMatchApiList[index],
-                                    liveMatchData: matchDataController
-                                        .currentLiveMatchFilterList[index + 1 > matchDataController.currentLiveMatchFilterList.length ? 0 : index],
-                                    index: index,
-                                  );
-                                },
-                              ));
+                              if (matchStreamingCategoryIndex == 0) {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return HomeMatchScoreScreen(
+                                      matchResultData: matchDataController.upcomingMatchApiList[index],
+                                      liveMatchData: matchDataController.currentLiveMatchFilterList[index],
+                                      index: index,
+                                    );
+                                  },
+                                ));
+                              }
                             },
                             child: commonContainer(
                               size: cardHeight,
@@ -196,10 +194,12 @@ class _MatchesListState extends State<MatchesList> {
                                                     matchStreamingCategoryIndex == 0 ? 'Live' : 'Upcoming',
                                                     style: const TextStyle(fontWeight: FontWeight.w500),
                                                   )),
-                                                  Icon(
-                                                    Icons.circle,
-                                                    size: width * 0.022,
-                                                    color: matchStreamingCategoryIndex == 0 ? Colors.red : Colors.blue,
+                                                  FittedBox(
+                                                    child: Icon(
+                                                      Icons.circle,
+                                                      size: width * 0.022,
+                                                      color: matchStreamingCategoryIndex == 0 ? Colors.red : Colors.blue,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -213,15 +213,18 @@ class _MatchesListState extends State<MatchesList> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         //TeamA
-                                        ClipRRect(
+                                        PhysicalModel(
+                                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                                          color: const Color(0xff2E2445),
                                           borderRadius: BorderRadius.all(Radius.circular(cardHeight * 0.1)),
-                                          child: Image.network(
-                                            matchStreamingCategoryIndex == 1
+                                          child: FadeInImage.assetNetwork(
+                                            placeholder: 'asset/cricImg.png',
+                                            image: matchStreamingCategoryIndex == 1
                                                 ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamAImage}"
                                                 : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamAImage}",
+                                            fit: BoxFit.cover,
                                             height: cardHeight * 0.35,
                                             width: cardHeight * 0.35,
-                                            fit: BoxFit.cover,
                                           ),
                                         ),
 
@@ -234,17 +237,20 @@ class _MatchesListState extends State<MatchesList> {
                                         ),
 
                                         //TeamB
-                                        ClipRRect(
+                                        PhysicalModel(
+                                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                                          color: const Color(0xff2E2445),
                                           borderRadius: BorderRadius.all(Radius.circular(cardHeight * 0.1)),
-                                          child: Image.network(
-                                            matchStreamingCategoryIndex == 1
+                                          child: FadeInImage.assetNetwork(
+                                            placeholder: 'asset/cricImg.png',
+                                            image: matchStreamingCategoryIndex == 1
                                                 ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamBImage}"
                                                 : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamBImage}",
+                                            fit: BoxFit.cover,
                                             height: cardHeight * 0.35,
                                             width: cardHeight * 0.35,
-                                            fit: BoxFit.cover,
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                     Row(
@@ -255,7 +261,10 @@ class _MatchesListState extends State<MatchesList> {
                                             matchStreamingCategoryIndex == 1
                                                 ? matchDataController.upcomingMatchApiList[index].teamA
                                                 : matchDataController.currentLiveMatchFilterList[index].teamA,
-                                            style: TextStyle(fontSize: cardHeight * 0.08, fontWeight: FontWeight.w500),
+                                            style: TextStyle(
+                                              fontSize: cardHeight * 0.08,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                         ),
                                         MarqueeWidget(
@@ -271,13 +280,48 @@ class _MatchesListState extends State<MatchesList> {
                                     if (matchStreamingCategoryIndex == 1)
                                       Text(
                                         matchDataController.upcomingMatchApiList[index].matchtime,
-                                        style: TextStyle(fontSize: cardHeight * 0.08, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                          fontSize: cardHeight * 0.08,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                   ],
                                 ),
                               ),
                             ),
                           ),
+                          Positioned(
+                            bottom: 0,
+                            right: width * 0.4,
+                            left: width * 0.4,
+                            child: Container(
+                              height: cardHeight * 0.14,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff2E2445),
+                                borderRadius: BorderRadius.all(Radius.circular((cardHeight * 0.14) * 0.4)),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black45,
+                                    blurRadius: 10,
+                                    spreadRadius: -1.8,
+                                    offset: Offset(0.0, 0.0),
+                                  )
+                                ],
+                              ),
+                              child: Center(
+                                child: MarqueeWidget(
+                                  child: Text(
+                                    matchStreamingCategoryIndex == 1
+                                        ? CountDown().timeLeft(
+                                            matchDataController.yourParserOrDateTimeParse(matchDataController.upcomingMatchApiList[index].matchtime),
+                                          )
+                                        : "View",
+                                    style: TextStyle(fontSize: (cardHeight * 0.14) * 0.6, color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     );

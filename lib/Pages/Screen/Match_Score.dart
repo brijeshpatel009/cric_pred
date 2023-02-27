@@ -16,12 +16,10 @@ import '../../utils/variable.dart';
 class HomeMatchScoreScreen extends StatefulWidget {
   const HomeMatchScoreScreen({
     Key? key,
-    required this.color,
     required this.matchResultData,
     required this.liveMatchData,
     required this.index,
   }) : super(key: key);
-  final Color color;
   final UpComingModelAllMatch matchResultData;
   final LiveMatchModel liveMatchData;
   final int index;
@@ -137,251 +135,251 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
           child: SizedBox(height: 20, width: 20, child: CircularProgressIndicator()),
         )
             : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: height * 0.02, horizontal: width * 0.05),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(MyIcons.backArrow, color: Colors.white),
-                  ),
-                ),
-                Text(
-                  matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
-                ),
-                const Text(
-                  ' vs ',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
-                ),
-                Text(
-                  matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
-                ),
-              ],
-            ),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
-                child: Container(
-                  color: Colors.white,
-                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      commonContainer(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                FittedBox(
-                                  child: Row(
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: height * 0.02, horizontal: width * 0.05),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(MyIcons.backArrow, color: Colors.white),
+                        ),
+                      ),
+                      Text(
+                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
+                      ),
+                      const Text(
+                        ' vs ',
+                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
+                      ),
+                      Text(
+                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
+                      child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            commonContainer(
+                                child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FittedBox(
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(2.5),
+                                          decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(
+                                                Radius.circular(25),
+                                              ),
+                                              border: Border.all(color: Colors.black)),
+                                          child: matchStreamingCategoryIndex == 0
+                                              ? Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: const [
+                                                    Text(
+                                                      'Live',
+                                                      style: TextStyle(fontSize: 12),
+                                                    ),
+                                                    Icon(
+                                                      Icons.circle,
+                                                      color: Colors.red,
+                                                      size: 8,
+                                                    ),
+                                                  ],
+                                                )
+                                              : Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: const [
+                                                    Text('Upcoming', style: TextStyle(fontSize: 12)),
+                                                    Icon(
+                                                      Icons.circle,
+                                                      color: Colors.blue,
+                                                      size: 8,
+                                                    ),
+                                                  ],
+                                                ),
+                                        ),
+                                        SizedBox(width: (width * 0.9) * 0.03),
+                                        Text(
+                                          'Start: ${matchStreamingCategoryIndex == 1 ? widget.matchResultData.matchtime : widget.liveMatchData.matchtime}',
+                                          style: const TextStyle(fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(2.5),
-                                        decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.all(
-                                              Radius.circular(25),
-                                            ),
-                                            border: Border.all(color: Colors.black)),
-                                        child: matchStreamingCategoryIndex == 0
-                                            ? Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: const [
-                                            Text(
-                                              'Live',
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                            Icon(
-                                              Icons.circle,
-                                              color: Colors.red,
-                                              size: 8,
-                                            ),
-                                          ],
-                                        )
-                                            : Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: const [
-                                            Text('Upcoming', style: TextStyle(fontSize: 12)),
-                                            Icon(
-                                              Icons.circle,
-                                              color: Colors.blue,
-                                              size: 8,
-                                            ),
-                                          ],
+                                      Text(
+                                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      SizedBox(width: (width * 0.9) * 0.03),
+                                      Text(getAllPlayerController.allPlayerDataList.isEmpty
+                                          ? "Match Not Started"
+                                          : getAllPlayerController.allPlayerDataList[0].teamRuns == ''
+                                              ? "in progress.."
+                                              : getAllPlayerController.allPlayerDataList[0].teamRuns == "in progress.."
+                                                  ? "${getAllPlayerController.allPlayerDataList[0].teamRuns}"
+                                                  : "${getAllPlayerController.allPlayerDataList[0].teamRuns})")
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
                                       Text(
-                                        'Start: ${matchStreamingCategoryIndex == 1 ? widget.matchResultData.matchtime : widget.liveMatchData.matchtime}',
-                                        style: const TextStyle(fontSize: 15),
+                                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        getAllPlayerController.allPlayerDataList.isEmpty
+                                            ? "Match Not Started"
+                                            : getAllPlayerController.allPlayerDataList.last.teamRuns == ''
+                                                ? "in progress.."
+                                                : "${getAllPlayerController.allPlayerDataList.last.teamRuns})",
                                       ),
                                     ],
                                   ),
+                                ],
+                              ),
+                            )),
+                            Flexible(
+                              child: SizedBox(
+                                child: SingleChildScrollView(
+                                  physics: const BouncingScrollPhysics(),
+                                  child: Column(
+                                    children: [
+                                      Text(matchStreamingCategoryIndex == 1
+                                          ? "Data Not Available From Server Side"
+                                          : getMatchController
+                                                      .liveMatchApiList[
+                                                          widget.index + 1 > getMatchController.liveMatchApiList.length ? 0 : widget.index]
+                                                      .jsondata ==
+                                                  ''
+                                              ? "Data Is Not available\nBecause Of That Match Is Not Started"
+                                              : matchDataString(liveMatchData!.jsondata!.title!)),
+                                      // Text(matchDataString(liveMatchRun?.jsonruns.summary ?? "")),
+                                    ],
+                                  ),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(getAllPlayerController.allPlayerDataList.isEmpty
-                                        ? "Match Not Started"
-                                        : getAllPlayerController.allPlayerDataList[0].teamRuns == ''
-                                        ? "in progress.."
-                                        : getAllPlayerController.allPlayerDataList[0].teamRuns == "in progress.."
-                                        ? "${getAllPlayerController.allPlayerDataList[0].teamRuns}"
-                                        : "${getAllPlayerController.allPlayerDataList[0].teamRuns})")
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB}',
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      getAllPlayerController.allPlayerDataList.isEmpty
-                                          ? "Match Not Started"
-                                          : getAllPlayerController.allPlayerDataList.last.teamRuns == ''
-                                          ? "in progress.."
-                                          : "${getAllPlayerController.allPlayerDataList.last.teamRuns})",
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )),
-                      Flexible(
-                        child: SizedBox(
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: Column(
-                              children: [
-                                Text(matchStreamingCategoryIndex == 1
-                                    ? "Data Not Available From Server Side"
-                                    : getMatchController
-                                    .liveMatchApiList[
-                                widget.index + 1 > getMatchController.liveMatchApiList.length ? 0 : widget.index]
-                                    .jsondata ==
-                                    ''
-                                    ? "Data Is Not available\nBecause Of That Match Is Not Started"
-                                    : matchDataString(liveMatchData!.jsondata!.title!)),
-                                // Text(matchDataString(liveMatchRun?.jsonruns.summary ?? "")),
-                              ],
-                            ),
-                          ),
+                              ),
+                              // ListView.builder(
+                              //   itemCount: _len,
+                              //   itemBuilder: (context, index) {
+                              //     return Container(
+                              //       margin: EdgeInsets.only(bottom: height * 0.02, right: width * 0.06, left: width * 0.06),
+                              //       height: height * 0.1,
+                              //       decoration: const BoxDecoration(
+                              //         color: Color(0xff9BDCFF),
+                              //         borderRadius: BorderRadius.all(
+                              //           Radius.circular(15),
+                              //         ),
+                              //       ),
+                              //       child: Row(
+                              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //         children: [
+                              //           const Padding(
+                              //             padding: EdgeInsets.only(left: 5),
+                              //             child: Text(
+                              //               'Who win the match?',
+                              //             ),
+                              //           ),
+                              //           Container(
+                              //             width: width * 0.35,
+                              //             decoration: const BoxDecoration(
+                              //               color: Color(0xff70CDFF),
+                              //               borderRadius: BorderRadius.only(
+                              //                 topRight: Radius.circular(15),
+                              //                 bottomRight: Radius.circular(15),
+                              //               ),
+                              //             ),
+                              //             child: Padding(
+                              //               padding: EdgeInsets.symmetric(horizontal: (width * 0.35) * 0.1, vertical: (height * 0.08) * 0.1),
+                              //               child: Column(
+                              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //                 children: [
+                              //                   Container(
+                              //                     height: (height * 0.11) * 0.35,
+                              //                     decoration: BoxDecoration(
+                              //                       border: Border.all(color: Colors.black, width: 1),
+                              //                       borderRadius: BorderRadius.circular(5),
+                              //                     ),
+                              //                     child: FittedBox(
+                              //                       child: Padding(
+                              //                         padding: const EdgeInsets.symmetric(horizontal: 2),
+                              //                         child: Row(
+                              //                           children: [
+                              //                             Text(matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
+                              //                                 style: const TextStyle(fontSize: 10)),
+                              //                             const Text(
+                              //                               '(0.0)',
+                              //                               style: TextStyle(fontSize: 10),
+                              //                             ),
+                              //                           ],
+                              //                         ),
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                   Container(
+                              //                     height: (height * 0.11) * 0.35,
+                              //                     decoration: BoxDecoration(
+                              //                       border: Border.all(color: Colors.black, width: 1),
+                              //                       borderRadius: BorderRadius.circular(5),
+                              //                     ),
+                              //                     child: FittedBox(
+                              //                       child: Padding(
+                              //                         padding: const EdgeInsets.symmetric(horizontal: 2),
+                              //                         child: Row(
+                              //                           children: [
+                              //                             Text(
+                              //                               matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
+                              //                               style: const TextStyle(fontSize: 5),
+                              //                             ),
+                              //                             const Text(
+                              //                               '(0.0)',
+                              //                               style: TextStyle(fontSize: 5),
+                              //                             ),
+                              //                           ],
+                              //                         ),
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                 ],
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     );
+                              //   },
+                              // ),
+                            )
+                          ],
                         ),
-                        // ListView.builder(
-                        //   itemCount: _len,
-                        //   itemBuilder: (context, index) {
-                        //     return Container(
-                        //       margin: EdgeInsets.only(bottom: height * 0.02, right: width * 0.06, left: width * 0.06),
-                        //       height: height * 0.1,
-                        //       decoration: const BoxDecoration(
-                        //         color: Color(0xff9BDCFF),
-                        //         borderRadius: BorderRadius.all(
-                        //           Radius.circular(15),
-                        //         ),
-                        //       ),
-                        //       child: Row(
-                        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           const Padding(
-                        //             padding: EdgeInsets.only(left: 5),
-                        //             child: Text(
-                        //               'Who win the match?',
-                        //             ),
-                        //           ),
-                        //           Container(
-                        //             width: width * 0.35,
-                        //             decoration: const BoxDecoration(
-                        //               color: Color(0xff70CDFF),
-                        //               borderRadius: BorderRadius.only(
-                        //                 topRight: Radius.circular(15),
-                        //                 bottomRight: Radius.circular(15),
-                        //               ),
-                        //             ),
-                        //             child: Padding(
-                        //               padding: EdgeInsets.symmetric(horizontal: (width * 0.35) * 0.1, vertical: (height * 0.08) * 0.1),
-                        //               child: Column(
-                        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //                 children: [
-                        //                   Container(
-                        //                     height: (height * 0.11) * 0.35,
-                        //                     decoration: BoxDecoration(
-                        //                       border: Border.all(color: Colors.black, width: 1),
-                        //                       borderRadius: BorderRadius.circular(5),
-                        //                     ),
-                        //                     child: FittedBox(
-                        //                       child: Padding(
-                        //                         padding: const EdgeInsets.symmetric(horizontal: 2),
-                        //                         child: Row(
-                        //                           children: [
-                        //                             Text(matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
-                        //                                 style: const TextStyle(fontSize: 10)),
-                        //                             const Text(
-                        //                               '(0.0)',
-                        //                               style: TextStyle(fontSize: 10),
-                        //                             ),
-                        //                           ],
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //                   Container(
-                        //                     height: (height * 0.11) * 0.35,
-                        //                     decoration: BoxDecoration(
-                        //                       border: Border.all(color: Colors.black, width: 1),
-                        //                       borderRadius: BorderRadius.circular(5),
-                        //                     ),
-                        //                     child: FittedBox(
-                        //                       child: Padding(
-                        //                         padding: const EdgeInsets.symmetric(horizontal: 2),
-                        //                         child: Row(
-                        //                           children: [
-                        //                             Text(
-                        //                               matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
-                        //                               style: const TextStyle(fontSize: 5),
-                        //                             ),
-                        //                             const Text(
-                        //                               '(0.0)',
-                        //                               style: TextStyle(fontSize: 5),
-                        //                             ),
-                        //                           ],
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //                 ],
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
-                      )
-                    ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ],
-        )),
+                ],
+              )),
       ),
     );
   }
