@@ -6,10 +6,9 @@ import 'package:cric_pred/controller/GetAllPlayerController.dart';
 import 'package:cric_pred/model/LiveScore/MatchDataModel.dart';
 import 'package:cric_pred/model/LiveScore/MatchRunsModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 import '../Pages/Screen/Match_Score.dart';
 import '../controller/GetAllMatchController.dart';
 import '../model/GetAllPlayerModel.dart';
@@ -79,6 +78,8 @@ class _MatchesListState extends State<MatchesList> {
   static const int _len = 5;
   LiveScoreRunModel? liveMatchRun;
 
+  late Timer _timer;
+
   @override
   void initState() {
     super.initState();
@@ -105,6 +106,15 @@ class _MatchesListState extends State<MatchesList> {
         liveMatchApiList[index + 1 > matchDataController.currentLiveMatchFilterList.length ? 0 : index].matchId}");
       },
     );
+    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _timer.cancel();
   }
 
   late GetAllMatchesController matchDataController;
@@ -112,11 +122,45 @@ class _MatchesListState extends State<MatchesList> {
   final GetAllMatchesController getMatchController = Get.find();
   late GetPlayerAndRunController getAllPlayerController;
 
+  // String countTime = "Loading...";
+
   @override
   Widget build(BuildContext context) {
     double height = Get.height;
     double width = Get.width;
-    double cardHeight = height * 0.25;
+    double cardHeight = height * 0.15;
+
+    var dateTime1 = List.generate(matchDataController.upcomingMatchApiList.length, (index) =>
+     matchDataController.upcomingMatchApiList[index].matchtime,
+    ).toString();
+
+    print("ListdateTime1:===>>> ${dateTime1.length}");
+
+
+    yourParserOrDateTimeParse(String dateTime1) {
+      print(">>>>>>>>>>>>>>>>?????  $dateTime1");
+      DateTime currentDate = DateTime.now();
+
+      String stringDateFormat = dateTime1.length > 28
+          ? "${dateTime1.substring(0, 6).replaceAll(" ", '-')}-${DateFormat("yyyy").format(currentDate)}"
+          : dateTime1.substring(0, 11);
+
+      String stringTimeFormat = dateTime1.length > 28 ? dateTime1.substring(26, 33) : dateTime1.split(' at').last.split('-').first;
+
+      String formatTime = dateTime1.length > 28
+          ? '${stringTimeFormat.substring(0, 5)} ${stringTimeFormat.substring(5, 7)}'
+          : '${stringTimeFormat.substring(1, 6)} ${stringTimeFormat.substring(6, 8)}';
+
+      String stringDateTime = "$stringDateFormat $formatTime";
+
+      DateTime dateTimeFormat = DateFormat(dateTime1.length > 28 ? "MMM-dd-yyyy h:mm a" : "dd-MMM-yyyy h:mm a").parse(stringDateTime);
+      print(dateTimeFormat);
+      return dateTimeFormat;
+    }
+
+    // countTime = CountDown().timeLeft(DateTime.parse("2023-02-26 14:30:00"), "Completed", "Days - ", "Hours - ", "Minutes - ", "Seconds ", "days - ", "hours - ", "minutes - ", "seconds ");
+    // countTime = CountDown().timeLeft(yourParserOrDateTimeParse(dateTime1[2]), "Completed", "Days - ", "Hours - ", "Minutes - ", "Seconds ", "days - ", "hours - ", "minutes - ", "seconds ");
+
     return Obx(
           () => matchDataController.isLoading.value
           ? Center(
@@ -131,7 +175,6 @@ class _MatchesListState extends State<MatchesList> {
                 )
               : ListView.builder(
                   physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 15, bottom: 100),
                   itemCount: matchStreamingCategoryIndex == 1
                       ? matchDataController.upcomingMatchApiList.length
                       : matchDataController.currentLiveMatchFilterList.isEmpty
@@ -139,7 +182,7 @@ class _MatchesListState extends State<MatchesList> {
                           : matchDataController.currentLiveMatchFilterList.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                      padding: EdgeInsets.symmetric(vertical: height * 0.015),
                       child: Stack(
                         children: [
                           GestureDetector(
@@ -187,7 +230,7 @@ class _MatchesListState extends State<MatchesList> {
                                               padding:
                                                   EdgeInsets.symmetric(vertical: (cardHeight * 0.1) * 0.07, horizontal: (cardHeight * 0.1) * 0.5),
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   FittedBox(
                                                       child: Text(
@@ -227,7 +270,6 @@ class _MatchesListState extends State<MatchesList> {
                                             width: cardHeight * 0.35,
                                           ),
                                         ),
-
                                         //VS
                                         Image.asset(
                                           'asset/VS.png',
@@ -254,7 +296,7 @@ class _MatchesListState extends State<MatchesList> {
                                       ],
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
                                         MarqueeWidget(
                                           child: Text(
@@ -267,6 +309,7 @@ class _MatchesListState extends State<MatchesList> {
                                             ),
                                           ),
                                         ),
+                                        SizedBox(width: width*0.05,),
                                         MarqueeWidget(
                                           child: Text(
                                             matchStreamingCategoryIndex == 1

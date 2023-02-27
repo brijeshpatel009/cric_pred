@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, depend_on_referenced_packages, avoid_print
 
+import 'package:cric_pred/widget/commonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
@@ -42,69 +43,102 @@ class _TeamsMatchState extends State<TeamsMatch> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          height: double.maxFinite,
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('asset/appbar.png'), fit: BoxFit.fill),
-          ),
-          child: Row(
-            children: [
-              GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(MyIcons.backArrow)),
-              Expanded(
-                child: MarqueeWidget(
-                  direction: Axis.horizontal,
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: Container(
-        height: double.maxFinite,
-        width: double.maxFinite,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('asset/background.png'), fit: BoxFit.fill),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Obx(
-                () => matchStatsController.isLoading.value == true
-                    ? Center(
-                        child: SizedBox(
-                          height: height * 0.1,
-                          width: height * 0.1,
-                          child: const CircularProgressIndicator(),
-                        ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Center(
-                          child: MarqueeWidget(
-                            direction: Axis.vertical,
-                            child: Text(
-                              matchStatsController.matchStatusData!.matchst!.isEmpty
-                                  ? "Data Not Available"
-                                  : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat1descr ?? ''),
-                              style: const TextStyle(fontSize: 18),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   automaticallyImplyLeading: false,
+      //   flexibleSpace: Container(
+      //     height: double.maxFinite,
+      //     decoration: const BoxDecoration(
+      //       image: DecorationImage(image: AssetImage('asset/appbar.png'), fit: BoxFit.fill),
+      //     ),
+      //     child: Row(
+      //       children: [
+      //         GestureDetector(
+      //             onTap: () {
+      //               Navigator.pop(context);
+      //             },
+      //             child: const Icon(MyIcons.backArrow)),
+      //         Expanded(
+      //           child: MarqueeWidget(
+      //             direction: Axis.horizontal,
+      //             child: Text(
+      //               widget.title,
+      //               style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Obx(
+              () => matchStatsController.isLoading.value == true
+                  ? Center(
+                      child: SizedBox(
+                        height: height * 0.1,
+                        width: height * 0.1,
+                        child: const CircularProgressIndicator(),
+                      ),
+                    )
+                  : Container(
+                     color: const Color(0xff2E2445),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                     Padding(
+                       padding: EdgeInsets.only(top: height*0.025),
+                       child: Row(
+                        children: [
+                          SizedBox(width: width*0.025,),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Icon(MyIcons.backArrow,color: Colors.white,)),
+                          SizedBox(width: width*0.025,),
+                          Expanded(
+                            child: MarqueeWidget(
+                              direction: Axis.horizontal,
+                              child: Text(
+                                widget.title,
+                                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-              )),
-        ),
+                        ],
+                    ),
+                     ),
+                       Padding(
+                         padding: EdgeInsets.only(top: height*0.025),
+                         child: ClipRRect(
+                           borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
+                           child: Container(
+                               height: height,
+                               width: width,
+                               color: Colors.white,
+                              child: Padding(
+                                  padding: EdgeInsets.only(top: height*0.03,left: width*0.03),
+                                  child: MarqueeWidget(
+                                    direction: Axis.vertical,
+                                    child: Text(
+                                      matchStatsController.matchStatusData!.matchst!.isEmpty
+                                          ? "Data Not Available"
+                                          : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat1descr ?? ''),
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                ),
+                            ),
+                         ),
+                       ),
+                      ],
+                    ),
+                  ),
+            )),
       ),
     );
   }

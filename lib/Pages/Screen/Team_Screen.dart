@@ -62,7 +62,10 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 labelColor: const Color(0xffF97900),
                 indicatorWeight: height * 0.005,
                 indicatorSize: TabBarIndicatorSize.label,
-                padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+                padding: EdgeInsets.symmetric(horizontal: width * 0.02,),
+                indicatorPadding: EdgeInsets.only(
+                  bottom: height * 0.005,
+                ),
                 tabs: [
                   tabsWidget('International', width, height),
                   tabsWidget('T20', width, height),
