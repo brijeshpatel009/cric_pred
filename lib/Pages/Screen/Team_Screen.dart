@@ -64,12 +64,12 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 indicatorSize: TabBarIndicatorSize.label,
                 padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                 tabs: [
-                  tab('International', width),
-                  tab('T20', width),
-                  tab('IPL', width),
-                  tab('CPL', width),
-                  tab('BPL', width),
-                  tab('Test', width),
+                  tabsWidget('International', width, height),
+                  tabsWidget('T20', width, height),
+                  tabsWidget('IPL', width, height),
+                  tabsWidget('CPL', width, height),
+                  tabsWidget('BPL', width, height),
+                  tabsWidget('Test', width, height),
                 ],
               ),
               Expanded(
@@ -117,10 +117,15 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget tab(String string, double width) {
-    return Text(
-      string,
-      style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400),
+  Widget tabsWidget(String string, double width, double height) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: height * 0.01,
+      ),
+      child: Text(
+        string,
+        style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400),
+      ),
     );
   }
 }

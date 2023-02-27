@@ -26,6 +26,7 @@ class GetAllMatchesController extends GetxController {
   RxList<LiveMatchModel> currentLiveMatchFilterList = RxList([]);
   RxBool isLoading = true.obs;
   ScrollController allMatchScroller = ScrollController();
+  DateTime currentDate = DateTime.now();
 
   @override
   void onInit() {
@@ -99,6 +100,33 @@ class GetAllMatchesController extends GetxController {
     isLoading.value = false;
   }
 
+  yourParserOrDateTimeParse(String dateTime) {
+    String stringDateFormat = dateTime.length > 28
+        ? "${dateTime.substring(0, 6).replaceAll(" ", '-')}-${DateFormat("yyyy").format(currentDate)}"
+        : dateTime.substring(0, 11);
+
+    String stringTimeFormat = dateTime.length > 28 ? dateTime.substring(26, 33) : dateTime.split(' at').last.split('-').first;
+
+    String formatTime = dateTime.length > 28
+        ? '${stringTimeFormat.substring(0, 5)} ${stringTimeFormat.substring(5, 7)}'
+        : '${stringTimeFormat.substring(1, 6)} ${stringTimeFormat.substring(6, 8)}';
+
+    String stringDateTime = "$stringDateFormat $formatTime";
+
+    DateTime dateTimeFormat = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "dd-MMM-yyyy h:mm a").parse(stringDateTime);
+    return dateTimeFormat;
+  }
+
+  String forMoreThenOneDayMatch({required String matchTime}) {
+    if (matchTime.length > 28) {
+      var time = "${DateFormat("dd-MMM-yyyy").format(currentDate)} ${matchTime.substring(27, 31)} ${matchTime.substring(31, 33)}";
+      print("...===,,,,>>?? $time");
+      return time;
+    } else {
+      return matchTime;
+    }
+  }
+
   Future<void> fetchPosts() async {
     liveMatchApiList.clear();
     final http.Response liveMatchResponse = await http.post(
@@ -110,25 +138,6 @@ class GetAllMatchesController extends GetxController {
       liveMatchApiList.add(LiveMatchModel.fromJson(element));
     }
 
-    yourParserOrDateTimeParse(String dateTime) {
-      DateTime currentDate = DateTime.now();
-
-      String stringDateFormat = dateTime.length > 28
-          ? "${dateTime.substring(0, 6).replaceAll(" ", '-')}-${DateFormat("yyyy").format(currentDate)}"
-          : dateTime.substring(0, 11);
-
-      String stringTimeFormat = dateTime.length > 28 ? dateTime.substring(26, 33) : dateTime.split('at').last.split('-').first;
-
-      String formatTime = dateTime.length > 28
-          ? '${stringTimeFormat.substring(0, 5)} ${stringTimeFormat.substring(5, 7)}'
-          : '${stringTimeFormat.substring(1, 6)} ${stringTimeFormat.substring(6, 8)}';
-
-      String stringDateTime = "$stringDateFormat $formatTime";
-
-      DateTime dateTimeFormat = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "dd-MMM-yyyy h:mm a").parse(stringDateTime);
-      return dateTimeFormat;
-    }
-
     // var pastMatchList =
     //     liveMatchApiList.value.where((element) => DateFormat("dd-MMM-yyyy").parse(element.matchtime).difference(DateTime.now()).inDays < 0).toList();
     // for (var a = 0; a < pastMatchList.length; a++) {
@@ -136,11 +145,23 @@ class GetAllMatchesController extends GetxController {
     // }
     upcomingMatchFilterList.value =
         liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isAfter(DateTime.now())).toList();
-    currentLiveMatchFilterList.value = liveMatchApiList.value
-        .where((element) =>
-            yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now()) &&
-            DateFormat("dd-MMM-yyyy").parse(element.matchtime).difference(DateTime.now()).inDays >= 0)
-        .toList();
+
+    currentLiveMatchFilterList.value =
+        liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now())).toList();
+
+    // print(">>>>>>>>++++++++++=====${yourParserOrDateTimeParse(liveMatchApiList[1].matchtime).isBefore(DateTime.now())}");
+    // print("++++++++++=====${upcomingMatchFilterList[0].matchtime}");
+    // print("=====${currentLiveMatchFilterList[0].matchtime}");
+    // print(DateFormat("dd-MMM-yyyy h:mm a")
+    //         .parse(forMoreThenOneDayMatch(matchTime: currentLiveMatchFilterList[0].matchtime))
+    //         .difference(DateTime.now())
+    //         .inDays >=
+    //     0);
+
+    // currentLiveMatchFilterList.value = currentLiveMatchFilterList.value
+    //     .where((element) =>
+    //         DateFormat("dd-MMM-yyyy h:mm a").parse(forMoreThenOneDayMatch(matchTime: element.matchtime)).difference(DateTime.now()).inDays >= 0)
+    //     .toList();
 
     // for (var a = 0; a < upcomingMatchFilterList.length; a++) {
     //   // print(DateFormat("dd-MMM-yyyy").parse(upcomingMatchFilterList[a].matchtime).difference(DateTime.now()).inMinutes);

@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
@@ -27,8 +28,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    double height = Get.height;
+    double width = Get.width;
     double size = min(height, width);
     return Scaffold(
       extendBody: true,
@@ -48,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
-                            tabIndex = 2;
+                            tabIndex = 0;
                             widget.tab.animateTo(tabIndex);
                           });
                           print('profile');

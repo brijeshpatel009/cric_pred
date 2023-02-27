@@ -18,12 +18,10 @@ import '../../utils/variable.dart';
 class HomeMatchScoreScreen extends StatefulWidget {
   const HomeMatchScoreScreen({
     Key? key,
-    required this.color,
     required this.matchResultData,
     required this.liveMatchData,
     required this.index,
   }) : super(key: key);
-  final Color color;
   final UpComingModelAllMatch matchResultData;
   final LiveMatchModel liveMatchData;
   final int index;
@@ -158,7 +156,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                       ),
                       const Text(
                         ' vs ',
-                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
+                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
                       ),
                       Text(
                         matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
@@ -248,7 +246,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        '${matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB}',
+                                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
                                         style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500,
