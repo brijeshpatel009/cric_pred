@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cric_pred/Pages/Screen/Match_Score.dart';
 import 'package:cric_pred/Pages/Screen/Team_Screen.dart';
 import 'package:cric_pred/controller/GetAllPlayerController.dart';
 import 'package:cric_pred/model/LiveScore/MatchDataModel.dart';
 import 'package:cric_pred/model/LiveScore/MatchRunsModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -164,7 +166,8 @@ class _MatchesListState extends State<MatchesList> {
     return Obx(
           () => matchDataController.isLoading.value
           ? Center(
-              child: SizedBox(height: height * 0.04, width: height * 0.04, child: const CircularProgressIndicator()),
+              child: SizedBox(height: height * 0.04, width: height * 0.04, child: CircularProgressIndicator(),
+              ),
             )
           : matchDataController.currentLiveMatchFilterList.isEmpty && matchStreamingCategoryIndex == 0
               ? Center(
@@ -237,10 +240,11 @@ class _MatchesListState extends State<MatchesList> {
                                                     matchStreamingCategoryIndex == 0 ? 'Live' : 'Upcoming',
                                                     style: const TextStyle(fontWeight: FontWeight.w500),
                                                   )),
+                                                  SizedBox(width: width*0.003,),
                                                   FittedBox(
                                                     child: Icon(
                                                       Icons.circle,
-                                                      size: width * 0.022,
+                                                      size: width * 0.012,
                                                       color: matchStreamingCategoryIndex == 0 ? Colors.red : Colors.blue,
                                                     ),
                                                   ),
@@ -337,29 +341,44 @@ class _MatchesListState extends State<MatchesList> {
                             bottom: 0,
                             right: width * 0.4,
                             left: width * 0.4,
-                            child: Container(
-                              height: cardHeight * 0.14,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff2E2445),
-                                borderRadius: BorderRadius.all(Radius.circular((cardHeight * 0.14) * 0.4)),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black45,
-                                    blurRadius: 10,
-                                    spreadRadius: -1.8,
-                                    offset: Offset(0.0, 0.0),
-                                  )
-                                ],
-                              ),
-                              child: Center(
-                                child: MarqueeWidget(
-                                  child: Text(
-                                    matchStreamingCategoryIndex == 1
-                                        ? CountDown().timeLeft(
-                                            matchDataController.yourParserOrDateTimeParse(matchDataController.upcomingMatchApiList[index].matchtime),
-                                          )
-                                        : "View",
-                                    style: TextStyle(fontSize: (cardHeight * 0.14) * 0.6, color: Colors.white),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (matchStreamingCategoryIndex == 0) {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return HomeMatchScoreScreen(
+                                        matchResultData: matchDataController.upcomingMatchApiList[index],
+                                        liveMatchData: matchDataController.currentLiveMatchFilterList[index],
+                                        index: index,
+                                      );
+                                    },
+                                  ));
+                                }
+                              },
+                              child: Container(
+                                height: cardHeight * 0.14,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff2E2445),
+                                  borderRadius: BorderRadius.all(Radius.circular((cardHeight * 0.14) * 0.4)),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black45,
+                                      blurRadius: 10,
+                                      spreadRadius: -1.8,
+                                      offset: Offset(0.0, 0.0),
+                                    )
+                                  ],
+                                ),
+                                child: Center(
+                                  child: MarqueeWidget(
+                                    child: Text(
+                                      matchStreamingCategoryIndex == 1
+                                          ? CountDown().timeLeft(
+                                              matchDataController.yourParserOrDateTimeParse(matchDataController.upcomingMatchApiList[index].matchtime),
+                                            )
+                                          : "View",
+                                      style: TextStyle(fontSize: (cardHeight * 0.14) * 0.6, color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),

@@ -170,6 +170,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                         child: Column(
                           children: [
                             commonContainer(
+                              size: height*0.16,
                                 child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -189,15 +190,16 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                           child: matchStreamingCategoryIndex == 0
                                               ? Row(
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const [
-                                                    Text(
+                                                  children: [
+                                                    SizedBox(width: width*0.01,),
+                                                    const Text(
                                                       'Live',
                                                       style: TextStyle(fontSize: 12),
                                                     ),
-                                                    Icon(
+                                                    const Icon(
                                                       Icons.circle,
                                                       color: Colors.red,
-                                                      size: 8,
+                                                      size: 6,
                                                     ),
                                                   ],
                                                 )
@@ -208,12 +210,12 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                     Icon(
                                                       Icons.circle,
                                                       color: Colors.blue,
-                                                      size: 8,
+                                                      size: 6,
                                                     ),
                                                   ],
                                                 ),
                                         ),
-                                        SizedBox(width: (width * 0.9) * 0.03),
+                                        SizedBox(width: (width * 0.9) * 0.05),
                                         Text(
                                           'Start: ${matchStreamingCategoryIndex == 1 ? widget.matchResultData.matchtime : widget.liveMatchData.matchtime}',
                                           style: const TextStyle(fontSize: 15),
@@ -222,7 +224,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                     ),
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
                                         matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
@@ -231,6 +233,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
+                                      SizedBox(width: width*0.2,),
                                       Text(getAllPlayerController.allPlayerDataList.isEmpty
                                           ? "Match Not Started"
                                           : getAllPlayerController.allPlayerDataList[0].teamRuns == ''
@@ -241,7 +244,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                     ],
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
                                         matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
@@ -250,6 +253,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
+                                      SizedBox(width: width*0.2,),
                                       Text(
                                         getAllPlayerController.allPlayerDataList.isEmpty
                                             ? "Match Not Started"
@@ -259,6 +263,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                       ),
                                     ],
                                   ),
+                                  SizedBox(height: height*0.001,),
                                 ],
                               ),
                             )),
@@ -268,6 +273,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                   physics: const BouncingScrollPhysics(),
                                   child: Column(
                                     children: [
+                                      SizedBox(height: height*0.05,),
                                       Text(matchStreamingCategoryIndex == 1
                                           ? "Data Not Available From Server Side"
                                           : getMatchController

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -115,14 +116,22 @@ class GetAllMatchesController extends GetxController {
     return dateTimeFormat;
   }
 
-  String forMoreThenOneDayMatch({required String matchTime}) {
-    if (matchTime.length > 28) {
-      var time = "${DateFormat("dd-MMM-yyyy").format(currentDate)} ${matchTime.substring(27, 31)} ${matchTime.substring(31, 33)}";
-      print("...===,,,,>>?? $time");
-      return time;
-    } else {
-      return matchTime;
-    }
+  dateTimeCompare(String dateTime){
+    String stringDateFormat =   dateTime.length > 28
+        ? "${dateTime.substring(0, 6).replaceAll(" ", '-')}-${DateFormat("yyyy").format(currentDate)}"
+        : dateTime.substring(0, 11);
+
+    String stringTimeFormat = dateTime.length > 28 ? dateTime.substring(26, 33) : dateTime.split(' ,').last.split(' ').first;
+
+    String formatTime = dateTime.length > 28
+        ? '${stringTimeFormat.substring(0, 5)} ${stringTimeFormat.substring(5, 7)}'
+        : '${stringTimeFormat.substring(1, 6)} ${stringTimeFormat.substring(6, 8)}';
+
+    String stringDateTime = "$stringDateFormat $formatTime";
+
+    DateTime dateTimeFormat = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "yyyy-mm-dd h:mm a").parse(stringDateTime);
+    return dateTimeFormat;
+
   }
 
   Future<void> fetchPosts() async {
@@ -141,11 +150,16 @@ class GetAllMatchesController extends GetxController {
     // for (var a = 0; a < pastMatchList.length; a++) {
     //   print("pastMatchList:=>>> ${pastMatchList[a].matchtime}");
     // }
+
     upcomingMatchFilterList.value =
-        liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isAfter(DateTime.now())).toList();
+        liveMatchApiList.value.where((element) {
+             return yourParserOrDateTimeParse(element.matchtime).isAfter(DateTime.now());
+          },).toList();
 
     currentLiveMatchFilterList.value =
-        liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now())).toList();
+        liveMatchApiList.value.where((element) {
+             return yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now()) && dateTimeCompare(element.matchtime).isBefore(DateTime.now());
+          },).toList();
 
     // print(">>>>>>>>++++++++++=====${yourParserOrDateTimeParse(liveMatchApiList[1].matchtime).isBefore(DateTime.now())}");
     // print("++++++++++=====${upcomingMatchFilterList[0].matchtime}");

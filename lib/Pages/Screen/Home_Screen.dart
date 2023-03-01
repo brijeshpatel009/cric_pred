@@ -1,5 +1,10 @@
+import 'dart:async';
 import 'dart:math';
+import 'dart:developer' as developer;
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:cric_pred/DialogBox/DialogBox.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
@@ -16,17 +21,33 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final tabController = TabController(length: 2, vsync: this, animationDuration: const Duration(seconds: 1));
 
+  bool networkIsCheck = true;
+
+
   @override
   void initState() {
     matchStreamingCategoryIndex = 0;
     super.initState();
+    var subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async {
+      if (result != ConnectivityResult.none) {
+        print('YAY!------------------ Network Is connected');
+      } else {
+        networkIsCheck = false;
+        // alertBox("Internet not available", Alignment.center);
+        showInternetPopup();
+      }
+    });
   }
+
+  double cardHeight = Get.height*0.15;
+  double height = Get.height;
+  double width = Get.width;
 
   @override
   Widget build(BuildContext context) {
-    double height = Get.height;
-    double width = Get.width;
+
     double size = min(height, width);
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -172,4 +193,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     );
   }
+  alertBox(String text, AlignmentGeometry align,) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          // Future.delayed(const Duration(seconds: 1), () {
+          //   Navigator.of(context).pop();
+          // });
+          return Dialog(
+            backgroundColor: const Color(0xff002b56),
+            alignment: align,
+            elevation: 10,
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18),)),
+            //this right here
+            child: SizedBox(
+              height: height*0.15,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Center(child: Text(text, style: const TextStyle(color: Colors.white), textAlign: TextAlign.center))),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(onPressed: (){SystemNavigator.pop();}, child: const Text("Cancel")),
+                      TextButton(onPressed: (){}, child: const Text("Retry")),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });}
 }
