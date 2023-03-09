@@ -5,6 +5,8 @@ class SharedPreferencesDatas {
 
   static const String selectedMatchName = "selectedMatch";
 
+  static String isSelcted = "isSelected";
+
   static Future<void> initialPreference() async {
     prefs = await SharedPreferences.getInstance();
   }
@@ -17,4 +19,13 @@ class SharedPreferencesDatas {
   static List<String> getStringList(String key) {
     return prefs.getStringList(key) ?? [];
   }
+
+  static setBool(String key , bool value) async {
+    await prefs.setBool(key, value);
+  }
+
+  static getBool(String key){
+    return prefs.getBool(key) ?? false;
+  }
+
 }

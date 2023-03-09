@@ -3,9 +3,11 @@ import 'dart:math';
 import 'dart:developer' as developer;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cric_pred/DialogBox/DialogBox.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
 import '../../widget/Match_List.dart';
@@ -21,22 +23,43 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final tabController = TabController(length: 2, vsync: this, animationDuration: const Duration(seconds: 1));
 
+  late StreamSubscription subscription;
   bool networkIsCheck = true;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
 
 
   @override
   void initState() {
     matchStreamingCategoryIndex = 0;
     super.initState();
-    var subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async {
-      if (result != ConnectivityResult.none) {
-        print('YAY!------------------ Network Is connected');
-      } else {
-        networkIsCheck = false;
-        // alertBox("Internet not available", Alignment.center);
-        showInternetPopup();
-      }
-    });
+    // var subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async {
+    //   if (result != ConnectivityResult.none) {
+    //     print('YAY!------------------ Network Is connected');
+    //   } else {
+    //     networkIsCheck = false;
+    //     alertBox("Internet not available", Alignment.center);
+    //   }
+    // });
+    getConnectivity();
+  }
+
+  getConnectivity(){
+    if(isDeviceConnected){
+      showDialogBox();
+    }
+    subscription = Connectivity().onConnectivityChanged.listen(
+          (ConnectivityResult result) async {
+        isDeviceConnected = result != ConnectivityResult.none;
+        if (!isDeviceConnected && isAlertSet == false) {
+          showDialogBox();
+          setState(() => isAlertSet = true);
+        }else{
+          print("Network Connected Successfully");
+          setState(() => isDeviceConnected = true);
+        }
+      },
+    );
   }
 
   double cardHeight = Get.height*0.15;
@@ -193,39 +216,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     );
   }
-  alertBox(String text, AlignmentGeometry align,) {
-    return showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          // Future.delayed(const Duration(seconds: 1), () {
-          //   Navigator.of(context).pop();
-          // });
-          return Dialog(
-            backgroundColor: const Color(0xff002b56),
-            alignment: align,
-            elevation: 10,
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18),)),
-            //this right here
-            child: SizedBox(
-              height: height*0.15,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(child: Text(text, style: const TextStyle(color: Colors.white), textAlign: TextAlign.center))),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(onPressed: (){SystemNavigator.pop();}, child: const Text("Cancel")),
-                      TextButton(onPressed: (){}, child: const Text("Retry")),
-                    ],
-                  )
-                ],
-              ),
+  showDialogBox() => showCupertinoDialog<String>(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) => WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: AlertDialog(
+        title: Text('No Connection',),
+        content: Text('Please check your internet connectivity',),
+        actions: <Widget>[
+          Center(
+            child: TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                setState(() => isAlertSet = false);
+                isDeviceConnected = await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
             ),
-          );
-        });}
+          ),
+        ],
+      ),
+    ),
+  );
 }

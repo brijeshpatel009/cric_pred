@@ -6,9 +6,11 @@ import 'package:cric_pred/Pages/Screen/Team_Screen.dart';
 import 'package:cric_pred/controller/GetAllPlayerController.dart';
 import 'package:cric_pred/model/LiveScore/MatchDataModel.dart';
 import 'package:cric_pred/model/LiveScore/MatchRunsModel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../Pages/Screen/Match_Score.dart';
@@ -81,6 +83,7 @@ class _MatchesListState extends State<MatchesList> {
   LiveScoreRunModel? liveMatchRun;
 
   late Timer _timer;
+
 
   @override
   void initState() {

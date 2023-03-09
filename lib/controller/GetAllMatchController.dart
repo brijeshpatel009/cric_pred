@@ -112,8 +112,11 @@ class GetAllMatchesController extends GetxController {
 
     String stringDateTime = "$stringDateFormat $formatTime";
 
-    DateTime dateTimeFormat = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "dd-MMM-yyyy h:mm a").parse(stringDateTime);
-    return dateTimeFormat;
+    String stringTime = "$formatTime";
+
+    DateTime dateTimeFormate = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "dd-MMM-yyyy h:mm a").parse(stringDateTime);
+
+    return dateTimeFormate;
   }
 
   dateTimeCompare(String dateTime){
@@ -129,9 +132,9 @@ class GetAllMatchesController extends GetxController {
 
     String stringDateTime = "$stringDateFormat $formatTime";
 
-    DateTime dateTimeFormat = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "yyyy-mm-dd h:mm a").parse(stringDateTime);
-    return dateTimeFormat;
-
+    DateTime dateTimeFormate = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "yyyy-MMM-dd h:mm a").parse(stringDateTime);
+    
+    return dateTimeFormate;
   }
 
   Future<void> fetchPosts() async {
@@ -158,7 +161,7 @@ class GetAllMatchesController extends GetxController {
 
     currentLiveMatchFilterList.value =
         liveMatchApiList.value.where((element) {
-             return yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now()) && dateTimeCompare(element.matchtime).isBefore(DateTime.now());
+             return yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now());
           },).toList();
 
     // print(">>>>>>>>++++++++++=====${yourParserOrDateTimeParse(liveMatchApiList[1].matchtime).isBefore(DateTime.now())}");

@@ -13,7 +13,7 @@
         </intent>
     </queries>
    <application
-        android:label="cric_pred"
+        android:label="Cricket club"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
