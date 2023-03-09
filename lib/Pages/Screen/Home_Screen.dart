@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../utils/String.dart';
 import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
 import '../../widget/Match_List.dart';
@@ -47,7 +48,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular((height * 0.07) * 0.15)),
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          // await AdsHelper.showInterstitialAds();
                           setState(() {
                             tabIndex = 0;
                             widget.tab.animateTo(tabIndex);
@@ -111,11 +113,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               // ),
 
               //Live Or Upcoming Category Tab
+
               TabBar(
                   overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                     return states.contains(MaterialState.focused) ? null : Colors.transparent;
                   }),
-                  onTap: (int val) {
+                  onTap: (int val) async {
+                    // await AdsHelper.showInterstitialAds();
                     setState(() {
                       matchStreamingCategoryIndex = val;
                     });
@@ -137,14 +141,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         top: height * 0.03,
                         bottom: height * 0.01,
                       ),
-                      child: Text('Live Match', style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
+                      child: Text(Strings.liveMatch, style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
                         top: height * 0.03,
                         bottom: height * 0.01,
                       ),
-                      child: Text('Upcoming', style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
+                      child: Text(Strings.upcoming, style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w400)),
                     ),
                   ]),
 

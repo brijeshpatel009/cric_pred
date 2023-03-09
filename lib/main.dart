@@ -8,6 +8,7 @@ import 'package:cric_pred/widget/app_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'Pages/Home_Page.dart';
 import 'Pages/Login_Page.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await SharedPreferencesDatas.initialPreference();
+  await MobileAds.instance.initialize();
   runApp(const MyApp());
 }
 

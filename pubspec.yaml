@@ -41,12 +41,14 @@ dependencies:
   http: ^0.13.5
   socket_io_client: ^2.0.0
   get:
-  dio:
+  dio: ^5.0.1
   flutter_html: ^2.2.1
   url_launcher: ^6.1.9
   cached_network_image: ^3.2.3
   shared_preferences: ^2.0.17
-
+  google_mobile_ads: ^2.3.0
+  facebook_audience_network: ^1.0.1
+  connectivity_plus: ^3.0.3
 
 dev_dependencies:
   flutter_test:

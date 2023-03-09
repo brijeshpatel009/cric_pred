@@ -6,6 +6,7 @@ import 'package:cric_pred/Pages/Login_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../utils/String.dart';
 import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
 
@@ -185,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text('My Profile'),
+                                  const Text(Strings.myProfile),
                                   Icon(profile == 0 ? Icons.chevron_right_outlined : Icons.keyboard_arrow_down_outlined),
                                 ],
                               ),
@@ -292,7 +293,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       });
                                     },
                                     icon: Icon(enableEmail == false ? Icons.edit : Icons.done, size: 18),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -382,7 +383,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.only(right: 10, left: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [Text('Change password'), Icon(Icons.chevron_right_outlined)],
+                              children: const [
+                                Text('Change password'),
+                                Icon(Icons.chevron_right_outlined),
+                              ],
                             ),
                           ),
                         ),

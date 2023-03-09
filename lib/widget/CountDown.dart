@@ -16,16 +16,24 @@ class CountDown {
     if (daysUntil > 0) {
       retVal += "$daysUntil Day Left";
     } else if (hoursUntil > 0) {
-      retVal += "$hoursUntil Hour Left";
+      if (hoursUntil <= 9 || minUntil <= 9) {
+        retVal += "0$hoursUntil:0$minUntil Left";
+      } else {
+        retVal += "$hoursUntil:$minUntil Hour Left";
+      }
     } else if (minUntil > 0) {
-      retVal += "$minUntil Min Left";
+      if (minUntil <= 9) {
+        retVal += "0$minUntil Min Left";
+      } else {
+        retVal += "$minUntil Min Left";
+      }
     }
     // if (secUntil > 0) {
     //   retVal += s + secondsTextLong;
     // }
 
     if (secUntil < 1) {
-      retVal = "Start Match";
+      retVal = "View";
     }
     return retVal;
   }

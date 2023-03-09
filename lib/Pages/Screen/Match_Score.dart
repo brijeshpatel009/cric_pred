@@ -2,13 +2,14 @@
 
 import 'dart:convert';
 
-import 'package:cric_pred/widget/commonWidget.dart';
+import 'package:cric_pred/widget/Marquee.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Custom/my_icons_icons.dart';
 import '../../controller/GetAllMatchController.dart';
 import '../../controller/GetAllPlayerController.dart';
+import '../../dialog/score_prediction.dart';
 import '../../model/LiveScore/LiveScoreModel.dart';
 import '../../model/LiveScore/MatchDataModel.dart';
 import '../../model/LiveScore/MatchRunsModel.dart';
@@ -31,8 +32,6 @@ class HomeMatchScoreScreen extends StatefulWidget {
 }
 
 class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
-  late double height = MediaQuery.of(context).size.height;
-  late double width = MediaQuery.of(context).size.width;
   LiveScoreRunModel? liveMatchRun;
   MatchDataModel? liveMatchData;
 
@@ -49,7 +48,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
   }
 
   late GetPlayerAndRunController getAllPlayerController;
-  final GetAllMatchesController getMatchController = Get.find();
+  GetAllMatchesController getMatchController = Get.find();
 
   String matchDataString(String data) {
     String matchData = data;
@@ -61,6 +60,9 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double height = Get.height;
+    double width = Get.width;
+    double logoHeight = height * 0.2;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -129,259 +131,227 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
       //   automaticallyImplyLeading: false,
       //   backgroundColor: Colors.transparent,
       // ),
-      body: Container(
-        height: double.infinity,
-        color: const Color(0xff2E2445),
-        child: Obx(() => getAllPlayerController.isLoading.value
-            ? const Center(
-                child: SizedBox(height: 20, width: 20, child: CircularProgressIndicator()),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          getAllPlayerController = Get.put(GetPlayerAndRunController());
+          getMatchController = Get.put(GetAllMatchesController());
+        },
+        child: Container(
+          height: double.infinity,
+          color: const Color(0xff2E2445),
+          child: Obx(
+            () => getAllPlayerController.isLoading.value
+                ? const Center(
+                    child: SizedBox(height: 20, width: 20, child: CircularProgressIndicator()),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: height * 0.02, horizontal: width * 0.05),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Icon(MyIcons.backArrow, color: Colors.white),
-                        ),
-                      ),
-                      Text(
-                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
-                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
-                      ),
-                      const Text(
-                        ' vs ',
-                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
-                      ),
-                      Text(
-                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
-                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
-                      child: Container(
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            commonContainer(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  FittedBox(
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(2.5),
-                                          decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.all(
-                                                Radius.circular(25),
-                                              ),
-                                              border: Border.all(color: Colors.black)),
-                                          child: matchStreamingCategoryIndex == 0
-                                              ? Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const [
-                                                    Text(
-                                                      'Live',
-                                                      style: TextStyle(fontSize: 12),
-                                                    ),
-                                                    Icon(
-                                                      Icons.circle,
-                                                      color: Colors.red,
-                                                      size: 8,
-                                                    ),
-                                                  ],
-                                                )
-                                              : Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const [
-                                                    Text('Upcoming', style: TextStyle(fontSize: 12)),
-                                                    Icon(
-                                                      Icons.circle,
-                                                      color: Colors.blue,
-                                                      size: 8,
-                                                    ),
-                                                  ],
-                                                ),
-                                        ),
-                                        SizedBox(width: (width * 0.9) * 0.03),
-                                        Text(
-                                          'Start: ${matchStreamingCategoryIndex == 1 ? widget.matchResultData.matchtime : widget.liveMatchData.matchtime}',
-                                          style: const TextStyle(fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(getAllPlayerController.allPlayerDataList.isEmpty
-                                          ? "Match Not Started"
-                                          : getAllPlayerController.allPlayerDataList[0].teamRuns == ''
-                                              ? "in progress.."
-                                              : getAllPlayerController.allPlayerDataList[0].teamRuns == "in progress.."
-                                                  ? "${getAllPlayerController.allPlayerDataList[0].teamRuns}"
-                                                  : "${getAllPlayerController.allPlayerDataList[0].teamRuns})")
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        getAllPlayerController.allPlayerDataList.isEmpty
-                                            ? "Match Not Started"
-                                            : getAllPlayerController.allPlayerDataList.last.teamRuns == ''
-                                                ? "in progress.."
-                                                : "${getAllPlayerController.allPlayerDataList.last.teamRuns})",
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                      SafeArea(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: height * 0.02, horizontal: width * 0.05),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(MyIcons.backArrow, color: Colors.white, size: height * 0.035),
                               ),
-                            )),
-                            Flexible(
-                              child: SizedBox(
-                                child: SingleChildScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                  child: Column(
+                              Container(
+                                height: height * 0.035,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(height * 0.03)),
+                                  border: Border.all(color: Colors.black),
+                                  color: Colors.white,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: (height * 0.03) * 0.3),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(matchStreamingCategoryIndex == 1
-                                          ? "Data Not Available From Server Side"
-                                          : getMatchController
-                                                      .liveMatchApiList[
-                                                          widget.index + 1 > getMatchController.liveMatchApiList.length ? 0 : widget.index]
-                                                      .jsondata ==
-                                                  ''
-                                              ? "Data Is Not available\nBecause Of That Match Is Not Started"
-                                              : matchDataString(liveMatchData!.jsondata!.title!)),
-                                      // Text(matchDataString(liveMatchRun?.jsonruns.summary ?? "")),
+                                      Text(
+                                        'Live',
+                                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: (height * 0.03) * 0.6),
+                                      ),
+                                      Icon(Icons.circle, size: (height * 0.035) * 0.5, color: Colors.red),
                                     ],
                                   ),
                                 ),
                               ),
-                              // ListView.builder(
-                              //   itemCount: _len,
-                              //   itemBuilder: (context, index) {
-                              //     return Container(
-                              //       margin: EdgeInsets.only(bottom: height * 0.02, right: width * 0.06, left: width * 0.06),
-                              //       height: height * 0.1,
-                              //       decoration: const BoxDecoration(
-                              //         color: Color(0xff9BDCFF),
-                              //         borderRadius: BorderRadius.all(
-                              //           Radius.circular(15),
-                              //         ),
-                              //       ),
-                              //       child: Row(
-                              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //         children: [
-                              //           const Padding(
-                              //             padding: EdgeInsets.only(left: 5),
-                              //             child: Text(
-                              //               'Who win the match?',
-                              //             ),
-                              //           ),
-                              //           Container(
-                              //             width: width * 0.35,
-                              //             decoration: const BoxDecoration(
-                              //               color: Color(0xff70CDFF),
-                              //               borderRadius: BorderRadius.only(
-                              //                 topRight: Radius.circular(15),
-                              //                 bottomRight: Radius.circular(15),
-                              //               ),
-                              //             ),
-                              //             child: Padding(
-                              //               padding: EdgeInsets.symmetric(horizontal: (width * 0.35) * 0.1, vertical: (height * 0.08) * 0.1),
-                              //               child: Column(
-                              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //                 children: [
-                              //                   Container(
-                              //                     height: (height * 0.11) * 0.35,
-                              //                     decoration: BoxDecoration(
-                              //                       border: Border.all(color: Colors.black, width: 1),
-                              //                       borderRadius: BorderRadius.circular(5),
-                              //                     ),
-                              //                     child: FittedBox(
-                              //                       child: Padding(
-                              //                         padding: const EdgeInsets.symmetric(horizontal: 2),
-                              //                         child: Row(
-                              //                           children: [
-                              //                             Text(matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
-                              //                                 style: const TextStyle(fontSize: 10)),
-                              //                             const Text(
-                              //                               '(0.0)',
-                              //                               style: TextStyle(fontSize: 10),
-                              //                             ),
-                              //                           ],
-                              //                         ),
-                              //                       ),
-                              //                     ),
-                              //                   ),
-                              //                   Container(
-                              //                     height: (height * 0.11) * 0.35,
-                              //                     decoration: BoxDecoration(
-                              //                       border: Border.all(color: Colors.black, width: 1),
-                              //                       borderRadius: BorderRadius.circular(5),
-                              //                     ),
-                              //                     child: FittedBox(
-                              //                       child: Padding(
-                              //                         padding: const EdgeInsets.symmetric(horizontal: 2),
-                              //                         child: Row(
-                              //                           children: [
-                              //                             Text(
-                              //                               matchStreamingCategoryIndex == 0 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
-                              //                               style: const TextStyle(fontSize: 5),
-                              //                             ),
-                              //                             const Text(
-                              //                               '(0.0)',
-                              //                               style: TextStyle(fontSize: 5),
-                              //                             ),
-                              //                           ],
-                              //                         ),
-                              //                       ),
-                              //                     ),
-                              //                   ),
-                              //                 ],
-                              //               ),
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     );
-                              //   },
+                              // Text(
+                              //   matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamA : widget.liveMatchData.teamA,
+                              //   style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
                               // ),
-                            )
+                              // const Text(
+                              //   ' vs ',
+                              //   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
+                              // ),
+                              // Text(
+                              //   matchStreamingCategoryIndex == 1 ? widget.matchResultData.teamB : widget.liveMatchData.teamB,
+                              //   style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Colors.white),
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.04),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //TeamA
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  PhysicalModel(
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    color: const Color(0xff2E2445),
+                                    borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: 'asset/cricImg.png',
+                                      image: "${widget.liveMatchData.imgeUrl}${widget.liveMatchData.teamAImage}",
+                                      fit: BoxFit.cover,
+                                      height: logoHeight * 0.35,
+                                      width: logoHeight * 0.35,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
+                                    child: MarqueeWidget(
+                                      child: Text(
+                                        widget.liveMatchData.teamA,
+                                        style: TextStyle(
+                                          fontSize: logoHeight * 0.1,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    getAllPlayerController.allPlayerDataList.isEmpty
+                                        ? "Match Not Started"
+                                        : getAllPlayerController.allPlayerDataList[0].teamRuns == ''
+                                            ? "in progress.."
+                                            : getAllPlayerController.allPlayerDataList[0].teamRuns == "in progress.."
+                                                ? "${getAllPlayerController.allPlayerDataList[0].teamRuns}"
+                                                : getAllPlayerController.allPlayerDataList[0].teamRuns!.contains("progress")
+                                                    ? "${getAllPlayerController.allPlayerDataList[0].teamRuns}"
+                                                    : "${getAllPlayerController.allPlayerDataList[0].teamRuns})",
+                                    style: TextStyle(fontSize: logoHeight * 0.1, fontWeight: FontWeight.w500, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            //VS
+                            Image.asset(
+                              'asset/VS.png',
+                              fit: BoxFit.contain,
+                              height: logoHeight * 0.35,
+                              width: logoHeight * 0.35,
+                            ),
+
+                            //TeamB
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  PhysicalModel(
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    color: const Color(0xff2E2445),
+                                    borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: 'asset/cricImg.png',
+                                      image: "${widget.liveMatchData.imgeUrl}${widget.liveMatchData.teamBImage}",
+                                      fit: BoxFit.cover,
+                                      height: logoHeight * 0.35,
+                                      width: logoHeight * 0.35,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
+                                    child: MarqueeWidget(
+                                      child: Text(
+                                        widget.liveMatchData.teamB,
+                                        style: TextStyle(fontSize: logoHeight * 0.1, fontWeight: FontWeight.w500, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    getAllPlayerController.allPlayerDataList.isEmpty
+                                        ? "Match Not Started"
+                                        : getAllPlayerController.allPlayerDataList.last.teamRuns == ''
+                                            ? "in progress.."
+                                            : getAllPlayerController.allPlayerDataList.last.teamRuns!.contains("progress")
+                                                ? "${getAllPlayerController.allPlayerDataList.last.teamRuns}"
+                                                : "${getAllPlayerController.allPlayerDataList.last.teamRuns})",
+                                    style: TextStyle(fontSize: logoHeight * 0.1, fontWeight: FontWeight.w500, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          print("click");
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return const ScoreDialog();
+                                            },
+                                          );
+                                          print("Click1");
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(20.0), color: const Color(0xff2E2445).withOpacity(0.5)),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child:
+                                                Text("Click Here For Prediction", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: height * 0.015),
+                                      child: Text(getMatchController
+                                                  .liveMatchApiList[widget.index + 1 > getMatchController.liveMatchApiList.length ? 0 : widget.index]
+                                                  .jsondata ==
+                                              ''
+                                          ? "Data Is Not available\nBecause Of That Match Is Not Started"
+                                          : matchDataString(liveMatchData!.jsondata!.title!)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              )),
+          ),
+        ),
       ),
     );
   }

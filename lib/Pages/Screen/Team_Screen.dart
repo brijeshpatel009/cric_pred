@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controller/GetAllMatchController.dart';
+import '../../utils/String.dart';
 import '../../utils/variable.dart';
 import 'Team_List_Screen.dart';
 
@@ -49,7 +50,8 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                   return states.contains(MaterialState.focused) ? null : Colors.transparent;
                 }),
-                onTap: (int val) {
+                onTap: (int val) async {
+                  // await AdsHelper.showInterstitialAds();
                   setState(() {
                     teamsIndex = val;
                   });
@@ -64,12 +66,12 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 indicatorSize: TabBarIndicatorSize.label,
                 padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                 tabs: [
-                  tabsWidget('International', width, height),
-                  tabsWidget('T20', width, height),
-                  tabsWidget('IPL', width, height),
-                  tabsWidget('CPL', width, height),
-                  tabsWidget('BPL', width, height),
-                  tabsWidget('Test', width, height),
+                  tabsWidget(Strings.international, width, height),
+                  tabsWidget(Strings.t20, width, height),
+                  tabsWidget(Strings.IPL, width, height),
+                  tabsWidget(Strings.CPL, width, height),
+                  tabsWidget(Strings.BPL, width, height),
+                  tabsWidget(Strings.Test, width, height),
                 ],
               ),
               Expanded(

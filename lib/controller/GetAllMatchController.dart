@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import '../helper/connection_config.dart';
 import '../model/LiveScore/LiveScoreModel.dart';
 import '../model/MatchesResult.dart';
 import '../model/UpcomingMatchModel.dart';
@@ -36,6 +37,11 @@ class GetAllMatchesController extends GetxController {
   }
 
   matchDataPagination() {}
+
+  void checkConnection() async {
+    ConnectionConfig().initConnectivity();
+  }
+
   Future<void> getMatchData() async {
     isLoading.value = true;
     allMatchResultList.clear();
@@ -100,7 +106,7 @@ class GetAllMatchesController extends GetxController {
     isLoading.value = false;
   }
 
-  yourParserOrDateTimeParse(String dateTime) {
+  DateTime yourParserOrDateTimeParse(String dateTime) {
     String stringDateFormat = dateTime.length > 28
         ? "${dateTime.substring(0, 6).replaceAll(" ", '-')}-${DateFormat("yyyy").format(currentDate)}"
         : dateTime.substring(0, 11);
@@ -112,18 +118,21 @@ class GetAllMatchesController extends GetxController {
         : '${stringTimeFormat.substring(1, 6)} ${stringTimeFormat.substring(6, 8)}';
 
     String stringDateTime = "$stringDateFormat $formatTime";
-
     DateTime dateTimeFormat = DateFormat(dateTime.length > 28 ? "MMM-dd-yyyy h:mm a" : "dd-MMM-yyyy h:mm a").parse(stringDateTime);
-    return dateTimeFormat;
-  }
 
-  String forMoreThenOneDayMatch({required String matchTime}) {
-    if (matchTime.length > 28) {
-      var time = "${DateFormat("dd-MMM-yyyy").format(currentDate)} ${matchTime.substring(27, 31)} ${matchTime.substring(31, 33)}";
-      print("...===,,,,>>?? $time");
-      return time;
+    DateTime lastDateTime;
+
+    var liveDate = DateFormat("MMM-dd-yyyy h:mm a").parse("${DateFormat("MMM-dd-yyyy").format(currentDate)} $formatTime");
+    if (dateTime.length > 28) {
+      lastDateTime = DateFormat("MMM-dd-yyyy h:mm a").parse(
+          "${dateTime.substring(14, 20).replaceAll(" ", '-')}-${DateFormat("yyyy").format(currentDate)} ${dateTime.substring(27, 31)} ${dateTime.substring(31, 33)}");
+      if (dateTimeFormat.isBefore(DateTime.now()) && !lastDateTime.difference(DateTime.now()).inDays.isNegative) {
+        return liveDate;
+      } else {
+        return dateTimeFormat;
+      }
     } else {
-      return matchTime;
+      return dateTimeFormat;
     }
   }
 
@@ -138,45 +147,10 @@ class GetAllMatchesController extends GetxController {
       liveMatchApiList.add(LiveMatchModel.fromJson(element));
     }
 
-    // var pastMatchList =
-    //     liveMatchApiList.value.where((element) => DateFormat("dd-MMM-yyyy").parse(element.matchtime).difference(DateTime.now()).inDays < 0).toList();
-    // for (var a = 0; a < pastMatchList.length; a++) {
-    //   print("pastMatchList:=>>> ${pastMatchList[a].matchtime}");
-    // }
     upcomingMatchFilterList.value =
         liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isAfter(DateTime.now())).toList();
 
     currentLiveMatchFilterList.value =
         liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now())).toList();
-
-    // print(">>>>>>>>++++++++++=====${yourParserOrDateTimeParse(liveMatchApiList[1].matchtime).isBefore(DateTime.now())}");
-    // print("++++++++++=====${upcomingMatchFilterList[0].matchtime}");
-    // print("=====${currentLiveMatchFilterList[0].matchtime}");
-    // print(DateFormat("dd-MMM-yyyy h:mm a")
-    //         .parse(forMoreThenOneDayMatch(matchTime: currentLiveMatchFilterList[0].matchtime))
-    //         .difference(DateTime.now())
-    //         .inDays >=
-    //     0);
-
-    // currentLiveMatchFilterList.value = currentLiveMatchFilterList.value
-    //     .where((element) =>
-    //         DateFormat("dd-MMM-yyyy h:mm a").parse(forMoreThenOneDayMatch(matchTime: element.matchtime)).difference(DateTime.now()).inDays >= 0)
-    //     .toList();
-
-    // for (var a = 0; a < upcomingMatchFilterList.length; a++) {
-    //   // print(DateFormat("dd-MMM-yyyy").parse(upcomingMatchFilterList[a].matchtime).difference(DateTime.now()).inMinutes);
-    //   int time = DateFormat("dd-MMM-yyyy").parse("06:30PM").difference(DateTime.now()).inSeconds;
-    //   print("Minutes:=> $time");
-
-    // int sec = time % 60;
-    // int min = (time / 60).floor();
-    // String minute = min.toString().length <= 1 ? "0$min" : "$min";
-    // String second = sec.toString().length <= 1 ? "0$sec" : "$sec";
-    // print("$minute:$second");
-
-    // var d = Duration(minutes: mini);
-    // List<String> parts = d.toString().split(':');
-    // print('${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')}');
-    // }
   }
 }

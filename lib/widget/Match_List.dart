@@ -1,4 +1,6 @@
-// ignore_for_file: file_names, avoid_print, library_prefixes, unused_local_variable
+// ignore_for_file: file_names, avoid_print, library_prefixes, unused_local_variable, use_build_context_synchronously
+
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,8 @@ import '../controller/GetAllMatchController.dart';
 import '../model/GetAllPlayerModel.dart';
 import '../model/LiveScore/MatchDataModel.dart';
 import '../model/NewsModel.dart';
+import '../services/AdsHelper/ads_helper.dart';
+import '../utils/String.dart';
 import '../utils/variable.dart';
 import 'CountDown.dart';
 import 'Marquee.dart';
@@ -24,8 +28,21 @@ class MatchesList extends StatefulWidget {
 
 class _MatchesListState extends State<MatchesList> {
   String? date;
-
   late IO.Socket socket;
+  static const kAdIndex = 4;
+
+  int _getDestinationItemIndex(int rawIndex) {
+    if (rawIndex >= kAdIndex) {
+      return rawIndex - 1;
+    }
+    return rawIndex;
+  }
+
+  int randomInt() {
+    var num = 0;
+    num = Random().nextInt(5) + 1;
+    return num;
+  }
 
   initSocket() {
     socket = IO.io("https://soccer-battle-2023.onrender.com/", <String, dynamic>{
@@ -76,7 +93,7 @@ class _MatchesListState extends State<MatchesList> {
     // initSocket();
     super.initState();
     matchDataController = Get.find();
-    print("(b)object");
+    print(kAdIndex);
   }
 
   late GetAllMatchesController matchDataController;
@@ -86,7 +103,7 @@ class _MatchesListState extends State<MatchesList> {
   Widget build(BuildContext context) {
     double height = Get.height;
     double width = Get.width;
-    double cardHeight = height * 0.25;
+    double cardHeight = height * 0.15;
     return Obx(
       () => matchDataController.isLoading.value
           ? Center(
@@ -95,11 +112,11 @@ class _MatchesListState extends State<MatchesList> {
           : matchDataController.currentLiveMatchFilterList.isEmpty && matchStreamingCategoryIndex == 0
               ? Center(
                   child: Text(
-                    'Currently Not Live Any Match',
+                    Strings.matchNotLiveText,
                     style: TextStyle(color: const Color(0xff2E2445), fontWeight: FontWeight.w500, letterSpacing: 0.8, fontSize: height * 0.02),
                   ),
                 )
-              : ListView.builder(
+              : ListView.separated(
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.only(top: 15, bottom: 100),
                   itemCount: matchStreamingCategoryIndex == 1
@@ -107,13 +124,22 @@ class _MatchesListState extends State<MatchesList> {
                       : matchDataController.currentLiveMatchFilterList.isEmpty
                           ? 1
                           : matchDataController.currentLiveMatchFilterList.length,
+                  separatorBuilder: (context, index) {
+                    if ((index + 1) % randomInt() == 0) {
+                      print(">>>>>>>>>>>>>>>>>${(index + 1) % randomInt()}");
+                      return SizedBox(width: width, child: const BannerAdView());
+                    } else {
+                      return Container();
+                    }
+                  },
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                      padding: EdgeInsets.symmetric(vertical: height * 0.005),
                       child: Stack(
                         children: [
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              // await AdsHelper.showInterstitialAds();
                               if (matchStreamingCategoryIndex == 0) {
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) {
@@ -140,7 +166,7 @@ class _MatchesListState extends State<MatchesList> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Container(
-                                            height: cardHeight * 0.1,
+                                            height: cardHeight * 0.13,
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.all(Radius.circular((width * 0.13))),
                                               color: Colors.white,
@@ -161,7 +187,7 @@ class _MatchesListState extends State<MatchesList> {
                                                 children: [
                                                   FittedBox(
                                                       child: Text(
-                                                    matchStreamingCategoryIndex == 0 ? 'Live' : 'Upcoming',
+                                                    matchStreamingCategoryIndex == 0 ? Strings.live : Strings.upcoming,
                                                     style: const TextStyle(fontWeight: FontWeight.w500),
                                                   )),
                                                   FittedBox(
@@ -179,22 +205,41 @@ class _MatchesListState extends State<MatchesList> {
                                       ),
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         //TeamA
-                                        PhysicalModel(
-                                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                                          color: const Color(0xff2E2445),
-                                          borderRadius: BorderRadius.all(Radius.circular(cardHeight * 0.1)),
-                                          child: FadeInImage.assetNetwork(
-                                            placeholder: 'asset/cricImg.png',
-                                            image: matchStreamingCategoryIndex == 1
-                                                ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamAImage}"
-                                                : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamAImage}",
-                                            fit: BoxFit.cover,
-                                            height: cardHeight * 0.35,
-                                            width: cardHeight * 0.35,
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              PhysicalModel(
+                                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                                color: const Color(0xff2E2445),
+                                                borderRadius: BorderRadius.all(Radius.circular(cardHeight * 0.1)),
+                                                child: FadeInImage.assetNetwork(
+                                                  placeholder: 'asset/cricImg.png',
+                                                  image: matchStreamingCategoryIndex == 1
+                                                      ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamAImage}"
+                                                      : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamAImage}",
+                                                  fit: BoxFit.cover,
+                                                  height: cardHeight * 0.35,
+                                                  width: cardHeight * 0.35,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(top: cardHeight * 0.03),
+                                                child: MarqueeWidget(
+                                                  child: Text(
+                                                    matchStreamingCategoryIndex == 1
+                                                        ? matchDataController.upcomingMatchApiList[index].teamA
+                                                        : matchDataController.currentLiveMatchFilterList[index].teamA,
+                                                    style: TextStyle(
+                                                      fontSize: cardHeight * 0.1,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
 
@@ -207,52 +252,45 @@ class _MatchesListState extends State<MatchesList> {
                                         ),
 
                                         //TeamB
-                                        PhysicalModel(
-                                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                                          color: const Color(0xff2E2445),
-                                          borderRadius: BorderRadius.all(Radius.circular(cardHeight * 0.1)),
-                                          child: FadeInImage.assetNetwork(
-                                            placeholder: 'asset/cricImg.png',
-                                            image: matchStreamingCategoryIndex == 1
-                                                ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamBImage}"
-                                                : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamBImage}",
-                                            fit: BoxFit.cover,
-                                            height: cardHeight * 0.35,
-                                            width: cardHeight * 0.35,
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              PhysicalModel(
+                                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                                color: const Color(0xff2E2445),
+                                                borderRadius: BorderRadius.all(Radius.circular(cardHeight * 0.1)),
+                                                child: FadeInImage.assetNetwork(
+                                                  placeholder: 'asset/cricImg.png',
+                                                  image: matchStreamingCategoryIndex == 1
+                                                      ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamBImage}"
+                                                      : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamBImage}",
+                                                  fit: BoxFit.cover,
+                                                  height: cardHeight * 0.35,
+                                                  width: cardHeight * 0.35,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(top: cardHeight * 0.03),
+                                                child: MarqueeWidget(
+                                                  child: Text(
+                                                    matchStreamingCategoryIndex == 1
+                                                        ? matchDataController.upcomingMatchApiList[index].teamB
+                                                        : matchDataController.currentLiveMatchFilterList[index].teamB,
+                                                    style: TextStyle(fontSize: cardHeight * 0.1, fontWeight: FontWeight.w500),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        MarqueeWidget(
-                                          child: Text(
-                                            matchStreamingCategoryIndex == 1
-                                                ? matchDataController.upcomingMatchApiList[index].teamA
-                                                : matchDataController.currentLiveMatchFilterList[index].teamA,
-                                            style: TextStyle(
-                                              fontSize: cardHeight * 0.08,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                        MarqueeWidget(
-                                          child: Text(
-                                            matchStreamingCategoryIndex == 1
-                                                ? matchDataController.upcomingMatchApiList[index].teamB
-                                                : matchDataController.currentLiveMatchFilterList[index].teamB,
-                                            style: TextStyle(fontSize: cardHeight * 0.08, fontWeight: FontWeight.w500),
-                                          ),
-                                        )
                                       ],
                                     ),
                                     if (matchStreamingCategoryIndex == 1)
                                       Text(
                                         matchDataController.upcomingMatchApiList[index].matchtime,
                                         style: TextStyle(
-                                          fontSize: cardHeight * 0.08,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: cardHeight * 0.1,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                   ],
@@ -261,14 +299,14 @@ class _MatchesListState extends State<MatchesList> {
                             ),
                           ),
                           Positioned(
-                            bottom: 0,
+                            bottom: (height * 0.015) * 0.2,
                             right: width * 0.4,
                             left: width * 0.4,
                             child: Container(
-                              height: cardHeight * 0.14,
+                              height: cardHeight * 0.18,
                               decoration: BoxDecoration(
                                 color: const Color(0xff2E2445),
-                                borderRadius: BorderRadius.all(Radius.circular((cardHeight * 0.14) * 0.4)),
+                                borderRadius: BorderRadius.all(Radius.circular(cardHeight * 0.18)),
                                 boxShadow: const [
                                   BoxShadow(
                                     color: Colors.black45,
@@ -285,8 +323,11 @@ class _MatchesListState extends State<MatchesList> {
                                         ? CountDown().timeLeft(
                                             matchDataController.yourParserOrDateTimeParse(matchDataController.upcomingMatchApiList[index].matchtime),
                                           )
-                                        : "View",
-                                    style: TextStyle(fontSize: (cardHeight * 0.14) * 0.6, color: Colors.white),
+                                        : CountDown().timeLeft(
+                                            matchDataController
+                                                .yourParserOrDateTimeParse(matchDataController.currentLiveMatchFilterList[index].matchtime),
+                                          ),
+                                    style: TextStyle(fontSize: (cardHeight * 0.18) * 0.65, color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -295,135 +336,6 @@ class _MatchesListState extends State<MatchesList> {
                         ],
                       ),
                     );
-                    //   Container(
-                    //   height: height * 0.13,
-                    //   margin: const EdgeInsets.only(
-                    //     left: 15,
-                    //     right: 15,
-                    //   ),
-                    //   child: GestureDetector(
-                    //     onTap: () {
-                    //       Navigator.push(context, MaterialPageRoute(
-                    //         builder: (context) {
-                    //           return HomeMatchScoreScreen(
-                    //             color: matchesColor[index],
-                    //             matchResultData: matchDataController.allMatchResultList[index],
-                    //             liveMatchData: matchDataController.liveMatchList[index + 1 > matchDataController.liveMatchList.length ? 0 : index],
-                    //             index: index,
-                    //           );
-                    //         },
-                    //       ));
-                    //     },
-                    //     child: Container(
-                    //       width: width * 0.82,
-                    //       height: height * 0.115,
-                    //       decoration: BoxDecoration(
-                    //         color: const Color(0xffFFFFFF),
-                    //         boxShadow: [
-                    //           BoxShadow(
-                    //             color: const Color(0xff000000).withOpacity(0.5),
-                    //             blurRadius: 5,
-                    //           ),
-                    //         ],
-                    //         borderRadius: const BorderRadius.only(
-                    //           topRight: Radius.circular(10),
-                    //           bottomRight: Radius.circular(10),
-                    //         ),
-                    //       ),
-                    //       child: Column(
-                    //         crossAxisAlignment: CrossAxisAlignment.start,
-                    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //         children: [
-                    //           FittedBox(
-                    //             child: Row(
-                    //               children: [
-                    //                 Text(
-                    //                   matchStreamingCategoryIndex == 1
-                    //                       ? matchDataController.allMatchResultList[index].teamA ?? ""
-                    //                       : matchDataController.liveMatchList[index].teamA,
-                    //                   overflow: TextOverflow.ellipsis,
-                    //                   style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
-                    //                 ),
-                    //                 const Text(
-                    //                   ' vs ',
-                    //                   style: TextStyle(
-                    //                     fontSize: 15,
-                    //                     color: Colors.black,
-                    //                     fontWeight: FontWeight.w400,
-                    //                   ),
-                    //                 ),
-                    //                 Text(
-                    //                   matchStreamingCategoryIndex == 1
-                    //                       ? matchDataController.allMatchResultList[index].teamB ?? ""
-                    //                       : matchDataController.liveMatchList[index].teamB,
-                    //                   overflow: TextOverflow.ellipsis,
-                    //                   style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 0.5),
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //           Row(
-                    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //             children: [
-                    //               Container(
-                    //                 height: 15,
-                    //                 width: 30,
-                    //                 decoration: BoxDecoration(
-                    //                   borderRadius: BorderRadius.circular(10),
-                    //                   border: Border.all(color: Colors.black),
-                    //                 ),
-                    //                 child: FittedBox(
-                    //                   child: Text(
-                    //                     textAlign: TextAlign.center,
-                    //                     matchStreamingCategoryIndex == 1
-                    //                         ? matchDataController.allMatchResultList[index].matchtype ?? ""
-                    //                         : matchDataController.liveMatchList[index].matchType,
-                    //                     style: const TextStyle(
-                    //                       color: Colors.black,
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               matchStreamingCategoryIndex == 0
-                    //                   ? Row(
-                    //                       children: [
-                    //                         const Text('Live'),
-                    //                         SizedBox(
-                    //                           width: width * 0.015,
-                    //                         ),
-                    //                         Icon(
-                    //                           Icons.circle,
-                    //                           size: width * 0.022,
-                    //                           color: Colors.red,
-                    //                         ),
-                    //                       ],
-                    //                     )
-                    //                   : Row(
-                    //                       children: [
-                    //                         const Text('Upcoming'),
-                    //                         SizedBox(
-                    //                           width: width * 0.015,
-                    //                         ),
-                    //                         Icon(
-                    //                           Icons.circle,
-                    //                           size: width * 0.022,
-                    //                           color: Colors.blue,
-                    //                         ),
-                    //                       ],
-                    //                     ),
-                    //             ],
-                    //           ),
-                    //           Text(
-                    //             matchStreamingCategoryIndex == 1
-                    //                 ? matchDataController.allMatchResultList[index].matchtime ?? ""
-                    //                 : matchDataController.liveMatchList[index].matchtime,
-                    //             style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w400, letterSpacing: 1),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // );
                   },
                 ),
     );

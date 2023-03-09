@@ -1,0 +1,1 @@
+enum AdType { adMob, faceBook }

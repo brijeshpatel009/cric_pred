@@ -56,84 +56,86 @@ class _NewsScreenState extends State<NewsScreen> {
                 borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.05)),
                 child: Container(
                   color: Colors.white,
-                  child: Obx(() => newsController.isLoading.value
-                      ? Center(
-                          child: SizedBox(height: height * 0.04, width: height * 0.04, child: const CircularProgressIndicator()),
-                        )
-                      : ListView.builder(
-                          itemCount: newsController.getNewsData.newsList!.length,
-                          padding: EdgeInsets.only(bottom: height * 0.11, top: height * 0.025),
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return commonContainer(
-                              radius: newsCardHeight * 0.25,
-                              size: newsCardHeight,
-                              child: Padding(
-                                padding: EdgeInsets.all(newsCardHeight * 0.1),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print(newsController.getNewsData.newsList?[index].uRL ?? '');
-                                    launchURL(newsController.getNewsData.newsList?[index].uRL ?? '');
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                        flex: 4,
-                                        child: newsController.getNewsData.newsList![index].uRLToImage! == ""
-                                            ? Container(
-                                                height: double.maxFinite,
-                                                decoration: BoxDecoration(
-                                                    color: const Color(0xff2E2445),
-                                                    borderRadius: BorderRadius.all(Radius.circular(newsCardHeight * 0.15))),
-                                                child: Image.asset(
-                                                  'asset/cricImg.png',
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              )
-                                            : PhysicalModel(
-                                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                                color: const Color(0xff2E2445),
-                                                borderRadius: BorderRadius.all(Radius.circular(newsCardHeight * 0.15)),
-                                                child: FadeInImage.assetNetwork(
-                                                  placeholder: 'asset/cricImg.png',
-                                                  image: newsController.getNewsData.newsList![index].uRLToImage!.contains("http")
-                                                      ? newsController.getNewsData.newsList![index].uRLToImage!
-                                                      : "https:${newsController.getNewsData.newsList![index].uRLToImage!}",
-                                                  fit: BoxFit.cover,
+                  child: Obx(
+                    () => newsController.isLoading.value
+                        ? Center(
+                            child: SizedBox(height: height * 0.04, width: height * 0.04, child: const CircularProgressIndicator()),
+                          )
+                        : ListView.builder(
+                            itemCount: newsController.getNewsData.newsList!.length,
+                            padding: EdgeInsets.only(bottom: height * 0.11, top: height * 0.025),
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return commonContainer(
+                                radius: newsCardHeight * 0.25,
+                                size: newsCardHeight,
+                                child: Padding(
+                                  padding: EdgeInsets.all(newsCardHeight * 0.1),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print(newsController.getNewsData.newsList?[index].uRL ?? '');
+                                      launchURL(newsController.getNewsData.newsList?[index].uRL ?? '');
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          flex: 4,
+                                          child: newsController.getNewsData.newsList![index].uRLToImage! == ""
+                                              ? Container(
                                                   height: double.maxFinite,
+                                                  decoration: BoxDecoration(
+                                                      color: const Color(0xff2E2445),
+                                                      borderRadius: BorderRadius.all(Radius.circular(newsCardHeight * 0.15))),
+                                                  child: Image.asset(
+                                                    'asset/cricImg.png',
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                )
+                                              : PhysicalModel(
+                                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                                  color: const Color(0xff2E2445),
+                                                  borderRadius: BorderRadius.all(Radius.circular(newsCardHeight * 0.15)),
+                                                  child: FadeInImage.assetNetwork(
+                                                    placeholder: 'asset/cricImg.png',
+                                                    image: newsController.getNewsData.newsList![index].uRLToImage!.contains("http")
+                                                        ? newsController.getNewsData.newsList![index].uRLToImage!
+                                                        : "https:${newsController.getNewsData.newsList![index].uRLToImage!}",
+                                                    fit: BoxFit.cover,
+                                                    height: double.maxFinite,
+                                                  ),
                                                 ),
-                                              ),
-                                      ),
-                                      SizedBox(width: width * 0.02),
-                                      Flexible(
-                                        flex: 6,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              newsController.getNewsData.newsList![index].title!,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: newsCardHeight * 0.1,
-                                                  fontFamily: 'PoppinsBold',
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            Text(newsController.getNewsData.newsList![index].description!,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 3,
-                                                style: TextStyle(color: Colors.grey, fontSize: newsCardHeight * 0.1, fontFamily: 'PoppinsReg')),
-                                          ],
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(width: width * 0.02),
+                                        Flexible(
+                                          flex: 6,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                newsController.getNewsData.newsList![index].title!,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: newsCardHeight * 0.1,
+                                                    fontFamily: 'PoppinsBold',
+                                                    fontWeight: FontWeight.w600),
+                                              ),
+                                              Text(newsController.getNewsData.newsList![index].description!,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 3,
+                                                  style: TextStyle(color: Colors.grey, fontSize: newsCardHeight * 0.1, fontFamily: 'PoppinsReg')),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        )),
+                              );
+                            },
+                          ),
+                  ),
                 ),
               ),
             )

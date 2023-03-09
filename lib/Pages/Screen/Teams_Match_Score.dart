@@ -6,21 +6,20 @@ import 'package:html/parser.dart';
 
 import '../../Custom/my_icons_icons.dart';
 import '../../controller/MatchStatsController.dart';
+import '../../model/MatchesResult.dart';
+import '../../utils/String.dart';
 import '../../widget/Marquee.dart';
 
 class TeamsMatch extends StatefulWidget {
-  const TeamsMatch({Key? key, required this.title, required this.matchId}) : super(key: key);
+  const TeamsMatch({Key? key, required this.title, required this.matchData}) : super(key: key);
   final String title;
-  final int matchId;
+  final AllMatchData matchData;
 
   @override
   State<TeamsMatch> createState() => _TeamsMatchState();
 }
 
 class _TeamsMatchState extends State<TeamsMatch> {
-  late double height = MediaQuery.of(context).size.height;
-  late double width = MediaQuery.of(context).size.width;
-
   String _parseHtmlString(String htmlString) {
     final document = parse(htmlString);
     final String parsedString = parse(document.body?.text).documentElement?.text ?? '';
@@ -31,79 +30,192 @@ class _TeamsMatchState extends State<TeamsMatch> {
   @override
   void initState() {
     super.initState();
-    matchStatsController = Get.find()..getMatchStatsData(widget.matchId);
+    matchStatsController = Get.find()..getMatchStatsData(widget.matchData.matchId ?? 0);
   }
 
   late MatchStatusController matchStatsController;
 
   @override
   Widget build(BuildContext context) {
+    double height = Get.height;
+    double width = Get.width;
+    double logoHeight = height * 0.2;
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          height: double.maxFinite,
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('asset/appbar.png'), fit: BoxFit.fill),
-          ),
-          child: Row(
-            children: [
-              GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(MyIcons.backArrow)),
-              Expanded(
-                child: MarqueeWidget(
-                  direction: Axis.horizontal,
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
       body: Container(
-        height: double.maxFinite,
-        width: double.maxFinite,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('asset/background.png'), fit: BoxFit.fill),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Obx(
-                () => matchStatsController.isLoading.value == true
-                    ? Center(
-                        child: SizedBox(
-                          height: height * 0.1,
-                          width: height * 0.1,
-                          child: const CircularProgressIndicator(),
+        height: double.infinity,
+        color: const Color(0xff2E2445),
+        child: Obx(
+          () => matchStatsController.isLoading.value
+              ? const Center(
+                  child: SizedBox(height: 20, width: 20, child: CircularProgressIndicator()),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SafeArea(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: height * 0.02, horizontal: width * 0.05),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(MyIcons.backArrow, color: Colors.white, size: height * 0.035),
+                            ),
+                          ],
                         ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Center(
-                          child: MarqueeWidget(
-                            direction: Axis.vertical,
-                            child: Text(
-                              matchStatsController.matchStatusData!.matchst!.isEmpty
-                                  ? "Data Not Available"
-                                  : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat1descr ?? ''),
-                              style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.04),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          //TeamA
+                          Expanded(
+                            child: Column(
+                              children: [
+                                PhysicalModel(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  color: const Color(0xff2E2445),
+                                  borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: 'asset/cricImg.png',
+                                    image: "${widget.matchData.imageUrl}${widget.matchData.teamAImage}",
+                                    fit: BoxFit.cover,
+                                    height: logoHeight * 0.35,
+                                    width: logoHeight * 0.35,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
+                                  child: MarqueeWidget(
+                                    child: Text(
+                                      widget.matchData.teamA ?? '',
+                                      style: TextStyle(
+                                        fontSize: logoHeight * 0.1,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          //VS
+                          Image.asset(
+                            'asset/VS.png',
+                            fit: BoxFit.contain,
+                            height: logoHeight * 0.35,
+                            width: logoHeight * 0.35,
+                          ),
+
+                          //TeamB
+                          Expanded(
+                            child: Column(
+                              children: [
+                                PhysicalModel(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  color: const Color(0xff2E2445),
+                                  borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: 'asset/cricImg.png',
+                                    image: "${widget.matchData.imageUrl}${widget.matchData.teamBImage}",
+                                    fit: BoxFit.cover,
+                                    height: logoHeight * 0.35,
+                                    width: logoHeight * 0.35,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
+                                  child: MarqueeWidget(
+                                    child: Text(
+                                      widget.matchData.teamB ?? '',
+                                      style: TextStyle(fontSize: logoHeight * 0.1, fontWeight: FontWeight.w500, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),
+                        child: Container(
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: height * 0.015, left: width * 0.02, right: width * 0.02),
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      title: Text(
+                                        matchStatsController.matchStatusData!.matchst!.isEmpty
+                                            ? Strings.dataNotAvailable
+                                            : "${matchStatsController.matchStatusData!.matchst![0].stat1name} :",
+                                        style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+                                      ),
+                                      subtitle: Text(
+                                        matchStatsController.matchStatusData!.matchst!.isEmpty
+                                            ? Strings.dataNotAvailable
+                                            : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat1descr ?? ''),
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                    const Divider(color: Colors.black, thickness: 2),
+                                    ListTile(
+                                      title: Text(
+                                        matchStatsController.matchStatusData!.matchst!.isEmpty
+                                            ? Strings.dataNotAvailable
+                                            : "${matchStatsController.matchStatusData!.matchst![0].stat2name} :",
+                                        style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+                                      ),
+                                      subtitle: Text(
+                                        matchStatsController.matchStatusData!.matchst!.isEmpty
+                                            ? Strings.dataNotAvailable
+                                            : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat2descr ?? ''),
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                    const Divider(color: Colors.black, thickness: 2),
+                                    ListTile(
+                                      title: Text(
+                                        matchStatsController.matchStatusData!.matchst!.isEmpty
+                                            ? Strings.dataNotAvailable
+                                            : "${matchStatsController.matchStatusData!.matchst![0].stat3name} :",
+                                        style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+                                      ),
+                                      subtitle: Text(
+                                        matchStatsController.matchStatusData!.matchst!.isEmpty
+                                            ? Strings.dataNotAvailable
+                                            : _parseHtmlString(matchStatsController.matchStatusData!.matchst![0].stat3descr ?? ''),
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-              )),
+                    ),
+                  ],
+                ),
         ),
       ),
     );

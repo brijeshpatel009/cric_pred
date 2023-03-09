@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, avoid_print
+// ignore_for_file: file_names, avoid_print, use_build_context_synchronously
 
 import 'dart:math';
 
@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../model/MatchesResult.dart';
 import '../../utils/Shared_Pref.dart';
+import '../../utils/String.dart';
 import '../../widget/Marquee.dart';
 import 'Teams_Match_Score.dart';
 
@@ -33,18 +34,17 @@ class _TeamListScreenState extends State<TeamListScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    double size = min(height, width);
+    double minSize = min(height, width);
+    double maxSize = max(height, width);
     return widget.isLoading
         ? Center(child: SizedBox(height: height * 0.04, width: height * 0.04, child: const CircularProgressIndicator()))
         : widget.list.isEmpty
             ? Center(
-                child: SizedBox(
-                    height: height * 0.05,
-                    width: height * 0.05,
-                    child: const FittedBox(
-                        child: Text(
-                      "Data Not Available!",
-                    ))))
+                child: Text(
+                  Strings.noData,
+                  style: TextStyle(color: const Color(0xff2E2445), fontWeight: FontWeight.w500, letterSpacing: 0.8, fontSize: height * 0.02),
+                ),
+              )
             : ListView.builder(
                 itemCount: widget.list.length,
                 padding: EdgeInsets.only(bottom: height * 0.14, top: height * 0.04),
@@ -56,14 +56,15 @@ class _TeamListScreenState extends State<TeamListScreen> {
                       children: [
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              // await AdsHelper.showInterstitialAds();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return TeamsMatch(
                                       title: widget.list[index].title ?? '',
-                                      matchId: widget.list[index].matchId ?? 0000,
+                                      matchData: widget.list[index],
                                     );
                                   },
                                 ),
@@ -79,7 +80,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
                                   widget.list[index].title ?? "",
                                   softWrap: false,
                                   maxLines: 1,
-                                  style: TextStyle(fontSize: size * 0.045),
+                                  style: TextStyle(fontSize: minSize * 0.045),
                                 ),
                               ),
                             ),
