@@ -17,14 +17,21 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> {
+  late NewsController newsController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    newsController = Get.put(NewsController());
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     double size = min(height, width);
     double newsCardHeight = height * 0.2;
-
-    final NewsController newsController = Get.find();
 
     Future<void> launchURL(String url) async {
       var uri = Uri.parse(url);

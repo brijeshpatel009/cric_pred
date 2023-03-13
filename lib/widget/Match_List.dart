@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, avoid_print, library_prefixes, unused_local_variable, use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -19,8 +20,7 @@ import 'Marquee.dart';
 import 'commonWidget.dart';
 
 class MatchesList extends StatefulWidget {
-  const MatchesList({Key? key, required this.matchStreamingCategoryIndex}) : super(key: key);
-  final int matchStreamingCategoryIndex;
+  const MatchesList({Key? key}) : super(key: key);
 
   @override
   State<MatchesList> createState() => _MatchesListState();
@@ -29,18 +29,12 @@ class MatchesList extends StatefulWidget {
 class _MatchesListState extends State<MatchesList> {
   String? date;
   late IO.Socket socket;
-  static const kAdIndex = 4;
-
-  int _getDestinationItemIndex(int rawIndex) {
-    if (rawIndex >= kAdIndex) {
-      return rawIndex - 1;
-    }
-    return rawIndex;
-  }
+  late GetAllMatchesController matchDataController;
+  List<MatchDataModel> matchDataList = [];
 
   int randomInt() {
     var num = 0;
-    num = Random().nextInt(5) + 1;
+    num = Random().nextInt(3) + 1;
     return num;
   }
 
@@ -92,12 +86,8 @@ class _MatchesListState extends State<MatchesList> {
   void initState() {
     // initSocket();
     super.initState();
-    matchDataController = Get.find();
-    print(kAdIndex);
+    matchDataController = Get.put(GetAllMatchesController());
   }
-
-  late GetAllMatchesController matchDataController;
-  List<MatchDataModel> matchDataList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +110,7 @@ class _MatchesListState extends State<MatchesList> {
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.only(top: 15, bottom: 100),
                   itemCount: matchStreamingCategoryIndex == 1
-                      ? matchDataController.upcomingMatchApiList.length
+                      ? matchDataController.upcomingMatchTeamA.length
                       : matchDataController.currentLiveMatchFilterList.isEmpty
                           ? 1
                           : matchDataController.currentLiveMatchFilterList.length,
@@ -144,9 +134,7 @@ class _MatchesListState extends State<MatchesList> {
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) {
                                     return HomeMatchScoreScreen(
-                                      matchResultData: matchDataController.upcomingMatchApiList[index],
                                       liveMatchData: matchDataController.currentLiveMatchFilterList[index],
-                                      index: index,
                                     );
                                   },
                                 ));
@@ -218,7 +206,7 @@ class _MatchesListState extends State<MatchesList> {
                                                 child: FadeInImage.assetNetwork(
                                                   placeholder: 'asset/cricImg.png',
                                                   image: matchStreamingCategoryIndex == 1
-                                                      ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamAImage}"
+                                                      ? matchDataController.upcomingMatchImageurlA[index]
                                                       : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamAImage}",
                                                   fit: BoxFit.cover,
                                                   height: cardHeight * 0.35,
@@ -230,7 +218,7 @@ class _MatchesListState extends State<MatchesList> {
                                                 child: MarqueeWidget(
                                                   child: Text(
                                                     matchStreamingCategoryIndex == 1
-                                                        ? matchDataController.upcomingMatchApiList[index].teamA
+                                                        ? matchDataController.upcomingMatchTeamA[index]
                                                         : matchDataController.currentLiveMatchFilterList[index].teamA,
                                                     style: TextStyle(
                                                       fontSize: cardHeight * 0.1,
@@ -262,7 +250,7 @@ class _MatchesListState extends State<MatchesList> {
                                                 child: FadeInImage.assetNetwork(
                                                   placeholder: 'asset/cricImg.png',
                                                   image: matchStreamingCategoryIndex == 1
-                                                      ? "${matchDataController.upcomingMatchApiList[index].imageUrl}${matchDataController.upcomingMatchApiList[index].teamBImage}"
+                                                      ? matchDataController.upcomingMatchImageurlB[index]
                                                       : "${matchDataController.currentLiveMatchFilterList[index].imgeUrl}${matchDataController.currentLiveMatchFilterList[index].teamBImage}",
                                                   fit: BoxFit.cover,
                                                   height: cardHeight * 0.35,
@@ -274,7 +262,7 @@ class _MatchesListState extends State<MatchesList> {
                                                 child: MarqueeWidget(
                                                   child: Text(
                                                     matchStreamingCategoryIndex == 1
-                                                        ? matchDataController.upcomingMatchApiList[index].teamB
+                                                        ? matchDataController.upcomingMatchTeamB[index]
                                                         : matchDataController.currentLiveMatchFilterList[index].teamB,
                                                     style: TextStyle(fontSize: cardHeight * 0.1, fontWeight: FontWeight.w500),
                                                   ),
@@ -287,7 +275,7 @@ class _MatchesListState extends State<MatchesList> {
                                     ),
                                     if (matchStreamingCategoryIndex == 1)
                                       Text(
-                                        matchDataController.upcomingMatchApiList[index].matchtime,
+                                        matchDataController.upcomingMatchTime[index],
                                         style: TextStyle(
                                           fontSize: cardHeight * 0.1,
                                           fontWeight: FontWeight.w600,
@@ -321,7 +309,7 @@ class _MatchesListState extends State<MatchesList> {
                                   child: Text(
                                     matchStreamingCategoryIndex == 1
                                         ? CountDown().timeLeft(
-                                            matchDataController.yourParserOrDateTimeParse(matchDataController.upcomingMatchApiList[index].matchtime),
+                                            matchDataController.yourParserOrDateTimeParse(matchDataController.upcomingMatchTime[index]),
                                           )
                                         : CountDown().timeLeft(
                                             matchDataController
@@ -339,5 +327,9 @@ class _MatchesListState extends State<MatchesList> {
                   },
                 ),
     );
+  }
+
+  void update() async {
+    Timer.periodic(Duration(seconds: 1), (timer) {});
   }
 }

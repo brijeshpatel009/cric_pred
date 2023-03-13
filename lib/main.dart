@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialBinding: AppBinding(),
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,

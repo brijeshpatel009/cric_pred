@@ -16,10 +16,10 @@ class CountDown {
     if (daysUntil > 0) {
       retVal += "$daysUntil Day Left";
     } else if (hoursUntil > 0) {
-      if (hoursUntil <= 9 || minUntil <= 9) {
-        retVal += "0$hoursUntil:0$minUntil Left";
+      if (hoursUntil <= 9 && minUntil <= 9) {
+        retVal += "0${hoursUntil}h:0${minUntil}m Left";
       } else {
-        retVal += "$hoursUntil:$minUntil Hour Left";
+        retVal += "${hoursUntil}h:${minUntil}m Left";
       }
     } else if (minUntil > 0) {
       if (minUntil <= 9) {

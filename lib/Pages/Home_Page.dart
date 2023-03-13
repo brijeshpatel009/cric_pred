@@ -1,9 +1,7 @@
 // ignore_for_file: file_names, avoid_print, no_leading_underscores_for_local_identifiers
 import 'package:cric_pred/Custom/tab_bar_icon_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../controller/GetAllMatchController.dart';
 import '../utils/String.dart';
 import '../utils/variable.dart';
 import 'Screen/Home_Screen.dart';
@@ -18,15 +16,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  double iconSize = 30;
   late final TabController _tab = TabController(length: 3, vsync: this);
 
   @override
   void initState() {
     super.initState();
   }
-
-  final GetAllMatchesController mainController = Get.find()..checkConnection();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +40,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               physics: const NeverScrollableScrollPhysics(),
               controller: _tab,
               children: [
-                HomeScreen(
+                LiveUpcomingScreen(
                   tab: _tab,
                 ),
                 const TeamScreen(

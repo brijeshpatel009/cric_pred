@@ -15,13 +15,14 @@ class _ScoreDialogState extends State<ScoreDialog> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.of(context);
-    });
+    // Timer(Duration(seconds: 3), () {
+    //   Navigator.pop(context);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    double height = Get.height;
     double width = Get.width;
     // var svgIconSize = (width / 100) * 20;
     return WillPopScope(
@@ -38,25 +39,35 @@ class _ScoreDialogState extends State<ScoreDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Run 1",
+              "Who win Match",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: (width / 100) * 4.6,
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: height * 0.05,
+                    width: height * 0.05,
+                    color: Colors.orange,
+                  ),
+                ),
+                Container(
+                  height: height * 0.05,
+                  width: height * 0.05,
+                  color: const Color(0xff2E2445),
+                ),
+              ],
+            ),
             SizedBox(
               height: (width / 100) * 2.0,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: (width / 100) * 5),
-              child: Text(
-                'Run 2',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: (width / 100) * 3.8,
-                ),
-              ),
             ),
           ],
         ),

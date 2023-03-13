@@ -19,8 +19,14 @@ class TeamScreen extends StatefulWidget {
 
 class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
   late final tabs = TabController(length: 6, vsync: this, animationDuration: const Duration(seconds: 1));
+  late GetAllMatchesController allMatches;
 
-  final GetAllMatchesController allMatches = Get.find();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    allMatches = Get.put(GetAllMatchesController());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +107,6 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                         ),
                         TeamListScreen(
                           list: allMatches.completeBPLMatchList,
-                          isLoading: allMatches.isLoading.value,
-                        ),
-                        TeamListScreen(
-                          list: allMatches.completeTestMatchList,
                           isLoading: allMatches.isLoading.value,
                         ),
                       ],

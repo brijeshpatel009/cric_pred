@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Strings {
   static const String team = "Team";
   static const String news = "News";
@@ -12,7 +14,13 @@ class Strings {
   static const String CPL = "CPL";
   static const String BPL = "BPL";
   static const String Test = "Test";
+  static const String favorite = "Favorite";
   static const String dataNotAvailable = "Data Not Available";
   static const String myProfile = "My Profile";
   static const String noData = "Data Not Available!";
+}
+
+class StringStyle {
+  static TextStyle batsmanH = TextStyle(color: Colors.grey);
+  static TextStyle batsmanN = TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
 }

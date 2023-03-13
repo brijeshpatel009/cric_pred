@@ -28,12 +28,19 @@ class GetAllMatchesController extends GetxController {
   RxBool isLoading = true.obs;
   ScrollController allMatchScroller = ScrollController();
   DateTime currentDate = DateTime.now();
+  RxList<String> upcomingMatchTeamA = RxList([]);
+  RxList<String> upcomingMatchTeamB = RxList([]);
+  RxList<String> upcomingMatchTime = RxList([]);
+  RxList<String> upcomingMatchImageurlA = RxList([]);
+  RxList<String> upcomingMatchImageurlB = RxList([]);
 
   @override
   void onInit() {
     super.onInit();
-    getMatchData();
-    fetchPosts();
+    getLiveMatch().then((value) => upcomingMatch()).then((value) => filterLiveAndUpcomingMatch());
+    // upcomingMatch();
+    // filterLiveAndUpcomingMatch();
+    getAllCompleteMatch();
   }
 
   matchDataPagination() {}
@@ -42,7 +49,7 @@ class GetAllMatchesController extends GetxController {
     ConnectionConfig().initConnectivity();
   }
 
-  Future<void> getMatchData() async {
+  Future<void> getAllCompleteMatch() async {
     isLoading.value = true;
     allMatchResultList.clear();
 
@@ -59,25 +66,19 @@ class GetAllMatchesController extends GetxController {
       filterCompletedMatchList();
       isLoading.value = false;
     } else {
-      // print(matchResultResponse.statusCode);
+      print(matchResultResponse.statusCode);
     }
+  }
 
-    liveMatchApiList.clear();
-    final http.Response liveMatchResponse = await http.post(
-      Uri.parse('http://cricpro.cricnet.co.in/api/values/LiveLine'),
-      headers: {'Accept': '*/*', 'Connection': 'keep-alive'},
-    );
-    var responseJson = json.decode(liveMatchResponse.body);
-    for (var element in responseJson) {
-      liveMatchApiList.add(LiveMatchModel.fromJson(element));
-    }
-
+  Future<void> upcomingMatch() async {
+    isLoading.value = true;
     upcomingMatchApiList.clear();
     final http.Response upcomingMatchResponse = await http.get(Uri.parse('http://cricpro.cricnet.co.in/api/values/upcomingMatches'));
     if (upcomingMatchResponse.statusCode == 200) {
       var upcomingMatchData = UpComingModel.fromJson(jsonDecode(upcomingMatchResponse.body));
       upcomingMatchApiList.value.addAll(upcomingMatchData.allMatch);
       upcomingMatchApiList.refresh();
+      isLoading.value = false;
     } else {
       print(upcomingMatchResponse.statusCode);
     }
@@ -136,7 +137,8 @@ class GetAllMatchesController extends GetxController {
     }
   }
 
-  Future<void> fetchPosts() async {
+  Future<void> getLiveMatch() async {
+    isLoading.value = true;
     liveMatchApiList.clear();
     final http.Response liveMatchResponse = await http.post(
       Uri.parse('http://cricpro.cricnet.co.in/api/values/LiveLine'),
@@ -146,11 +148,33 @@ class GetAllMatchesController extends GetxController {
     for (var element in responseJson) {
       liveMatchApiList.add(LiveMatchModel.fromJson(element));
     }
+    isLoading.value = false;
+  }
 
+  void filterLiveAndUpcomingMatch() async {
+    isLoading.value = true;
     upcomingMatchFilterList.value =
         liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isAfter(DateTime.now())).toList();
 
     currentLiveMatchFilterList.value =
         liveMatchApiList.value.where((element) => yourParserOrDateTimeParse(element.matchtime).isBefore(DateTime.now())).toList();
+
+    for (var b = 0; b < upcomingMatchFilterList.length; b++) {
+      upcomingMatchTeamA.add(upcomingMatchFilterList[b].teamA);
+      upcomingMatchTeamB.add(upcomingMatchFilterList[b].teamB);
+      upcomingMatchImageurlA.add("${upcomingMatchFilterList[b].imgeUrl}${upcomingMatchFilterList[b].teamAImage}");
+      upcomingMatchImageurlB.add("${upcomingMatchFilterList[b].imgeUrl}${upcomingMatchFilterList[b].teamBImage}");
+      upcomingMatchTime.add(upcomingMatchFilterList[b].matchtime);
+    }
+
+    for (var a = 0; a < upcomingMatchApiList.length; a++) {
+      upcomingMatchTeamA.add(upcomingMatchApiList[a].teamA);
+      upcomingMatchTeamB.add(upcomingMatchApiList[a].teamB);
+      upcomingMatchImageurlA.add("${upcomingMatchApiList[a].imageUrl}${upcomingMatchApiList[a].teamAImage}");
+      upcomingMatchImageurlB.add("${upcomingMatchApiList[a].imageUrl}${upcomingMatchApiList[a].teamBImage}");
+      upcomingMatchTime.add(upcomingMatchApiList[a].matchtime);
+    }
+
+    isLoading.value = false;
   }
 }

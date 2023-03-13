@@ -23,4 +23,12 @@ class Utils {
       },
     );
   }
+
+  static String matchDataString(String data) {
+    String matchData = data;
+    matchData = matchData.replaceAll('PLZ RATE US 5 STARS', '');
+    matchData = matchData.replaceAll('*****', '');
+    matchData = matchData.replaceAll('Share This App and Rate us on Playstore', '');
+    return matchData;
+  }
 }

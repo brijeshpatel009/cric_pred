@@ -16,7 +16,6 @@ class GetPlayerAndRunController extends GetxController {
   getMatchPlayerData(int matchId, int length) async {
     isLoading.value = true;
     allPlayerDataList.clear();
-    print("object");
 
     final http.Response allPlayerResponse = await http.post(Uri.parse('http://cricpro.cricnet.co.in/api/values/GetAllPlayers'),
         headers: <String, String>{

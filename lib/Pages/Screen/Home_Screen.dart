@@ -10,15 +10,15 @@ import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
 import '../../widget/Match_List.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.tab}) : super(key: key);
+class LiveUpcomingScreen extends StatefulWidget {
+  const LiveUpcomingScreen({Key? key, required this.tab}) : super(key: key);
   final TabController tab;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<LiveUpcomingScreen> createState() => _LiveUpcomingScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _LiveUpcomingScreenState extends State<LiveUpcomingScreen> with TickerProviderStateMixin {
   late final tabController = TabController(length: 2, vsync: this, animationDuration: const Duration(seconds: 1));
 
   @override
@@ -70,50 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ],
               ),
 
-              //Match Category
-              // SizedBox(
-              //   height: 76,
-              //   width: double.infinity,
-              //   child: ListView.builder(
-              //     physics: const BouncingScrollPhysics(),
-              //     itemCount: 6,
-              //     scrollDirection: Axis.horizontal,
-              //     itemBuilder: (context, index) {
-              //       return Padding(
-              //         padding: const EdgeInsets.symmetric(horizontal: 10),
-              //         child: Column(
-              //           children: [
-              //             GestureDetector(
-              //               onTap: () {
-              //                 print(index);
-              //               },
-              //               child: Container(
-              //                 width: 60,
-              //                 decoration: BoxDecoration(color: colors[index], borderRadius: BorderRadius.circular(20)),
-              //                 child: Padding(
-              //                   padding: const EdgeInsets.all(15),
-              //                   child: Image(
-              //                     image: AssetImage(imagePath[index]),
-              //                   ),
-              //                 ),
-              //               ),
-              //             ),
-              //             Text(
-              //               matchType[index],
-              //               style: const TextStyle(fontWeight: FontWeight.w400),
-              //             )
-              //           ],
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 30,
-              // ),
-
               //Live Or Upcoming Category Tab
-
               TabBar(
                   overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                     return states.contains(MaterialState.focused) ? null : Colors.transparent;
@@ -162,13 +119,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       controller: tabController,
-                      children: [
-                        MatchesList(
-                          matchStreamingCategoryIndex: matchStreamingCategoryIndex,
-                        ),
-                        MatchesList(
-                          matchStreamingCategoryIndex: matchStreamingCategoryIndex,
-                        ),
+                      children: const [
+                        MatchesList(),
+                        MatchesList(),
                       ],
                     ),
                   ),
