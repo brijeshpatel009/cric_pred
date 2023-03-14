@@ -1,11 +1,10 @@
 // ignore_for_file: file_names, non_constant_identifier_names
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controller/GetAllMatchController.dart';
-import '../../utils/String.dart';
+import '../../utils/String_Style.dart';
+import '../../utils/utils.dart';
 import '../../utils/variable.dart';
 import 'Team_List_Screen.dart';
 
@@ -30,9 +29,6 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    double size = min(height, width);
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -48,7 +44,7 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 child: Center(
                   child: Text(
                     widget.title,
-                    style: TextStyle(color: Colors.white, fontSize: size * 0.07, fontWeight: FontWeight.w600, letterSpacing: 1),
+                    style: TextStyle(color: Colors.white, fontSize: minSize * 0.07, fontWeight: FontWeight.w600, letterSpacing: 1),
                   ),
                 ),
               ),
@@ -73,11 +69,11 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                 padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                 tabs: [
                   tabsWidget(Strings.international, width, height),
+                  tabsWidget(Strings.Test, width, height),
                   tabsWidget(Strings.t20, width, height),
                   tabsWidget(Strings.IPL, width, height),
                   tabsWidget(Strings.CPL, width, height),
                   tabsWidget(Strings.BPL, width, height),
-                  tabsWidget(Strings.Test, width, height),
                 ],
               ),
               Expanded(
@@ -91,6 +87,10 @@ class _TeamScreenState extends State<TeamScreen> with TickerProviderStateMixin {
                       children: [
                         TeamListScreen(
                           list: allMatches.completeInternationalMatchList,
+                          isLoading: allMatches.isLoading.value,
+                        ),
+                        TeamListScreen(
+                          list: allMatches.completeTestMatchList,
                           isLoading: allMatches.isLoading.value,
                         ),
                         TeamListScreen(

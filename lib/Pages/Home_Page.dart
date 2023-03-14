@@ -2,7 +2,8 @@
 import 'package:cric_pred/Custom/tab_bar_icon_icons.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/String.dart';
+import '../utils/String_Style.dart';
+import '../utils/utils.dart';
 import '../utils/variable.dart';
 import 'Screen/Home_Screen.dart';
 import 'Screen/News_Screen.dart';
@@ -25,8 +26,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    // double width = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,

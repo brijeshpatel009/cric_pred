@@ -1,12 +1,12 @@
 // ignore_for_file: file_names, avoid_print
 
-import 'dart:math';
-
 import 'package:cric_pred/controller/GetNewsController.dart';
 import 'package:cric_pred/widget/commonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../utils/utils.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key, required this.title}) : super(key: key);
@@ -28,11 +28,6 @@ class _NewsScreenState extends State<NewsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    double size = min(height, width);
-    double newsCardHeight = height * 0.2;
-
     Future<void> launchURL(String url) async {
       var uri = Uri.parse(url);
       if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -54,7 +49,7 @@ class _NewsScreenState extends State<NewsScreen> {
               child: Center(
                 child: Text(
                   widget.title,
-                  style: TextStyle(color: Colors.white, fontSize: size * 0.07, fontWeight: FontWeight.w600, letterSpacing: 1),
+                  style: TextStyle(color: Colors.white, fontSize: minSize * 0.07, fontWeight: FontWeight.w600, letterSpacing: 1),
                 ),
               ),
             ),
@@ -74,10 +69,10 @@ class _NewsScreenState extends State<NewsScreen> {
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return commonContainer(
-                                radius: newsCardHeight * 0.25,
-                                size: newsCardHeight,
+                                radius: logoHeight * 0.25,
+                                size: logoHeight,
                                 child: Padding(
-                                  padding: EdgeInsets.all(newsCardHeight * 0.1),
+                                  padding: EdgeInsets.all(logoHeight * 0.1),
                                   child: GestureDetector(
                                     onTap: () {
                                       print(newsController.getNewsData.newsList?[index].uRL ?? '');
@@ -92,7 +87,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                                   height: double.maxFinite,
                                                   decoration: BoxDecoration(
                                                       color: const Color(0xff2E2445),
-                                                      borderRadius: BorderRadius.all(Radius.circular(newsCardHeight * 0.15))),
+                                                      borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.15))),
                                                   child: Image.asset(
                                                     'asset/cricImg.png',
                                                     fit: BoxFit.contain,
@@ -101,7 +96,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                               : PhysicalModel(
                                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                                   color: const Color(0xff2E2445),
-                                                  borderRadius: BorderRadius.all(Radius.circular(newsCardHeight * 0.15)),
+                                                  borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.15)),
                                                   child: FadeInImage.assetNetwork(
                                                     placeholder: 'asset/cricImg.png',
                                                     image: newsController.getNewsData.newsList![index].uRLToImage!.contains("http")
@@ -124,14 +119,14 @@ class _NewsScreenState extends State<NewsScreen> {
                                                 maxLines: 2,
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: newsCardHeight * 0.1,
+                                                    fontSize: logoHeight * 0.1,
                                                     fontFamily: 'PoppinsBold',
                                                     fontWeight: FontWeight.w600),
                                               ),
                                               Text(newsController.getNewsData.newsList![index].description!,
                                                   overflow: TextOverflow.ellipsis,
                                                   maxLines: 3,
-                                                  style: TextStyle(color: Colors.grey, fontSize: newsCardHeight * 0.1, fontFamily: 'PoppinsReg')),
+                                                  style: TextStyle(color: Colors.grey, fontSize: logoHeight * 0.1, fontFamily: 'PoppinsReg')),
                                             ],
                                           ),
                                         ),

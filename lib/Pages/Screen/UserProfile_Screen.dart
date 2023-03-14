@@ -6,8 +6,9 @@ import 'package:cric_pred/Pages/Login_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../utils/String.dart';
+import '../../utils/String_Style.dart';
 import '../../utils/User_Data.dart';
+import '../../utils/utils.dart';
 import '../../utils/variable.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -30,8 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     imageSelectorGallery() async {
       image = await picker.pickImage(source: ImageSource.gallery);
       setState(() {});

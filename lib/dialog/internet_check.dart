@@ -1,8 +1,4 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class NoInternetDialog extends StatefulWidget {
@@ -13,24 +9,24 @@ class NoInternetDialog extends StatefulWidget {
 }
 
 class _NoInternetDialogState extends State<NoInternetDialog> {
-  RxBool isConnecting = false.obs;
-  static const MethodChannel _channel = MethodChannel('toast_message');
-
-  static Future<bool> showToast(String message) async {
-    bool res = await _channel.invokeMethod('showToast', {'msg': message});
-    return res;
-  }
-
-  static void checkInternet(Function callback) async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        callback.call();
-      }
-    } on SocketException catch (_) {
-      showToast("noInternetConnection");
-    }
-  }
+  // RxBool isConnecting = false.obs;
+  // static const MethodChannel _channel = MethodChannel('toast_message');
+  //
+  // static Future<bool> showToast(String message) async {
+  //   bool res = await _channel.invokeMethod('showToast', {'msg': message});
+  //   return res;
+  // }
+  //
+  // static void checkInternet(Function callback) async {
+  //   try {
+  //     final result = await InternetAddress.lookup('google.com');
+  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+  //       callback.call();
+  //     }
+  //   } on SocketException catch (_) {
+  //     showToast("noInternetConnection");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,18 +95,18 @@ class _NoInternetDialogState extends State<NoInternetDialog> {
                       900: Color(0xFF0039CF),
                     })),
                 onPressed: () async {
-                  checkInternet(() async {
-                    try {
-                      isConnecting.value = true;
-                      Get.back();
-                    } catch (e) {
-                      showToast("Something was wrong. Please restart this app");
-                    } finally {
-                      isConnecting.value = false;
-                    }
-                  });
+                  // checkInternet(() async {
+                  //   try {
+                  //     isConnecting.value = true;
+                  //     Get.back();
+                  //   } catch (e) {
+                  //     showToast("Something was wrong. Please restart this app");
+                  //   } finally {
+                  //     isConnecting.value = false;
+                  //   }
+                  // });
                 },
-                child: Text(isConnecting.value ? 'Connecting..' : 'Refresh'),
+                child: const Text('Connecting..'),
               ),
             ),
           )

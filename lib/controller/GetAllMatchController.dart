@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-import '../helper/connection_config.dart';
 import '../model/LiveScore/LiveScoreModel.dart';
 import '../model/MatchesResult.dart';
 import '../model/UpcomingMatchModel.dart';
@@ -45,17 +44,13 @@ class GetAllMatchesController extends GetxController {
 
   matchDataPagination() {}
 
-  void checkConnection() async {
-    ConnectionConfig().initConnectivity();
-  }
-
   Future<void> getAllCompleteMatch() async {
     isLoading.value = true;
     allMatchResultList.clear();
 
     // print(">>>>>>All Match Api Calling<<<<<<");
     final http.Response matchResultResponse = await http.post(Uri.parse('http://cricpro.cricnet.co.in/api/values/MatchResults'),
-        headers: {'Accept': '*/*', 'Connection': 'keep-alive'}, body: {'start': '0', 'end': '1000'});
+        headers: {'Accept': '*/*', 'Connection': 'keep-alive'}, body: {'start': '0', 'end': '2000'});
     // print(">>>>>>All Match Api Called<<<<<<");
     // print(matchResultResponse.statusCode);
     if (matchResultResponse.statusCode == 200) {
@@ -92,11 +87,11 @@ class GetAllMatchesController extends GetxController {
     completeBPLMatchList.clear();
     completeIPLMatchList.clear();
     completeCPLMatchList.clear();
-    completeInternationalMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("International")).toList();
+    completeInternationalMatchList.value = allMatchResultList.value.where((e) => e.title.contains("International")).toList();
     completeT20MatchList.value = allMatchResultList.value.where((e) => e.matchtype == "T20").toList();
-    completeIPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("IPL")).toList();
-    completeCPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("CPL")).toList();
-    completeBPLMatchList.value = allMatchResultList.value.where((e) => e.title!.contains("BPL")).toList();
+    completeIPLMatchList.value = allMatchResultList.value.where((e) => e.title.contains("IPL")).toList();
+    completeCPLMatchList.value = allMatchResultList.value.where((e) => e.title.contains("CPL")).toList();
+    completeBPLMatchList.value = allMatchResultList.value.where((e) => e.title.contains("BPL")).toList();
     completeTestMatchList.value = allMatchResultList.value.where((e) => e.matchtype == "Test").toList();
     completeInternationalMatchList.refresh();
     completeTestMatchList.refresh();

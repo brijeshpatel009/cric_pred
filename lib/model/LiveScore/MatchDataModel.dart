@@ -1,202 +1,200 @@
 // ignore_for_file: file_names
 
 class MatchDataModel {
-  Jsondata? jsondata;
+  late Jsondata jsondata;
 
-  MatchDataModel({this.jsondata});
+  MatchDataModel({required this.jsondata});
 
   MatchDataModel.fromJson(Map<String, dynamic> json) {
-    jsondata = json['jsondata'] != null ? Jsondata.fromJson(json['jsondata']) : null;
+    jsondata = (json['jsondata'] != null ? Jsondata.fromJson(json['jsondata']) : null)!;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (jsondata != null) {
-      data['jsondata'] = jsondata!.toJson();
-    }
+    data['jsondata'] = jsondata.toJson();
     return data;
   }
 }
 
 class Jsondata {
-  String? batsman;
-  String? batsmanimage;
-  String? appversion;
-  String? s4;
-  String? s6;
-  String? ns4;
-  String? ns6;
-  String? bowler;
-  String? oversA;
-  String? oversB;
-  String? rateA;
-  String? score;
-  String? sessionA;
-  String? sessionB;
-  String? sessionOver;
-  String? teamA;
-  String? teamB;
-  String? totalballs;
-  String? title;
-  String? wicketA;
-  String? wicketB;
-  String? last6Balls;
-  String? teamABanner;
-  String? teamBBanner;
-  String? imgurl;
-  String? matchtype;
-  String? testTeamA;
-  String? testTeamARate1;
-  String? testTeamARate2;
-  String? testTeamB;
-  String? testTeamBRate1;
-  String? testTeamBRate2;
-  String? testdraw;
-  String? testdrawRate1;
-  String? testdrawRate2;
-  String? netfooterad2;
-  String? netfooterurl2;
-  String? netfooterredirect2;
-  String? matchId;
-  String? partnership;
-  String? lastwicket;
-  String? bowler1;
-  String? bover1;
-  String? brun1;
-  String? bwicket1;
-  String? beco1;
-  String? bowler2;
-  String? bover2;
-  String? brun2;
-  String? bwicket2;
-  String? beco2;
-  String? bowler3;
-  String? bover3;
-  String? brun3;
-  String? bwicket3;
-  String? beco3;
-  String? bowler4;
-  String? bover4;
-  String? brun4;
-  String? bwicket4;
-  String? beco4;
-  String? bowler5;
-  String? bover5;
-  String? brun5;
-  String? bwicket5;
-  String? beco5;
-  String? bowler6;
-  String? bover6;
-  String? brun6;
-  String? bwicket6;
-  String? beco6;
-  String? bowler7;
-  String? bover7;
-  String? brun7;
-  String? bwicket7;
-  String? beco7;
-  String? bowler8;
-  String? bover8;
-  String? brun8;
-  String? bwicket8;
-  String? beco8;
-  String? cbowler1;
-  String? cover1;
-  String? crun1;
-  String? cwicket1;
-  String? ceco1;
-  String? lambiA;
-  String? lambiB;
+  late String batsman;
+  late String batsmanimage;
+  late String appversion;
+  late String s4;
+  late String s6;
+  late String ns4;
+  late String ns6;
+  late String bowler;
+  late String oversA;
+  late String oversB;
+  late String rateA;
+  late String score;
+  late String sessionA;
+  late String sessionB;
+  late String sessionOver;
+  late String teamA;
+  late String teamB;
+  late String totalballs;
+  late String title;
+  late String wicketA;
+  late String wicketB;
+  late String last6Balls;
+  late String teamABanner;
+  late String teamBBanner;
+  late String imgurl;
+  late String matchtype;
+  late String testTeamA;
+  late String testTeamARate1;
+  late String testTeamARate2;
+  late String testTeamB;
+  late String testTeamBRate1;
+  late String testTeamBRate2;
+  late String testdraw;
+  late String testdrawRate1;
+  late String testdrawRate2;
+  late String netfooterad2;
+  late String netfooterurl2;
+  late String netfooterredirect2;
+  late String matchId;
+  late String partnership;
+  late String lastwicket;
+  late String bowler1;
+  late String bover1;
+  late String brun1;
+  late String bwicket1;
+  late String beco1;
+  late String bowler2;
+  late String bover2;
+  late String brun2;
+  late String bwicket2;
+  late String beco2;
+  late String bowler3;
+  late String bover3;
+  late String brun3;
+  late String bwicket3;
+  late String beco3;
+  late String bowler4;
+  late String bover4;
+  late String brun4;
+  late String bwicket4;
+  late String beco4;
+  late String bowler5;
+  late String bover5;
+  late String brun5;
+  late String bwicket5;
+  late String beco5;
+  late String bowler6;
+  late String bover6;
+  late String brun6;
+  late String bwicket6;
+  late String beco6;
+  late String bowler7;
+  late String bover7;
+  late String brun7;
+  late String bwicket7;
+  late String beco7;
+  late String bowler8;
+  late String bover8;
+  late String brun8;
+  late String bwicket8;
+  late String beco8;
+  late String cbowler1;
+  late String cover1;
+  late String crun1;
+  late String cwicket1;
+  late String ceco1;
+  late String lambiA;
+  late String lambiB;
 
   Jsondata(
-      {this.batsman,
-      this.batsmanimage,
-      this.appversion,
-      this.s4,
-      this.s6,
-      this.ns4,
-      this.ns6,
-      this.bowler,
-      this.oversA,
-      this.oversB,
-      this.rateA,
-      this.score,
-      this.sessionA,
-      this.sessionB,
-      this.sessionOver,
-      this.teamA,
-      this.teamB,
-      this.totalballs,
-      this.title,
-      this.wicketA,
-      this.wicketB,
-      this.last6Balls,
-      this.teamABanner,
-      this.teamBBanner,
-      this.imgurl,
-      this.matchtype,
-      this.testTeamA,
-      this.testTeamARate1,
-      this.testTeamARate2,
-      this.testTeamB,
-      this.testTeamBRate1,
-      this.testTeamBRate2,
-      this.testdraw,
-      this.testdrawRate1,
-      this.testdrawRate2,
-      this.netfooterad2,
-      this.netfooterurl2,
-      this.netfooterredirect2,
-      this.matchId,
-      this.partnership,
-      this.lastwicket,
-      this.bowler1,
-      this.bover1,
-      this.brun1,
-      this.bwicket1,
-      this.beco1,
-      this.bowler2,
-      this.bover2,
-      this.brun2,
-      this.bwicket2,
-      this.beco2,
-      this.bowler3,
-      this.bover3,
-      this.brun3,
-      this.bwicket3,
-      this.beco3,
-      this.bowler4,
-      this.bover4,
-      this.brun4,
-      this.bwicket4,
-      this.beco4,
-      this.bowler5,
-      this.bover5,
-      this.brun5,
-      this.bwicket5,
-      this.beco5,
-      this.bowler6,
-      this.bover6,
-      this.brun6,
-      this.bwicket6,
-      this.beco6,
-      this.bowler7,
-      this.bover7,
-      this.brun7,
-      this.bwicket7,
-      this.beco7,
-      this.bowler8,
-      this.bover8,
-      this.brun8,
-      this.bwicket8,
-      this.beco8,
-      this.cbowler1,
-      this.cover1,
-      this.crun1,
-      this.cwicket1,
-      this.ceco1,
-      this.lambiA,
-      this.lambiB});
+      {required this.batsman,
+      required this.batsmanimage,
+      required this.appversion,
+      required this.s4,
+      required this.s6,
+      required this.ns4,
+      required this.ns6,
+      required this.bowler,
+      required this.oversA,
+      required this.oversB,
+      required this.rateA,
+      required this.score,
+      required this.sessionA,
+      required this.sessionB,
+      required this.sessionOver,
+      required this.teamA,
+      required this.teamB,
+      required this.totalballs,
+      required this.title,
+      required this.wicketA,
+      required this.wicketB,
+      required this.last6Balls,
+      required this.teamABanner,
+      required this.teamBBanner,
+      required this.imgurl,
+      required this.matchtype,
+      required this.testTeamA,
+      required this.testTeamARate1,
+      required this.testTeamARate2,
+      required this.testTeamB,
+      required this.testTeamBRate1,
+      required this.testTeamBRate2,
+      required this.testdraw,
+      required this.testdrawRate1,
+      required this.testdrawRate2,
+      required this.netfooterad2,
+      required this.netfooterurl2,
+      required this.netfooterredirect2,
+      required this.matchId,
+      required this.partnership,
+      required this.lastwicket,
+      required this.bowler1,
+      required this.bover1,
+      required this.brun1,
+      required this.bwicket1,
+      required this.beco1,
+      required this.bowler2,
+      required this.bover2,
+      required this.brun2,
+      required this.bwicket2,
+      required this.beco2,
+      required this.bowler3,
+      required this.bover3,
+      required this.brun3,
+      required this.bwicket3,
+      required this.beco3,
+      required this.bowler4,
+      required this.bover4,
+      required this.brun4,
+      required this.bwicket4,
+      required this.beco4,
+      required this.bowler5,
+      required this.bover5,
+      required this.brun5,
+      required this.bwicket5,
+      required this.beco5,
+      required this.bowler6,
+      required this.bover6,
+      required this.brun6,
+      required this.bwicket6,
+      required this.beco6,
+      required this.bowler7,
+      required this.bover7,
+      required this.brun7,
+      required this.bwicket7,
+      required this.beco7,
+      required this.bowler8,
+      required this.bover8,
+      required this.brun8,
+      required this.bwicket8,
+      required this.beco8,
+      required this.cbowler1,
+      required this.cover1,
+      required this.crun1,
+      required this.cwicket1,
+      required this.ceco1,
+      required this.lambiA,
+      required this.lambiB});
 
   Jsondata.fromJson(Map<String, dynamic> json) {
     batsman = json['batsman'];

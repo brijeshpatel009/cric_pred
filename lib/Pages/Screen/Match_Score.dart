@@ -14,7 +14,7 @@ import '../../model/LiveScore/LiveScoreModel.dart';
 import '../../model/LiveScore/MatchDataModel.dart';
 import '../../services/AdsHelper/ads_helper.dart';
 import '../../utils/Colors.dart';
-import '../../utils/String.dart';
+import '../../utils/String_Style.dart';
 import '../../utils/utils.dart';
 
 class HomeMatchScoreScreen extends StatefulWidget {
@@ -29,7 +29,7 @@ class HomeMatchScoreScreen extends StatefulWidget {
 }
 
 class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
-  MatchDataModel? liveMatchData;
+  late MatchDataModel liveMatchData;
   late GetAllMatchesController getMatchController;
 
   @override
@@ -51,7 +51,6 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
   Widget build(BuildContext context) {
     double height = Get.height;
     double width = Get.width;
-    double logoHeight = height * 0.2;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -67,7 +66,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //Navigator & Live
+                    //Back Navigator & Live
                     SafeArea(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: height * 0.02, horizontal: width * 0.05),
@@ -108,7 +107,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
 
                     //Teams Runs & Banner
                     Padding(
-                      padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.02),
+                      padding: EdgeInsets.only(top: height * 0.01),
                       child: Column(
                         children: [
                           Row(
@@ -125,7 +124,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                       borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
                                       child: FadeInImage.assetNetwork(
                                         placeholder: 'asset/cricImg.png',
-                                        image: "${liveMatchData!.jsondata!.imgurl}${liveMatchData!.jsondata!.teamABanner}",
+                                        image: "${liveMatchData.jsondata.imgurl}${liveMatchData.jsondata.teamABanner}",
                                         fit: BoxFit.cover,
                                         height: logoHeight * 0.35,
                                         width: logoHeight * 0.35,
@@ -135,7 +134,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                       padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
                                       child: MarqueeWidget(
                                         child: Text(
-                                          liveMatchData!.jsondata!.teamA!,
+                                          liveMatchData.jsondata.teamA,
                                           style: TextStyle(
                                             fontSize: logoHeight * 0.1,
                                             fontWeight: FontWeight.w500,
@@ -145,7 +144,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                       ),
                                     ),
                                     Text(
-                                      "${liveMatchData!.jsondata!.wicketA!}(${liveMatchData!.jsondata!.oversA})",
+                                      "${liveMatchData.jsondata.wicketA}(${liveMatchData.jsondata.oversA})",
                                       style: TextStyle(fontSize: logoHeight * 0.1, fontWeight: FontWeight.w500, color: Colors.white),
                                     ),
                                   ],
@@ -170,7 +169,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                       borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
                                       child: FadeInImage.assetNetwork(
                                         placeholder: 'asset/cricImg.png',
-                                        image: "${liveMatchData!.jsondata!.imgurl}${liveMatchData!.jsondata!.teamBBanner}",
+                                        image: "${liveMatchData.jsondata.imgurl}${liveMatchData.jsondata.teamBBanner}",
                                         fit: BoxFit.cover,
                                         height: logoHeight * 0.35,
                                         width: logoHeight * 0.35,
@@ -180,13 +179,13 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                       padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
                                       child: MarqueeWidget(
                                         child: Text(
-                                          liveMatchData!.jsondata!.teamB!,
+                                          liveMatchData.jsondata.teamB,
                                           style: TextStyle(fontSize: logoHeight * 0.1, fontWeight: FontWeight.w500, color: Colors.white),
                                         ),
                                       ),
                                     ),
                                     Text(
-                                      liveMatchData!.jsondata!.wicketB! == "0/0" ? "Bowling" : liveMatchData!.jsondata!.wicketB!,
+                                      liveMatchData.jsondata.wicketB == "0/0" ? "Bowling" : liveMatchData.jsondata.wicketB,
                                       style: TextStyle(fontSize: logoHeight * 0.1, fontWeight: FontWeight.w500, color: Colors.white),
                                     ),
                                   ],
@@ -195,10 +194,13 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: height * 0.02),
-                            child: Text(
-                              liveMatchData!.jsondata!.score!,
-                              style: TextStyle(color: Colors.white, fontSize: height * 0.03),
+                            padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: height * 0.005),
+                            child: MarqueeWidget(
+                              child: Text(
+                                liveMatchData.jsondata.score,
+                                style: StringStyle.scoreStyle,
+                                maxLines: 1,
+                              ),
                             ),
                           )
                         ],
@@ -244,7 +246,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                         ),
                                         Expanded(
                                           child: ListView.builder(
-                                            itemCount: liveMatchData!.jsondata!.last6Balls!.split('-').toList().length,
+                                            itemCount: liveMatchData.jsondata.last6Balls.split('-').toList().length,
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
                                               return Container(
@@ -257,7 +259,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                 ),
                                                 child: Center(
                                                   child: Text(
-                                                    liveMatchData!.jsondata!.last6Balls!.split('-').toList()[index],
+                                                    liveMatchData.jsondata.last6Balls.split('-').toList()[index],
                                                     style: const TextStyle(color: Colors.white),
                                                   ),
                                                 ),
@@ -326,16 +328,16 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                   Expanded(
                                                       flex: 7,
                                                       child: Text(
-                                                        liveMatchData!.jsondata!.batsman!.split("*|").first.isEmpty
+                                                        liveMatchData.jsondata.batsman.split("*|").first.isEmpty
                                                             ? "------------"
-                                                            : liveMatchData!.jsondata!.batsman!.split("*|").first,
+                                                            : liveMatchData.jsondata.batsman.split("*|").first,
                                                         style: StringStyle.batsmanN,
                                                       )),
                                                   Expanded(
                                                     flex: 2,
                                                     child: Center(
                                                       child: Text(
-                                                        "${liveMatchData!.jsondata!.oversB!.split("|").first.split(",")[1]}(${liveMatchData!.jsondata!.oversB!.split("|").last.split(",")[1]})",
+                                                        "${liveMatchData.jsondata.oversB.split("|").first.split(",")[1]}(${liveMatchData.jsondata.oversB.split("|").last.split(",")[1]})",
                                                         style: StringStyle.batsmanN,
                                                       ),
                                                     ),
@@ -344,7 +346,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                       flex: 1,
                                                       child: Center(
                                                         child: Text(
-                                                          liveMatchData!.jsondata!.s6!,
+                                                          liveMatchData.jsondata.s6,
                                                           style: StringStyle.batsmanN,
                                                         ),
                                                       )),
@@ -352,7 +354,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                       flex: 1,
                                                       child: Center(
                                                         child: Text(
-                                                          liveMatchData!.jsondata!.s4!,
+                                                          liveMatchData.jsondata.s4,
                                                           style: StringStyle.batsmanN,
                                                         ),
                                                       ))
@@ -367,7 +369,9 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                 Expanded(
                                                   flex: 7,
                                                   child: Text(
-                                                    liveMatchData!.jsondata!.batsman!.split("*|").last,
+                                                    liveMatchData.jsondata.batsman.split("*|").last.isEmpty
+                                                        ? "------------"
+                                                        : liveMatchData.jsondata.batsman.split("*|").last,
                                                     style: StringStyle.batsmanN,
                                                   ),
                                                 ),
@@ -375,7 +379,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                   flex: 2,
                                                   child: Center(
                                                     child: Text(
-                                                      "${liveMatchData!.jsondata!.oversB!.split("|").first.split(",")[0]}(${liveMatchData!.jsondata!.oversB!.split("|").last.split(",")[0]})",
+                                                      "${liveMatchData.jsondata.oversB.split("|").first.split(",")[0]}(${liveMatchData.jsondata.oversB.split("|").last.split(",")[0]})",
                                                       style: StringStyle.batsmanN,
                                                     ),
                                                   ),
@@ -384,7 +388,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                   flex: 1,
                                                   child: Center(
                                                     child: Text(
-                                                      liveMatchData!.jsondata!.ns6!,
+                                                      liveMatchData.jsondata.ns6,
                                                       style: StringStyle.batsmanN,
                                                     ),
                                                   ),
@@ -393,7 +397,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                   flex: 1,
                                                   child: Center(
                                                     child: Text(
-                                                      liveMatchData!.jsondata!.ns4!,
+                                                      liveMatchData.jsondata.ns4,
                                                       style: StringStyle.batsmanN,
                                                     ),
                                                   ),
@@ -407,8 +411,41 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Text("P'ship: ${liveMatchData!.jsondata!.partnership}"),
-                                                Text("Last wkt: ${liveMatchData!.jsondata!.lastwicket!}"),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: RichText(
+                                                    text: TextSpan(children: [
+                                                      TextSpan(
+                                                        text: "P'ship: ",
+                                                        style: StringStyle.batsmanN,
+                                                      ),
+                                                      TextSpan(text: liveMatchData.jsondata.partnership, style: const TextStyle(color: Colors.black)),
+                                                    ]),
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                    flex: 2,
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          "Last wkt:",
+                                                          textAlign: TextAlign.end,
+                                                          maxLines: 1,
+                                                          style: StringStyle.batsmanN,
+                                                        ),
+                                                        SizedBox(
+                                                          child: MarqueeWidget(
+                                                            child: Text(
+                                                              liveMatchData.jsondata.lastwicket.isEmpty ? "-----" : liveMatchData.jsondata.lastwicket,
+                                                              textAlign: TextAlign.end,
+                                                              maxLines: 1,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )),
                                               ],
                                             ),
                                           )
@@ -469,11 +506,13 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                 Expanded(
                                                   flex: 7,
                                                   child: Text(
-                                                    liveMatchData!.jsondata!.bowler!.isEmpty
-                                                        ? liveMatchData!.jsondata!.cbowler1!.isEmpty
+                                                    liveMatchData.jsondata.bowler.isEmpty
+                                                        ? liveMatchData.jsondata.cbowler1.isEmpty
                                                             ? "-----"
-                                                            : liveMatchData!.jsondata!.cbowler1!
-                                                        : liveMatchData!.jsondata!.bowler!,
+                                                            : liveMatchData.jsondata.cbowler1
+                                                        : liveMatchData.jsondata.bowler == "0"
+                                                            ? "-----"
+                                                            : liveMatchData.jsondata.bowler,
                                                     style: StringStyle.batsmanN,
                                                   ),
                                                 ),
@@ -481,7 +520,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                   flex: 2,
                                                   child: Center(
                                                     child: Text(
-                                                      "${liveMatchData!.jsondata!.cwicket1}-${liveMatchData!.jsondata!.crun1}",
+                                                      "${liveMatchData.jsondata.cwicket1}-${liveMatchData.jsondata.crun1}",
                                                       style: StringStyle.batsmanN,
                                                     ),
                                                   ),
@@ -490,7 +529,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                   flex: 2,
                                                   child: Center(
                                                     child: Text(
-                                                      liveMatchData!.jsondata!.cover1!,
+                                                      liveMatchData.jsondata.cover1,
                                                       style: StringStyle.batsmanN,
                                                     ),
                                                   ),
@@ -499,7 +538,7 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                                   flex: 2,
                                                   child: Center(
                                                     child: Text(
-                                                      liveMatchData!.jsondata!.ceco1!,
+                                                      liveMatchData.jsondata.ceco1,
                                                       style: StringStyle.batsmanN,
                                                     ),
                                                   ),
@@ -513,41 +552,43 @@ class _HomeMatchScoreScreenState extends State<HomeMatchScoreScreen> {
                                   ),
 
                                   ///Prediction Dialog
-                                  Padding(
-                                    padding: EdgeInsets.all(height * 0.03),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return const ScoreDialog();
-                                          },
-                                        );
-                                      },
-                                      child: Container(
-                                        decoration:
-                                            BoxDecoration(borderRadius: BorderRadius.circular(20.0), color: const Color(0xff2E2445).withOpacity(0.5)),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text(
-                                            "Who Win The Match",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
+                                  if (!liveMatchData.jsondata.score.contains("Won") && !liveMatchData.jsondata.score.contains("MATCH DRAWN")) ...[
+                                    Padding(
+                                      padding: EdgeInsets.all(height * 0.03),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return const ScoreDialog();
+                                            },
+                                          );
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(20.0), color: const Color(0xff2E2445).withOpacity(0.5)),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Who Win The Match",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
+                                  ],
 
                                   Padding(
                                     padding: EdgeInsets.only(top: height * 0.015),
                                     child: Text(
                                       widget.liveMatchData.jsondata == ''
                                           ? "Data Is Not available\nBecause Of That Match Is Not Started"
-                                          : Utils.matchDataString(liveMatchData!.jsondata!.title!),
+                                          : Utils.matchDataString(liveMatchData.jsondata.title),
                                     ),
                                   ),
                                 ],

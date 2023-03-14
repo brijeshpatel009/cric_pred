@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../utils/String.dart';
+import '../../utils/String_Style.dart';
 import '../../utils/User_Data.dart';
 import '../../utils/variable.dart';
 import '../../widget/Match_List.dart';

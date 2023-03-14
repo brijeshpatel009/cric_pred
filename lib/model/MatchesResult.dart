@@ -33,30 +33,30 @@ class MatchResultModel {
 }
 
 class AllMatchData {
-  String? title;
-  String? matchtime;
-  String? venue;
-  int? matchId;
-  String? teamA;
-  String? teamB;
-  String? teamAImage;
-  String? matchtype;
-  String? teamBImage;
-  String? result;
-  String? imageUrl;
+  late String title;
+  late String matchtime;
+  late String venue;
+  late int matchId;
+  late String teamA;
+  late String teamB;
+  late String teamAImage;
+  late String matchtype;
+  late String teamBImage;
+  late String result;
+  late String imageUrl;
 
   AllMatchData(
-      {this.title,
-      this.matchtime,
-      this.venue,
-      this.matchId,
-      this.teamA,
-      this.teamB,
-      this.teamAImage,
-      this.matchtype,
-      this.teamBImage,
-      this.result,
-      this.imageUrl});
+      {required this.title,
+      required this.matchtime,
+      required this.venue,
+      required this.matchId,
+      required this.teamA,
+      required this.teamB,
+      required this.teamAImage,
+      required this.matchtype,
+      required this.teamBImage,
+      required this.result,
+      required this.imageUrl});
 
   AllMatchData.fromJson(Map<String, dynamic> json) {
     title = json['Title'];

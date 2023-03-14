@@ -7,7 +7,8 @@ import 'package:html/parser.dart';
 import '../../Custom/my_icons_icons.dart';
 import '../../controller/MatchStatsController.dart';
 import '../../model/MatchesResult.dart';
-import '../../utils/String.dart';
+import '../../utils/String_Style.dart';
+import '../../utils/utils.dart';
 import '../../widget/Marquee.dart';
 
 class TeamsMatch extends StatefulWidget {
@@ -30,16 +31,13 @@ class _TeamsMatchState extends State<TeamsMatch> {
   @override
   void initState() {
     super.initState();
-    matchStatsController = Get.find()..getMatchStatsData(widget.matchData.matchId ?? 0);
+    matchStatsController = Get.put(MatchStatusController())..getMatchStatsData(widget.matchData.matchId);
   }
 
   late MatchStatusController matchStatsController;
 
   @override
   Widget build(BuildContext context) {
-    double height = Get.height;
-    double width = Get.width;
-    double logoHeight = height * 0.2;
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -55,6 +53,7 @@ class _TeamsMatchState extends State<TeamsMatch> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //Back Navigator
                     SafeArea(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: height * 0.02, horizontal: width * 0.05),
@@ -71,84 +70,92 @@ class _TeamsMatchState extends State<TeamsMatch> {
                         ),
                       ),
                     ),
+
+                    //Teams Name & Banner
                     Padding(
-                      padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.04),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      padding: EdgeInsets.only(top: height * 0.01),
+                      child: Column(
                         children: [
-                          //TeamA
-                          Expanded(
-                            child: Column(
-                              children: [
-                                PhysicalModel(
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  color: const Color(0xff2E2445),
-                                  borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: 'asset/cricImg.png',
-                                    image: "${widget.matchData.imageUrl}${widget.matchData.teamAImage}",
-                                    fit: BoxFit.cover,
-                                    height: logoHeight * 0.35,
-                                    width: logoHeight * 0.35,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
-                                  child: MarqueeWidget(
-                                    child: Text(
-                                      widget.matchData.teamA ?? '',
-                                      style: TextStyle(
-                                        fontSize: logoHeight * 0.1,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ///TeamA
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    PhysicalModel(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      color: const Color(0xff2E2445),
+                                      borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'asset/cricImg.png',
+                                        image: "${widget.matchData.imageUrl}${widget.matchData.teamAImage}",
+                                        fit: BoxFit.cover,
+                                        height: logoHeight * 0.35,
+                                        width: logoHeight * 0.35,
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          //VS
-                          Image.asset(
-                            'asset/VS.png',
-                            fit: BoxFit.contain,
-                            height: logoHeight * 0.35,
-                            width: logoHeight * 0.35,
-                          ),
-
-                          //TeamB
-                          Expanded(
-                            child: Column(
-                              children: [
-                                PhysicalModel(
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  color: const Color(0xff2E2445),
-                                  borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: 'asset/cricImg.png',
-                                    image: "${widget.matchData.imageUrl}${widget.matchData.teamBImage}",
-                                    fit: BoxFit.cover,
-                                    height: logoHeight * 0.35,
-                                    width: logoHeight * 0.35,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
-                                  child: MarqueeWidget(
-                                    child: Text(
-                                      widget.matchData.teamB ?? '',
-                                      style: TextStyle(fontSize: logoHeight * 0.1, fontWeight: FontWeight.w500, color: Colors.white),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
+                                      child: MarqueeWidget(
+                                        child: Text(
+                                          widget.matchData.teamA,
+                                          style: StringStyle.teamNameStyle,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+
+                              ///VS
+                              Image.asset(
+                                'asset/VS.png',
+                                fit: BoxFit.contain,
+                                height: logoHeight * 0.35,
+                                width: logoHeight * 0.35,
+                              ),
+
+                              ///TeamB
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    PhysicalModel(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      color: const Color(0xff2E2445),
+                                      borderRadius: BorderRadius.all(Radius.circular(logoHeight * 0.1)),
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'asset/cricImg.png',
+                                        image: "${widget.matchData.imageUrl}${widget.matchData.teamBImage}",
+                                        fit: BoxFit.cover,
+                                        height: logoHeight * 0.35,
+                                        width: logoHeight * 0.35,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(vertical: logoHeight * 0.03),
+                                      child: MarqueeWidget(
+                                        child: Text(
+                                          widget.matchData.teamB,
+                                          style: StringStyle.teamNameStyle,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: height * 0.005),
+                            child: MarqueeWidget(child: Text(widget.matchData.result, style: StringStyle.scoreStyle, maxLines: 1)),
                           ),
                         ],
                       ),
                     ),
+
+                    //Match Details
                     Expanded(
                       child: ClipRRect(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(height * 0.04)),

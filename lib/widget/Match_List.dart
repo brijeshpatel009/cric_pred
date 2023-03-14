@@ -13,7 +13,7 @@ import '../model/GetAllPlayerModel.dart';
 import '../model/LiveScore/MatchDataModel.dart';
 import '../model/NewsModel.dart';
 import '../services/AdsHelper/ads_helper.dart';
-import '../utils/String.dart';
+import '../utils/String_Style.dart';
 import '../utils/variable.dart';
 import 'CountDown.dart';
 import 'Marquee.dart';
@@ -47,6 +47,7 @@ class _MatchesListState extends State<MatchesList> {
     socket.onConnect((_) {
       sendData();
       socket.on('leaderBoardReceiveData', (data) {
+        etData(data);
         print('Get LiveScore');
       });
 
@@ -78,8 +79,15 @@ class _MatchesListState extends State<MatchesList> {
     print('data Send');
   }
 
-  getData(String name) {
-    print(name);
+  etData(String name) {
+    print(">>>>>>>>>>>?????????? $name");
+  }
+
+  late Timer _timer;
+
+  String timeOut(DateTime date) {
+    print("12");
+    return CountDown().timeLeft(date);
   }
 
   @override
@@ -87,6 +95,17 @@ class _MatchesListState extends State<MatchesList> {
     // initSocket();
     super.initState();
     matchDataController = Get.put(GetAllMatchesController());
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      timeOut;
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _timer.cancel();
   }
 
   @override
@@ -195,7 +214,7 @@ class _MatchesListState extends State<MatchesList> {
                                     Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        //TeamA
+                                        ///TeamA
                                         Expanded(
                                           child: Column(
                                             children: [
@@ -231,7 +250,7 @@ class _MatchesListState extends State<MatchesList> {
                                           ),
                                         ),
 
-                                        //VS
+                                        ///VS
                                         Image.asset(
                                           'asset/VS.png',
                                           fit: BoxFit.contain,
@@ -239,7 +258,7 @@ class _MatchesListState extends State<MatchesList> {
                                           width: cardHeight * 0.35,
                                         ),
 
-                                        //TeamB
+                                        ///TeamB
                                         Expanded(
                                           child: Column(
                                             children: [
@@ -308,10 +327,10 @@ class _MatchesListState extends State<MatchesList> {
                                 child: MarqueeWidget(
                                   child: Text(
                                     matchStreamingCategoryIndex == 1
-                                        ? CountDown().timeLeft(
+                                        ? timeOut(
                                             matchDataController.yourParserOrDateTimeParse(matchDataController.upcomingMatchTime[index]),
                                           )
-                                        : CountDown().timeLeft(
+                                        : timeOut(
                                             matchDataController
                                                 .yourParserOrDateTimeParse(matchDataController.currentLiveMatchFilterList[index].matchtime),
                                           ),
@@ -330,6 +349,6 @@ class _MatchesListState extends State<MatchesList> {
   }
 
   void update() async {
-    Timer.periodic(Duration(seconds: 1), (timer) {});
+    Timer.periodic(const Duration(seconds: 1), (timer) {});
   }
 }

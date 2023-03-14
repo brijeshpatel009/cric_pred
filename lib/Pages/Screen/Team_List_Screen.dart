@@ -1,14 +1,13 @@
 // ignore_for_file: file_names, avoid_print, use_build_context_synchronously
 
-import 'dart:math';
-
 import 'package:cric_pred/widget/commonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../model/MatchesResult.dart';
 import '../../utils/Shared_Pref.dart';
-import '../../utils/String.dart';
+import '../../utils/String_Style.dart';
+import '../../utils/utils.dart';
 import '../../widget/Marquee.dart';
 import 'Teams_Match_Score.dart';
 
@@ -32,10 +31,6 @@ class _TeamListScreenState extends State<TeamListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    double minSize = min(height, width);
-    double maxSize = max(height, width);
     return widget.isLoading
         ? Center(child: SizedBox(height: height * 0.04, width: height * 0.04, child: const CircularProgressIndicator()))
         : widget.list.isEmpty
@@ -63,7 +58,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return TeamsMatch(
-                                      title: widget.list[index].title ?? '',
+                                      title: widget.list[index].title,
                                       matchData: widget.list[index],
                                     );
                                   },
@@ -77,7 +72,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Text(
-                                  widget.list[index].title ?? "",
+                                  widget.list[index].title,
                                   softWrap: false,
                                   maxLines: 1,
                                   style: TextStyle(fontSize: minSize * 0.045),
@@ -106,15 +101,15 @@ class _TeamListScreenState extends State<TeamListScreen> {
                             child: IconButton(
                               onPressed: () async {
                                 setState(() {
-                                  isFavourite.contains(widget.list[index].title!)
-                                      ? isFavourite.remove(widget.list[index].title!)
-                                      : isFavourite.add(widget.list[index].title!);
+                                  isFavourite.contains(widget.list[index].title)
+                                      ? isFavourite.remove(widget.list[index].title)
+                                      : isFavourite.add(widget.list[index].title);
                                 });
                                 SharedPreferencesDatas.getStringList(SharedPreferencesDatas.selectedMatchName).clear();
                                 SharedPreferencesDatas.setStringList(SharedPreferencesDatas.selectedMatchName, isFavourite);
                               },
                               icon: Icon(
-                                isFavourite.contains(widget.list[index].title!) ? Icons.star : Icons.star_border,
+                                isFavourite.contains(widget.list[index].title) ? Icons.star : Icons.star_border,
                                 size: (height * 0.07) * 0.6,
                                 color: Colors.white,
                               ),

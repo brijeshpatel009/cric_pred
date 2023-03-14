@@ -1,10 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-import '../dialog/internet_check.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void printLog(String message) {
   print('FlutterPrint: $message');
 }
+
+double height = Get.height;
+double width = Get.width;
+double logoHeight = height * 0.2;
+double minSize = min(height, width);
+double maxSize = max(height, width);
 
 class Utils {
   static void hideKeyboard(BuildContext context) {
@@ -12,16 +19,6 @@ class Utils {
     if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
       FocusManager.instance.primaryFocus!.unfocus();
     }
-  }
-
-  static void showNoInternetDialog(BuildContext context) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return const NoInternetDialog();
-      },
-    );
   }
 
   static String matchDataString(String data) {

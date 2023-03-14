@@ -1,3 +1,4 @@
+import 'package:cric_pred/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class Strings {
@@ -21,6 +22,12 @@ class Strings {
 }
 
 class StringStyle {
-  static TextStyle batsmanH = TextStyle(color: Colors.grey);
-  static TextStyle batsmanN = TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
+  static TextStyle batsmanH = const TextStyle(color: Colors.grey);
+  static TextStyle batsmanN = const TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
+  static TextStyle teamNameStyle = TextStyle(
+    fontSize: logoHeight * 0.1,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+  );
+  static TextStyle scoreStyle = TextStyle(color: Colors.white, fontSize: height * 0.02);
 }
