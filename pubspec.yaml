@@ -39,16 +39,30 @@ dependencies:
   intl: ^0.18.0
   image_picker: ^0.8.6
   http: ^0.13.5
-  socket_io_client: ^2.0.0
+  socket_io_client: ^2.0.1
   get:
   dio: ^5.0.1
-  flutter_html: ^2.2.1
-  url_launcher: ^6.1.9
   cached_network_image: ^3.2.3
   shared_preferences: ^2.0.17
-  google_mobile_ads: ^2.3.0
   facebook_audience_network: ^1.0.1
   connectivity_plus: ^3.0.3
+  web_socket_channel: ^2.3.0
+  internet_connection_checker: ^1.0.0+1
+  firebase_core: ^2.8.0
+  firebase_remote_config: ^3.0.15
+  package_info_plus:
+  url_launcher: ^6.1.10
+  flutter_launcher_icons: ^0.12.0
+  flutter_native_splash: ^2.2.17
+
+
+  ads_helper:
+    #    path: ../ads_helper_package/
+    git:
+      url: https://github.com/RajDonga09/ads_helper_package.git
+      ref: master
+
+
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +74,27 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "asset/appicon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "asset/appicon1.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: asset/appicon.png
+  image_dark:  asset/appicon.png
+  color_dark: "#ffffff"
+
+  android_12:
+    image: asset/appicon.png
+    image_dark:  asset/appicon.png
+    icon_background_color: "#ffffff"
+    icon_background_color_dark: "#ffffff"
+
+  web: false
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

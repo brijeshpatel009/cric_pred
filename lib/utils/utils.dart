@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,5 +30,12 @@ class Utils {
     matchData = matchData.replaceAll('*****', '');
     matchData = matchData.replaceAll('Share This App and Rate us on Playstore', '');
     return matchData;
+  }
+
+  static Widget tabsWidget(String string) {
+    return Text(
+      string,
+      style: TextStyle(fontSize: minSize * 0.05, fontWeight: FontWeight.w400),
+    );
   }
 }

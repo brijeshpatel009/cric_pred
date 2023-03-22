@@ -1,10 +1,18 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
+import '../utils/utils.dart';
+import '../widget/Divider.dart';
 
 class ScoreDialog extends StatefulWidget {
-  const ScoreDialog({Key? key}) : super(key: key);
+  const ScoreDialog({Key? key, required this.teamARate, required this.teamBRate, required this.teamA, required this.teamB}) : super(key: key);
+  final String teamARate;
+  final String teamBRate;
+  final String teamA;
+  final String teamB;
 
   @override
   _ScoreDialogState createState() => _ScoreDialogState();
@@ -13,18 +21,29 @@ class ScoreDialog extends StatefulWidget {
 class _ScoreDialogState extends State<ScoreDialog> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    // Timer(Duration(seconds: 3), () {
-    //   Navigator.pop(context);
-    // });
+    teamRateA = int.parse(widget.teamARate);
+    teamRateB = int.parse(widget.teamBRate);
+    print("teamRateA: $teamRateA");
+    print("teamRateB: $teamRateB");
+    _timer = Timer(const Duration(seconds: 5), () {
+      Navigator.pop(context);
+    });
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _timer.cancel();
+  }
+
+  late int teamRateA;
+  late int teamRateB;
+  late Timer _timer;
+
+  @override
   Widget build(BuildContext context) {
-    double height = Get.height;
-    double width = Get.width;
-    // var svgIconSize = (width / 100) * 20;
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: AlertDialog(
@@ -38,37 +57,45 @@ class _ScoreDialogState extends State<ScoreDialog> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              "Who win Match",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: (width / 100) * 4.6,
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                "Who will win the match",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: (width / 100) * 4.6,
+                ),
               ),
             ),
+            const DividerWidget(color: Color(0xff2E2445), thickness: 3),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    height: height * 0.05,
-                    width: height * 0.05,
-                    color: Colors.orange,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Text(widget.teamA), Text(widget.teamB)],
+            ),
+            Container(
+              width: double.infinity,
+              height: 6,
+              decoration: const BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.all(Radius.circular(5))),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: teamRateA,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.green, borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5))),
+                    ),
                   ),
-                ),
-                Container(
-                  height: height * 0.05,
-                  width: height * 0.05,
-                  color: const Color(0xff2E2445),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: (width / 100) * 2.0,
-            ),
+                  Expanded(
+                    flex: teamRateB,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.red, borderRadius: BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5))),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

@@ -1,6 +1,5 @@
+import 'package:cric_pred/Pages/Home_Page.dart';
 import 'package:get/get.dart';
-
-import '../Pages/Home_Page.dart';
 
 mixin Routes {
   static const defaultTransition = Transition.cupertinoDialog;

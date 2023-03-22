@@ -2,7 +2,7 @@ import 'package:cric_pred/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class Strings {
-  static const String team = "Team";
+  static const String finish = "Finished";
   static const String news = "News";
   static const String home = "Home";
   static const String live = "Live";
@@ -11,10 +11,14 @@ class Strings {
   static const String matchNotLiveText = "Currently Not Live Any Match";
   static const String international = "International";
   static const String t20 = "T20";
-  static const String IPL = "IPL";
-  static const String CPL = "CPL";
-  static const String BPL = "BPL";
-  static const String Test = "Test";
+  static const String ipl = "IPL";
+  static const String cpl = "CPL";
+  static const String bpl = "BPL";
+  static const String test = "Test";
+  static const String playerInfo = "Player Info";
+  static const String matchInfo = "Match Info";
+  static const String location = "Location";
+  static const String stat = "Stats";
   static const String favorite = "Favorite";
   static const String dataNotAvailable = "Data Not Available";
   static const String myProfile = "My Profile";
@@ -30,4 +34,5 @@ class StringStyle {
     color: Colors.white,
   );
   static TextStyle scoreStyle = TextStyle(color: Colors.white, fontSize: height * 0.02);
+  static TextStyle playerTeamNameStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: minSize * 0.05);
 }

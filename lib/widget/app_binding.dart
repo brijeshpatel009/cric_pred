@@ -1,18 +1,12 @@
-import 'package:get/get.dart';
-
-import '../controller/GetAllMatchController.dart';
-import '../controller/GetAllPlayerController.dart';
-import '../controller/GetNewsController.dart';
-import '../controller/MatchStatsController.dart';
-import '../controller/getAdAPIDataController.dart';
+import 'package:get/get_instance/src/bindings_interface.dart';
 
 class AppBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put<GetAllMatchesController>(GetAllMatchesController());
-    Get.put<NewsController>(NewsController());
-    Get.put<GetPlayerAndRunController>(GetPlayerAndRunController());
-    Get.put<MatchStatusController>(MatchStatusController());
-    Get.put<AdsApiData>(AdsApiData());
+    // Get.put<GetAllMatchesController>(GetAllMatchesController());
+    // Get.put<NewsController>(NewsController());
+    // Get.put<GetPlayerAndRunController>(GetPlayerAndRunController());
+    // Get.put<MatchStatusController>(MatchStatusController());
+    // Get.put<AdsApiData>(AdsApiData());
   }
 }
