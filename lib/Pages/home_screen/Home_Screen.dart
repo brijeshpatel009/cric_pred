@@ -223,11 +223,11 @@ class _LiveUpcomingScreenState extends State<LiveUpcomingScreen> with TickerProv
                     // print('profile');
                     _launchURL(FirebaseRemoteConfigUtils.privacyPolicyUrl);
                   },
-                  child: Align(
+                  child: const Align(
                     alignment: Alignment.topRight,
                     child: Icon(
                       TabBarIcon.insurance,
-                      size: height * 0.04,
+                      size: 25,
                       color: Colors.white,
                     ),
                   ),

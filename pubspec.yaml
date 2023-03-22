@@ -83,16 +83,16 @@ flutter_icons:
   adaptive_icon_foreground: "asset/appicon1.png"
 
 flutter_native_splash:
-  color: "#ffffff"
+  color: "#2E2445"
   image: asset/appicon.png
   image_dark:  asset/appicon.png
-  color_dark: "#ffffff"
+  color_dark: "#2E2445"
 
   android_12:
     image: asset/appicon.png
     image_dark:  asset/appicon.png
-    icon_background_color: "#ffffff"
-    icon_background_color_dark: "#ffffff"
+    icon_background_color: "#2E2445"
+    icon_background_color_dark: "#2E2445"
 
   web: false
 
